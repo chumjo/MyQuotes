@@ -18,9 +18,16 @@
 #- Added by Jonathan -#
 #---------------------#
 
-.iws
-workspace.xml
-tasks.xml
+*.iws
+*.workspace.xml
+*.tasks.xml
+
+#--------------------------#
+#- Unsure if ok to ignore -#
+#--------------------------#
+
+*.modules.xml
+*.misc.xml
 
 
 

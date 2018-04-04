@@ -6,17 +6,21 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    public QuoteFragmentPagerAdapter(FragmentManager fm) {
+    private final int numberOfFragment;
+
+    public QuoteFragmentPagerAdapter(FragmentManager fm, int numberOfFragment) {
         super(fm);
+        this.numberOfFragment = numberOfFragment;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return null;
+
+        return QuoteFragment.newInstance(position + 1);
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return numberOfFragment;
     }
 }

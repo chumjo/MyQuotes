@@ -21,7 +21,7 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        return QuoteFragment.newInstance(position + 1, mQuoteList.get(position+1));
+        return QuoteFragment.newInstance(position + 1, mQuoteList.get(position));
     }
 
     @Override

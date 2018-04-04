@@ -1,5 +1,6 @@
 package com.ift2905.myquotes;
 
+import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,9 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    public Quote quote;
 
     public ArrayList<Quote> mRandomQuoteArrayList;
     public int mCurrentQuotePosition;
@@ -27,12 +31,20 @@ public class MainActivity extends AppCompatActivity {
         // Initialise une liste de random quote vide
         mRandomQuoteArrayList = new ArrayList<Quote>(0);
 
-        // TMP BEG
+        RunAPI run;
+        for (int i=0; i<mNumberOfFragment; i++){
+            run = new RunAPI();
+            run.execute();
+            
+            mRandomQuoteArrayList.add(quote);
+        }
+
+        /*// TMP BEG
 
         for (int i=0; i<mNumberOfFragment; i++){
             mRandomQuoteArrayList.add(new Quote("quote : "+i, "- jonathan", "management","id"+i));
         }
-        // TMP END
+        // TMP END*/
 
 
 
@@ -70,5 +82,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public class RunAPI extends AsyncTask<String, Object, Quote> {
+
+        @Override
+        protected Quote doInBackground(String... strings) {
+
+            QuoteAPI web = new QuoteAPI(Category.MANAGEMENT);
+            try {
+                quote = web.run();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return quote;
+        }
     }
 }

@@ -9,13 +9,17 @@ import android.widget.TextView;
 
 public class QuoteFragment extends Fragment {
 
+    public Quote quote;
+
     public QuoteFragment() {
         super();
     }
 
-    public static QuoteFragment newInstance(int sectionNumber) {
+    public static QuoteFragment newInstance(int sectionNumber, Quote quote) {
 
         QuoteFragment fragment = new QuoteFragment();
+        fragment.quote = quote;
+
         return fragment;
     }
 
@@ -23,8 +27,11 @@ public class QuoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        TextView textView = (TextView) rootView.findViewById(R.id.quote);
-        //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+        TextView textViewQuote = (TextView) rootView.findViewById(R.id.quote);
+        TextView textViewAuthor = (TextView) rootView.findViewById(R.id.author);
+        textViewQuote.setText(quote.getQuote());
+        textViewAuthor.setText(quote.getAuthor());
+
         return rootView;
     }
 

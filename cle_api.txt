@@ -1,0 +1,17 @@
+zFq239fxPR_Y_MxmgZ1rlAeF
+
+http://quotes.rest/quote/random.json?api_key=zFq239fxPR_Y_MxmgZ1rlAeF
+
+http://quotes.rest/quote/search.json?category=management&api_key=zFq239fxPR_Y_MxmgZ1rlAeF
+
+http://quotes.rest/quote/search.json?category=inspire&api_key=zFq239fxPR_Y_MxmgZ1rlAeF
+
+http://quotes.rest/quote/search.json?category=sport&api_key=zFq239fxPR_Y_MxmgZ1rlAeF
+
+http://quotes.rest/quote/search.json?category=love&api_key=zFq239fxPR_Y_MxmgZ1rlAeF
+
+http://quotes.rest/quote/search.json?category=funny&api_key=zFq239fxPR_Y_MxmgZ1rlAeF
+
+http://quotes.rest/quote/search.json?category=life&api_key=zFq239fxPR_Y_MxmgZ1rlAeF
+
+http://quotes.rest/quote/search.json?category=movie&api_key=zFq239fxPR_Y_MxmgZ1rlAeF

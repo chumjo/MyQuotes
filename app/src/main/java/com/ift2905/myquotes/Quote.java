@@ -28,11 +28,11 @@ public class Quote {
     }
 
     // Constructors
-    public Quote(String quote, String author, String category, String id)
+    public Quote(String quote, String author, Category category, String id)
     {
         this.quote = quote;
         this.author = author;
-        this.category = Category.getCategory(category);
+        this.category = category;
         this.id = id;
     }
 

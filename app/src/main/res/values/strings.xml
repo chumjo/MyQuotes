@@ -1,9 +1,27 @@
 <resources>
     <string name="app_name">My Quotes</string>
+    <string name="quote_init">First think then be</string>
     <string name="favorites">My Favorites</string>
     <string name="action_settings">Settings</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Temp Quote for testing -->
-    <string name="quote_test">\“I\'m selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can\'t handle me at my worst, then you sure as hell don\'t deserve me at my best.\”</string>
+    <string name="quote_test">\“I\'m selfish, impatient and a little insecure. I make mistakes,
+        I am out of control and at times hard to handle. But if you can\'t handle me at my worst,
+        then you sure as hell don\'t deserve me at my best.\”</string>
     <string name="author_test">- Marilyn Monroe</string>
+
+    <string name="apropos">
+        \"L\'application My Quotes a été deéveloppée par les étudiants Jonathan Larose, Augusto
+        Dos Santos et Dennis Orozco dans le cadre du cours Interfaces personne machine pour la
+        session d\'hiver 2018 sous l\'enseignement du professeur Bernhard Thomaszewski de
+        l\'université de Montréal\."
+    </string>
+    <string name="Homme_id">Home</string>
+    <string name="Favorites_id">Favorites</string>
+    <string name="Settings_id">Settings</string>
+    <string name="About_id">about</string>
+    <string name="Share_id">Share</string>
+    <string name="Communicate_id">Communicate</string>
 </resources>

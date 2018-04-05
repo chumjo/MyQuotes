@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,21 +17,29 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
+    public Quote quote;
+
     public ArrayList<Quote> mRandomQuoteArrayList;
     public int mCurrentQuotePosition;
+    public int mMaxQuotePosition;
 
     private final int mNumberOfFragment = 1000;
 
     private QuoteFragmentPagerAdapter mQuoteFragmentPagerAdapter;
     private ViewPager mViewPager;
+
+    // TMP
+    public int count;
 
 
     @Override
@@ -38,12 +47,23 @@ public class MainActivity extends AppCompatActivity
 
         // Initialise une liste de random quote vide
         mRandomQuoteArrayList = new ArrayList<Quote>(0);
+        mCurrentQuotePosition = 0;
+        mMaxQuotePosition = 0;
 
-        // TMP BEG
-
-        for (int i=0; i<mNumberOfFragment; i++){
-            mRandomQuoteArrayList.add(new Quote("quote : "+i, "- jonathan", "management","id"+i));
+        for (int i=0; i<2; i++){
+            quote = null;
+            RunAPI run = new RunAPI();
+            run.execute();
+            while(quote == null);
+            Log.d("OUPS", "on est sortie " + (quote == null));
+            //mRandomQuoteArrayList.add(new Quote("quote : "+i, "- jonathan", Category.MANAGEMENT,"id"+i));
+            mRandomQuoteArrayList.add(quote);
         }
+
+        /*RunAPI run = new RunAPI();
+        run.execute();*/
+
+        count = 100;
         // TMP END
 
         super.onCreate(savedInstanceState);
@@ -66,6 +86,60 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Page Change listener
+        // Changes the different page counts
+        // Laucnhes a query for a new quote if needed
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            public boolean scrollingRight = false;
+            public float lastPositionOffset = 0.0f;
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                /*
+                if(lastPositionOffset - positionOffset < -0.6) {
+                    if(position <= mMmaxQuotePosition - 5){
+                        mViewPager.setCurrentItem(mMmaxQuotePosition - 5);
+                    }
+                }
+                else {
+                    lastPositionOffset = positionOffset;
+                }
+                */
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                mCurrentQuotePosition = position;
+                if(position > mMaxQuotePosition){
+
+                    mMaxQuotePosition = mCurrentQuotePosition;
+
+                    // TODO
+
+                    RunAPI run = new RunAPI();
+                    run.execute();
+
+                    if(quote == null) {
+                        Log.d("OUPS", "Erreur");
+                    }
+
+                    // API query for new quote
+                    // TMP add a quote
+                    mRandomQuoteArrayList.add(quote);
+                    count++;
+                }
+
+                Log.d("DEBUG", "count = " + count);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }}
+        );
     }
 
     @Override
@@ -148,5 +222,22 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    public class RunAPI extends AsyncTask<String, Object, Quote> {
+
+        @Override
+        protected Quote doInBackground(String... strings) {
+
+            QuoteAPI web = new QuoteAPI(Category.MANAGEMENT);
+
+            try {
+                quote = web.run();
+                //mRandomQuoteArrayList.add(quote);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return quote;
+        }
     }
 }

@@ -5,27 +5,37 @@ public enum Category {
     // The different categories of quotes
     INSPIRATIONAL,
     MANAGEMENT,
-    LIFE,
+    ART,
     SPORTS,
     LOVE,
     FUNNY;
 
-    public static Category getCategory(String category)
+    public String toString()
     {
-        switch (category)
+        String toString = "";
+
+        switch (this)
         {
-            case "inspire" :
-                return  INSPIRATIONAL;
-            case "management" :
-                return MANAGEMENT;
-            case "sport" :
-                return SPORTS;
-            case "love" :
-                return LOVE;
-            case "funny" :
-                return FUNNY;
-            default :
-                return LIFE;
+            case INSPIRATIONAL :
+                toString = "inspire";
+                break;
+            case MANAGEMENT:
+                toString = "management";
+                break;
+            case SPORTS :
+                toString = "sport";
+                break;
+            case LOVE:
+                toString = "love" ;
+                break;
+            case FUNNY :
+                toString = "funny";
+                break;
+            case ART :
+                toString = "art";
+                break;
         }
+
+        return toString;
     }
 }

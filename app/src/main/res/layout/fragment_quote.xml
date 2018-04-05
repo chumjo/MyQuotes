@@ -36,7 +36,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_weight="0"
-                    android:contentDescription="@string/author_test"
+                    android:contentDescription="@string/app_author"
                     android:src="@drawable/icon_management" />
 
                 <Space
@@ -66,10 +66,10 @@
                 android:background="@drawable/round_corner"
                 android:lineSpacingExtra="5sp"
                 android:padding="16dp"
-                android:text="@string/quote_test"
+                android:text="@string/quote_welcome"
                 android:textAlignment="textStart"
                 android:textAllCaps="false"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -84,7 +84,7 @@
                 android:paddingLeft="16sp"
                 android:paddingRight="16sp"
                 android:paddingTop="8dp"
-                android:text="@string/author_test"
+                android:text="@string/app_author"
                 android:textAlignment="textEnd"
                 android:textSize="14sp" />
 
@@ -98,7 +98,7 @@
                     android:id="@+id/imageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/author_test"
+                    android:contentDescription="@string/Share_id"
                     android:src="@drawable/icon_share" />
             </LinearLayout>
 

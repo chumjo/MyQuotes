@@ -26,7 +26,7 @@ public class QuoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_quote, container, false);
         TextView textViewQuote = (TextView) rootView.findViewById(R.id.quote);
         TextView textViewAuthor = (TextView) rootView.findViewById(R.id.author);
         textViewQuote.setText(quote.getQuote());

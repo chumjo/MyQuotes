@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<Quote> mRandomQuoteArrayList;
     public int mCurrentQuotePosition;
-    public int mMmaxQuotePosition;
+    public int mMaxQuotePosition;
 
     private final int mNumberOfFragment = 1000;
 
@@ -37,19 +37,21 @@ public class MainActivity extends AppCompatActivity {
         // Initialise une liste de random quote vide
         mRandomQuoteArrayList = new ArrayList<Quote>(0);
         mCurrentQuotePosition = 0;
-        mMmaxQuotePosition = 0;
+        mMaxQuotePosition = 0;
 
-        RunAPI run;
-        for (int i=0; i<mNumberOfFragment; i++){
-            run = new RunAPI();
+        for (int i=0; i<2; i++){
+            quote = null;
+            RunAPI run = new RunAPI();
             run.execute();
-            
+            while(quote == null);
+            Log.d("OUPS", "on est sortie " + (quote == null));
+            //mRandomQuoteArrayList.add(new Quote("quote : "+i, "- jonathan", Category.MANAGEMENT,"id"+i));
             mRandomQuoteArrayList.add(quote);
         }
 
-        for (int i=0; i<5; i++){
-            mRandomQuoteArrayList.add(new Quote("quote : "+i, "- jonathan", "management","id"+i));
-        }
+        /*RunAPI run = new RunAPI();
+        run.execute();*/
+
         count = 100;
         // TMP END
 
@@ -92,14 +94,22 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
 
                 mCurrentQuotePosition = position;
-                if(position > mMmaxQuotePosition){
+                if(position > mMaxQuotePosition){
 
-                    mMmaxQuotePosition = mCurrentQuotePosition;
+                    mMaxQuotePosition = mCurrentQuotePosition;
 
                     // TODO
+
+                    RunAPI run = new RunAPI();
+                    run.execute();
+
+                    if(quote == null) {
+                        Log.d("OUPS", "Erreur");
+                    }
+
                     // API query for new quote
                     // TMP add a quote
-                    mRandomQuoteArrayList.add(new Quote("quote : "+count, "- jonathan", "management","id"+count));
+                    mRandomQuoteArrayList.add(quote);
                     count++;
                 }
 
@@ -141,8 +151,10 @@ public class MainActivity extends AppCompatActivity {
         protected Quote doInBackground(String... strings) {
 
             QuoteAPI web = new QuoteAPI(Category.MANAGEMENT);
+
             try {
                 quote = web.run();
+                //mRandomQuoteArrayList.add(quote);
             } catch (IOException e) {
                 e.printStackTrace();
             }

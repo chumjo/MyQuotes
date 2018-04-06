@@ -19,11 +19,11 @@
             android:title="@string/qod_sound"
             android:dependency="qod_activate"/>
 
-        <com.ift2905.myquotes.TimePreference
+        <!--<com.ift2905.myquotes.TimePreference
             android:defaultValue="00:00"
             android:key="qod_time"
             android:title="@string/qod_time"
-            android:dependency="@string/qod_activate"/>
+            android:dependency="@string/qod_activate"/>-->
 
     </PreferenceCategory>
 

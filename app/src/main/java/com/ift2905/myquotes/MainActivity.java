@@ -25,13 +25,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.ift2905.myquotes.R.id.container;
+import static java.lang.Math.random;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     public Quote quote;
 
-    public DrawerLayout mDrawerLayout;
+    public DrawerLayout drawer;
 
     public int nb_init_quotes = 3;
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity
         mCurrentQuotePosition = 0;
         mMaxQuotePosition = 0;
 
-        RunAPI run = new RunAPI(Category.MANAGEMENT);
+        RunAPI run = new RunAPI(Category.management);
         try{
             while(run.execute().get().size() == 0);
             nb_init_quotes = 1;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity
         mViewPager = (ViewPager) findViewById(container);
         mViewPager.setAdapter(mQuoteFragmentPagerAdapter);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -95,13 +96,14 @@ public class MainActivity extends AppCompatActivity
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
-                        // close drawer when item is tapped
 
                         if(menuItem.getTitle().equals("Favorites")) {
                             Intent intent = new Intent(MainActivity.this,FavoritesActivity.class);
                             startActivity(intent);
                         }
-                        //mDrawerLayout.closeDrawers();
+
+                        // close drawer when item is tapped
+                        drawer.closeDrawers();
 
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
@@ -143,7 +145,10 @@ public class MainActivity extends AppCompatActivity
 
                     // TODO
 
-                    RunAPI run = new RunAPI(Category.MANAGEMENT);
+                    String[] preferences = {};
+                    Category category = randomQuoteFromPreferences(preferences);
+
+                    RunAPI run = new RunAPI(category);
                     try{
                         run.execute();
                     }catch (Exception e) {
@@ -168,7 +173,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -233,7 +238,7 @@ public class MainActivity extends AppCompatActivity
             toast.show();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
@@ -241,7 +246,8 @@ public class MainActivity extends AppCompatActivity
 
     public class RunAPI extends AsyncTask<String, Object, ArrayList<Quote>> {
 
-        Category category = Category.MANAGEMENT;
+        String[] preferences = {};
+        Category category = randomQuoteFromPreferences(preferences);
 
         public RunAPI(Category category){
             super();
@@ -252,6 +258,7 @@ public class MainActivity extends AppCompatActivity
         protected ArrayList<Quote> doInBackground(String... strings) {
 
             for (int i=0; i<nb_init_quotes; i++){
+                this.category = randomQuoteFromPreferences(preferences);
                 QuoteAPI web = new QuoteAPI(category,MainActivity.this);
 
                 try {
@@ -264,7 +271,17 @@ public class MainActivity extends AppCompatActivity
 
             return mRandomQuoteArrayList;
         }
+    }
 
+    public Category randomQuoteFromPreferences(String[] preferences) {
+
+        if(preferences.length == 0) {
+            String[] default_preferences = {"inspire","management","sport","love","funny","art"};
+            preferences = default_preferences;
+        }
+        int i = (int) Math.floor(Math.random()*preferences.length);
+
+        return Category.valueOf(preferences[i]);
 
     }
 }

@@ -25,7 +25,8 @@ public class QuoteAPI {
 
     public QuoteAPI(Category category, Context context) {
         this.category = category;
-        url_begin = "http://quotes.rest/quote/search.json?maxlength=430&category=";url_final = url_begin + category;Log.d("HELLO WORLD", url_final);
+        url_begin = "http://quotes.rest/quote/search.json?maxlength=430&category=";
+        url_final = url_begin + category;Log.d("HELLO WORLD", url_final);
         dbh = new DBHelper(context);
     }
 
@@ -49,7 +50,7 @@ public class QuoteAPI {
                                 category,
                                 root.contents.id);
 
-        dbh.addQuote(quote);
+        dbh.addQuoteToFavorites(quote);
 
         return quote;
     }

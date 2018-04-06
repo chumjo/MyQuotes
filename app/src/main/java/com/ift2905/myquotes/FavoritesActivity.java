@@ -15,13 +15,8 @@ import java.util.ArrayList;
 
 public class FavoritesActivity extends AppCompatActivity {
     ListView list;
-    Quote quote;
     TextView tv;
     DBHelper dbh;
-
-    public int nb_init_quotes = 3;
-
-    ArrayList<Quote> mRandomQuoteArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +29,9 @@ public class FavoritesActivity extends AppCompatActivity {
         dbh = new DBHelper(this);
         Cursor c = dbh.quotesList();
 
-        String[] from = {DBHelper.Q_QUOTE, DBHelper.Q_AUTHOR, /*DBHelper.Q_ID*/};
+        String[] from = {DBHelper.Q_QUOTE, /*DBHelper.Q_AUTHOR,*/ DBHelper.Q_CATEGORY};
         int[] to = {/*0,*/android.R.id.text1,android.R.id.text2};
-        SimpleCursorAdapter sca = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, c, from,to,0);
+        SimpleCursorAdapter sca = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, c, from, to,0);
 
         list.setAdapter(sca);
     }

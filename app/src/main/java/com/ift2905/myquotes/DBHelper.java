@@ -8,13 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 /**
  * Created by augus on 05/04/2018.
  */
 
 public class DBHelper extends SQLiteOpenHelper {
-
-    private static DBHelper sInstance;
 
     static final String DB_NAME = "quotes.db";
     static final int DB_VERSION = 1;
@@ -28,17 +28,6 @@ public class DBHelper extends SQLiteOpenHelper {
     //private static SQLiteDatabase db = null;
     public static SQLiteDatabase db = null;
 
-    public static synchronized DBHelper getInstance(Context context) {
-
-        // Use the application context, which will ensure that you
-        // don't accidentally leak an Activity's context.
-        // See this article for more information: http://bit.ly/6LRzfx
-        if (sInstance == null) {
-            sInstance = new DBHelper(context.getApplicationContext());
-        }
-        return sInstance;
-    }
-
     public DBHelper(Context context){
         super(context, DB_NAME, null, DB_VERSION);
         if (db==null){
@@ -48,10 +37,10 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "create table " + TABLE_QUOTES
-                +" ( "+Q_ID + " text, "
-                + Q_QUOTE+ " text, "
+                +" ( "+Q_QUOTE + " text, "
                 + Q_AUTHOR+ " text, "
-                +Q_CATEGORY+ " text )";
+                + Q_CATEGORY+ " text, "
+                +Q_ID+ " text )";
         Log.d("SQL",sql);
         db.execSQL(sql);
     }
@@ -62,21 +51,41 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addQuote(Quote quote){
-        //int nb = 0;
+    public void addQuoteToFavorites(Quote quote){
         ContentValues cv = new ContentValues();
         cv.clear();
-        cv.put(Q_ID,quote.getId());
         cv.put(Q_QUOTE,quote.getQuote());
         cv.put(Q_AUTHOR,quote.getAuthor());
         cv.put(Q_CATEGORY, quote.getCategory().toString());
+        cv.put(Q_ID,quote.getId());
         try{
             db.insertOrThrow(TABLE_QUOTES, null, cv);
-            //nb++;
         } catch (SQLException e){
             e.printStackTrace();
         }
-        //return nb;
+    }
+
+    public void deleteQuoteFromFavorites(String id) {
+        //db = this.getReadableDatabase();
+        db.delete(TABLE_QUOTES, Q_ID + " = ?", new String[]{id});
+        db.close();
+    }
+
+    public ArrayList<Quote> getFaroriteQuotes() {
+        //db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_QUOTES, null, null, null, null, null, null);
+        ArrayList<Quote> quotes = new ArrayList<Quote>();
+        Quote quote;
+        if (cursor.getCount() > 0) {
+            for (int i = 0; i < cursor.getCount(); i++) {
+                cursor.moveToNext();
+                quote = new Quote(cursor.getString(0),cursor.getString(1),Category.valueOf(cursor.getString(2)),cursor.getString(3));
+                quotes.add(quote);
+            }
+        }
+        cursor.close();
+        db.close();
+        return quotes;
     }
 
     public Cursor quotesList(){

@@ -33,14 +33,6 @@ public class MainActivity extends AppCompatActivity
 
     public DrawerLayout mDrawerLayout;
 
-    //tmp
-
-    public String current_activity = "";
-
-
-
-
-
     public int nb_init_quotes = 3;
 
     public ArrayList<Quote> mRandomQuoteArrayList;
@@ -72,19 +64,6 @@ public class MainActivity extends AppCompatActivity
         }catch (Exception e) {
             e.printStackTrace();
         }
-
-        /*for (int i=0; i<2; i++){
-            quote = null;
-            RunAPI run = new RunAPI();
-            run.execute();
-            while(quote == null);
-            Log.d("OUPS", "on est sortie " + (quote == null));
-            //mRandomQuoteArrayList.add(new Quote("quote : "+i, "- jonathan", Category.MANAGEMENT,"id"+i));
-            mRandomQuoteArrayList.add(quote);
-        }*/
-
-        /*RunAPI run = new RunAPI();
-        run.execute();*/
 
         count = 100;
         // TMP END
@@ -119,8 +98,6 @@ public class MainActivity extends AppCompatActivity
                         // close drawer when item is tapped
 
                         if(menuItem.getTitle().equals("Favorites")) {
-                            /*Toast toast = Toast.makeText(getApplicationContext(), "Favorites", Toast.LENGTH_SHORT);
-                            toast.show();*/
                             Intent intent = new Intent(MainActivity.this,FavoritesActivity.class);
                             startActivity(intent);
                         }

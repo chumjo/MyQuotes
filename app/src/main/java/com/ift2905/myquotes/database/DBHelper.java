@@ -1,4 +1,4 @@
-package com.ift2905.myquotes;
+package com.ift2905.myquotes.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.ift2905.myquotes.Category;
+import com.ift2905.myquotes.Quote;
 
 import java.util.ArrayList;
 
@@ -79,7 +82,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.getCount() > 0) {
             for (int i = 0; i < cursor.getCount(); i++) {
                 cursor.moveToNext();
-                quote = new Quote(cursor.getString(0),cursor.getString(1),Category.valueOf(cursor.getString(2)),cursor.getString(3));
+                quote = new Quote(cursor.getString(0),cursor.getString(1), Category.valueOf(cursor.getString(2)),cursor.getString(3));
                 quotes.add(quote);
             }
         }

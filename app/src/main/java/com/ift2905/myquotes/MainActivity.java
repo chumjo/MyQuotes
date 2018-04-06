@@ -1,6 +1,7 @@
 package com.ift2905.myquotes;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -30,6 +31,18 @@ public class MainActivity extends AppCompatActivity
 
     public Quote quote;
 
+    public DrawerLayout mDrawerLayout;
+
+    //tmp
+
+    public String current_activity = "";
+
+
+
+
+
+    public int nb_init_quotes = 3;
+
     public ArrayList<Quote> mRandomQuoteArrayList;
     public int mCurrentQuotePosition;
     public int mMaxQuotePosition;
@@ -52,7 +65,15 @@ public class MainActivity extends AppCompatActivity
         mCurrentQuotePosition = 0;
         mMaxQuotePosition = 0;
 
-        for (int i=0; i<2; i++){
+        RunAPI run = new RunAPI(Category.MANAGEMENT);
+        try{
+            while(run.execute().get().size() == 0);
+            nb_init_quotes = 1;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        /*for (int i=0; i<2; i++){
             quote = null;
             RunAPI run = new RunAPI();
             run.execute();
@@ -60,7 +81,7 @@ public class MainActivity extends AppCompatActivity
             Log.d("OUPS", "on est sortie " + (quote == null));
             //mRandomQuoteArrayList.add(new Quote("quote : "+i, "- jonathan", Category.MANAGEMENT,"id"+i));
             mRandomQuoteArrayList.add(quote);
-        }
+        }*/
 
         /*RunAPI run = new RunAPI();
         run.execute();*/
@@ -87,7 +108,30 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        //navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+
+                        if(menuItem.getTitle().equals("Favorites")) {
+                            /*Toast toast = Toast.makeText(getApplicationContext(), "Favorites", Toast.LENGTH_SHORT);
+                            toast.show();*/
+                            Intent intent = new Intent(MainActivity.this,FavoritesActivity.class);
+                            startActivity(intent);
+                        }
+                        //mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
 
         // Page Change listener
         // Changes the different page counts
@@ -122,16 +166,15 @@ public class MainActivity extends AppCompatActivity
 
                     // TODO
 
-                    RunAPI run = new RunAPI();
-                    run.execute();
-
-                    if(quote == null) {
-                        Log.d("OUPS", "Erreur");
+                    RunAPI run = new RunAPI(Category.MANAGEMENT);
+                    try{
+                        run.execute();
+                    }catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                     // API query for new quote
                     // TMP add a quote
-                    mRandomQuoteArrayList.add(quote);
                     count++;
                 }
 
@@ -142,6 +185,8 @@ public class MainActivity extends AppCompatActivity
             public void onPageScrollStateChanged(int state) {
             }}
         );
+
+
     }
 
     @Override
@@ -217,20 +262,32 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public class RunAPI extends AsyncTask<String, Object, Quote> {
+    public class RunAPI extends AsyncTask<String, Object, ArrayList<Quote>> {
+
+        Category category = Category.MANAGEMENT;
+
+        public RunAPI(Category category){
+            super();
+            this.category = category;
+        }
 
         @Override
-        protected Quote doInBackground(String... strings) {
+        protected ArrayList<Quote> doInBackground(String... strings) {
 
-            QuoteAPI web = new QuoteAPI(Category.MANAGEMENT);
+            for (int i=0; i<nb_init_quotes; i++){
+                QuoteAPI web = new QuoteAPI(category,MainActivity.this);
 
-            try {
-                quote = web.run();
-                //mRandomQuoteArrayList.add(quote);
-            } catch (IOException e) {
-                e.printStackTrace();
+                try {
+                    quote = web.run();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                mRandomQuoteArrayList.add(quote);
             }
-            return quote;
+
+            return mRandomQuoteArrayList;
         }
+
+
     }
 }

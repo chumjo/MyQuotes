@@ -1,5 +1,6 @@
 package com.ift2905.myquotes;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.ift2905.myquotes.theysaidso.Root;
@@ -21,16 +22,18 @@ public class QuoteAPI {
     //private String url_end;
     private String url_final;
     private Category category;
+    DBHelper dbh ;
 
-    public QuoteAPI(Category category) {
+    public QuoteAPI(Category category, Context context) {
         this.category = category;
-        url_begin = "http://quotes.rest/quote/search.json?category=";
+        url_begin = "http://quotes.rest/quote/search.json?maxlength=430&category=";
         //url_end = "&api_key=zFq239fxPR_Y_MxmgZ1rlAeF";
         //url_final = url_begin + category + url_end;
         url_final = url_begin + category;
         //url_final = "http://quotes.rest/quote/random.json?api_key=zFq239fxPR_Y_MxmgZ1rlAeF";
         //url_final = "http://quotes.rest/quote/search.json?category=managament&api_key=zFq239fxPR_Y_MxmgZ1rlAeF";
         Log.d("HELLO WORLD", url_final);
+        dbh = new DBHelper(context);
     }
 
     public Quote run() throws IOException {
@@ -53,6 +56,8 @@ public class QuoteAPI {
                                 root.contents.author,
                                 category,
                                 root.contents.id);
+
+        dbh.addQuote(quote);
 
         return quote;
     }

@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity
 
     public Quote quote;
 
+    public RandomQuoteInitialList randomQuoteInitialList;
+
     public DrawerLayout drawer;
 
     public int nb_init_quotes = 3;
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity
     @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        randomQuoteInitialList = new RandomQuoteInitialList(this);
 
         // Initialise une liste de random quote vide
         mRandomQuoteArrayList = new ArrayList<Quote>(0);
@@ -260,7 +264,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public Category randomQuoteFromPreferences(String[] preferences) {
+    public static Category randomQuoteFromPreferences(String[] preferences) {
 
         if(preferences.length == 0) {
             String[] default_preferences = {"inspire","management","sport","love","funny","art"};

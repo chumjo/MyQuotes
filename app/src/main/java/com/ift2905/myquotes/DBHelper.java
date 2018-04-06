@@ -40,11 +40,11 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "create table " + TABLE_QUOTES
-                +" ( "+Q_QUOTE + " text, "
+                +" ( "+Q_ID + " text, "
+                + Q_QUOTE+ " text, "
                 + Q_AUTHOR+ " text, "
-                + Q_CATEGORY+ " text, "
-                +Q_ID+ " text )";
-        Log.d("SQL",sql);
+                +Q_CATEGORY+ " text )";
+        Log.d("MY QUOTES DEBUG",sql);
         db.execSQL(sql);
     }
 
@@ -54,7 +54,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addQuoteToFavorites(Quote quote){
+    public static void addQuoteToFavorites(Quote quote){
         ContentValues cv = new ContentValues();
         cv.clear();
         cv.put(Q_QUOTE,quote.getQuote());
@@ -68,13 +68,13 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteQuoteFromFavorites(String id) {
+    public static void deleteQuoteFromFavorites(String id) {
         //db = this.getReadableDatabase();
         db.delete(TABLE_QUOTES, Q_ID + " = ?", new String[]{id});
         db.close();
     }
 
-    public ArrayList<Quote> getFaroriteQuotes() {
+    public static ArrayList<Quote> getFaroriteQuotes() {
         //db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_QUOTES, null, null, null, null, null, null);
         ArrayList<Quote> quotes = new ArrayList<Quote>();
@@ -82,7 +82,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.getCount() > 0) {
             for (int i = 0; i < cursor.getCount(); i++) {
                 cursor.moveToNext();
-                quote = new Quote(cursor.getString(0),cursor.getString(1), Category.valueOf(cursor.getString(2)),cursor.getString(3));
+                quote = new Quote(cursor.getString(1),cursor.getString(2), Category.valueOf(cursor.getString(3)),cursor.getString(0));
                 quotes.add(quote);
             }
         }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="prefs"
+    android:title="@string/Settings_id">
+
+    <!-- QUOTE OF THE DAY -->
+    <PreferenceCategory android:title="@string/qod"
+        android:key="qod"
+        android:layout="@xml/preference_category">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="qod_activate"
+            android:title="@string/qod_activate"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="qod_sound"
+            android:title="@string/qod_sound"
+            android:dependency="qod_activate"/>
+
+        <!--<com.ift2905.myquotes.TimePreference
+            android:defaultValue="00:00"
+            android:key="qod_time"
+            android:title="@string/qod_time"
+            android:dependency="@string/qod_activate"/>-->
+
+    </PreferenceCategory>
+
+    <!-- CATEGORIES -->
+    <PreferenceCategory android:title="@string/categories"
+        android:key="@string/categories"
+        android:layout="@xml/preference_category">
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/arr_categories"
+            android:entryValues="@array/arr_categories"
+            android:key="list_preference_1"
+            android:title="List preference" />
+        <MultiSelectListPreference
+            android:defaultValue="@array/arr_categories"
+            android:entries="@array/arr_categories"
+            android:entryValues="@array/arr_categories"
+            android:key="multi_select_list_preference_1"
+            android:title="Multi select list preference" />
+
+    </PreferenceCategory>
+
+    <!-- PREFERENCES -->
+    <PreferenceCategory android:title="@string/pref"
+        android:key="@string/pref"
+        android:layout="@xml/preference_category">
+    </PreferenceCategory>
+
+</PreferenceScreen>

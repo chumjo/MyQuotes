@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- default colors -->
+    <color name="white">#ffffff</color>
+
     <color name="colorPrimary">#63d8d2</color>
     <color name="colorPrimaryDark">#28bab2</color>
     <color name="colorPrimaryLight">#d6fcfa</color>

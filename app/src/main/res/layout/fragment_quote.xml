@@ -16,6 +16,7 @@
         android:layout_marginTop="16dp"
         app:cardBackgroundColor="@color/colorPrimaryLight"
         app:cardCornerRadius="10dp"
+        app:cardElevation="8dp"
         app:contentPadding="20dp"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="247dp">
@@ -36,7 +37,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_weight="0"
-                    android:contentDescription="@string/app_author"
+                    android:contentDescription="@string/img_category"
                     android:src="@drawable/icon_management" />
 
                 <Space
@@ -44,11 +45,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/favoriteButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
+                    android:button="@android:drawable/btn_star"
+                    android:buttonTint="@color/colorPrimaryDark"
                     android:textAlignment="textEnd" />
 
             </LinearLayout>
@@ -96,10 +99,13 @@
 
                 <ImageButton
                     android:id="@+id/imageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/qf_button_share"
+                    android:layout_height="@dimen/qf_button_share"
+                    android:backgroundTint="@color/cardview_light_background"
                     android:contentDescription="@string/Share_id"
-                    android:src="@drawable/icon_share" />
+                    android:elevation="5dp"
+                    android:src="@android:drawable/ic_menu_share"
+                    android:tint="@android:color/holo_blue_dark" />
             </LinearLayout>
 
         </LinearLayout>

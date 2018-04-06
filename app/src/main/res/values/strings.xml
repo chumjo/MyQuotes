@@ -24,7 +24,11 @@
     <string name="categories">Categories</string>
     <string name="pref">Preferences</string>
 
+    <!-- Content Description -->
+    <string name="img_category">category</string>
+    <string name="btn_delete">button delete</string>
 
+    <!-- Naviguation Menu -->
     <string name="Home_id">Home</string>
     <string name="Favorites_id">Favorites</string>
     <string name="Settings_id">Settings</string>

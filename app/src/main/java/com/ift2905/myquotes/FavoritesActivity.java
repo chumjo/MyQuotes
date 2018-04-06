@@ -7,8 +7,6 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import com.ift2905.myquotes.database.DBHelper;
-
 /**
  * Created by augus on 05/04/2018.
  */

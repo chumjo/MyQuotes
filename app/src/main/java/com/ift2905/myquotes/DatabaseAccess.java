@@ -1,15 +1,11 @@
-package com.ift2905.myquotes.database;
+package com.ift2905.myquotes;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.ift2905.myquotes.Category;
-import com.ift2905.myquotes.Quote;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by augus on 06/04/2018.

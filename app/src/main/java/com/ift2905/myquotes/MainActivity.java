@@ -49,9 +49,6 @@ public class MainActivity extends AppCompatActivity
     private QuoteFragmentPagerAdapter mQuoteFragmentPagerAdapter;
     private ViewPager mViewPager;
 
-    // TMP
-    public int count;
-
 
     @SuppressLint("CutPasteId")
     @Override
@@ -69,9 +66,6 @@ public class MainActivity extends AppCompatActivity
         }catch (Exception e) {
             e.printStackTrace();
         }
-
-        count = 100;
-        // TMP END
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -136,21 +130,68 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onPause() {
+        
+        super.onPause();
+    }
+
+    @Override
     public void onBackPressed() {
 
+        // Get the fragments by tag
         Fragment frag_about = getSupportFragmentManager().findFragmentByTag("FRAG_ABOUT");
+        Fragment frag_fav_list = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_LIST");
+        Fragment frag_fav_pager = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_PAGER");
+        android.app.Fragment frag_setting = getFragmentManager().findFragmentByTag("FRAG_SETTING");
 
-        if(frag_about != null && frag_about.isVisible()) {
-            drawer.openDrawer(Gravity.START);
-            return;
-        }
-
+        //--- DRAWER ---//
+        // If the drawer is open, we simply close it
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+
+        //--- FRAG ABOUT ---//
+        // Opens the drawer
+        else if(frag_about != null && frag_about.isVisible()) {
+            drawer.openDrawer(Gravity.START);
+        }
+
+        //--- FRAG FAVORITE LIST ---//
+        // Opens the drawer
+        else if(frag_fav_list != null && frag_fav_list.isVisible()) {
+            drawer.openDrawer(Gravity.START);
+        }
+
+        //--- FRAG FAVORITE PAGER ---//
+        // Return to the favorite list
+        else if(frag_fav_pager != null && frag_fav_pager.isVisible()) {
+
+            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+            if(frag_fav_list != null){
+                ft.replace(R.id.container_main, frag_fav_list);
+                ft.commit();
+            }
+            else {
+                FavoritesListFragment fragment = new FavoritesListFragment();
+                ft.replace(R.id.container_main, fragment, "FRAG_FAV_LIST");
+                ft.commit();
+            }
+        }
+
+        //--- SETTINGS ---//
+        // Return to the favorite list
+        else if(frag_setting != null && frag_setting.isVisible()) {
+            drawer.openDrawer(Gravity.START);
+        }
+
+        // Else we call the normal back pressed
+        else{
             super.onBackPressed();
         }
+
+
     }
 
     @Override
@@ -161,7 +202,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-
         if (id == R.id.action_settings) {
             return true;
         }
@@ -169,6 +209,10 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /*
+     * Navigation Menu on selected item :
+     * Tansaction between fragments or activities
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -176,53 +220,48 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        //--- HOME ---//
         if (id == R.id.nav_home) {
-
+            Context context = getApplicationContext();
             getSupportFragmentManager().beginTransaction().remove(new Fragment());
 
+            // Remove all Fragments to get back to the main activity
+            removeAllFragments();
+        }
+
+        //--- FAVORITES ---//
+        else if (id == R.id.nav_favorites) {
             Context context = getApplicationContext();
 
-            /*
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
-            */
-
-        } else if (id == R.id.nav_favorites) {
-            Context context = getApplicationContext();
-
-            /*
-            Intent intent = new Intent(MainActivity.this,FavoritesActivity.class);
-            startActivity(intent);
-            */
             FavoritesListFragment fragment = new FavoritesListFragment();
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.container_main, fragment, "FRAG_FAVORITES_LIST");
+            ft.replace(R.id.container_main, fragment, "FRAG_FAV_LIST");
+            ft.commit();
+        }
+
+        //--- SETTINGS ---//
+        else if (id == R.id.nav_settings) {
+            Context context = getApplicationContext();
+
+            SettingsFragment fragment = new SettingsFragment();
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.container_main, fragment, "FRAG_SETTING");
             ft.commit();
 
-        } else if (id == R.id.nav_settings) {
-            Context context = getApplicationContext();
-            //Intent intent = new Intent(context,Settings.class);
-            //startActivity(intent);
-
-        } else if (id == R.id.nav_about) {
+        }
+        //--- ABOUT ---//
+        else if (id == R.id.nav_about) {
             Context context = getApplicationContext();
 
             AboutFragment fragment = new AboutFragment();
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container_main, fragment, "FRAG_ABOUT");
             ft.commit();
+        }
 
-            //Intent intent = new Intent(context,About.class);
-            //startActivity(intent);
-
-        } else if (id == R.id.nav_share) {
+        // TO REMOVE
+        else if (id == R.id.nav_share) {
             Context context = getApplicationContext();
-            CharSequence texte = "buton clicked";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, texte, duration);
-            toast.setGravity(Gravity.CENTER_VERTICAL,0,0);
-            toast.show();
         }
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -270,5 +309,21 @@ public class MainActivity extends AppCompatActivity
 
         return Category.valueOf(preferences[i]);
 
+    }
+
+    private void removeAllFragments(){
+
+        for(Fragment fragment:getSupportFragmentManager().getFragments()){
+            if(fragment instanceof QuoteFragment);
+            else {
+                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+            }
+        }
+
+        android.app.Fragment frag_setting = getFragmentManager().findFragmentByTag("FRAG_SETTING");
+
+        if(frag_setting != null) {
+            getFragmentManager().beginTransaction().remove(frag_setting).commit();
+        }
     }
 }

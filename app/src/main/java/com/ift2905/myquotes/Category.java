@@ -3,12 +3,12 @@ package com.ift2905.myquotes;
 public enum Category {
 
     // The different categories of quotes
-    INSPIRATIONAL,
-    MANAGEMENT,
-    ART,
-    SPORTS,
-    LOVE,
-    FUNNY;
+    inspire,
+    management,
+    sport,
+    love,
+    funny,
+    art;
 
     public String toString()
     {
@@ -16,22 +16,22 @@ public enum Category {
 
         switch (this)
         {
-            case INSPIRATIONAL :
+            case inspire :
                 toString = "inspire";
                 break;
-            case MANAGEMENT:
+            case management:
                 toString = "management";
                 break;
-            case SPORTS :
+            case sport :
                 toString = "sport";
                 break;
-            case LOVE:
+            case love:
                 toString = "love" ;
                 break;
-            case FUNNY :
+            case funny :
                 toString = "funny";
                 break;
-            case ART :
+            case art :
                 toString = "art";
                 break;
         }

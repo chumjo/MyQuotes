@@ -1,11 +1,13 @@
 package com.ift2905.myquotes;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentTransaction;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.ift2905.myquotes.R.id.container;
+import static com.ift2905.myquotes.R.id.drawer_layout;
 import static java.lang.Math.random;
 
 public class MainActivity extends AppCompatActivity
@@ -89,29 +92,9 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
+        navigationView.setNavigationItemSelectedListener(this);
 
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
 
-                        if(menuItem.getTitle().equals("Favorites")) {
-                            Intent intent = new Intent(MainActivity.this,FavoritesActivity.class);
-                            startActivity(intent);
-                        }
-
-                        // close drawer when item is tapped
-                        drawer.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-
-                        return true;
-                    }
-                });
 
         // Page Change listener
         // Changes the different page counts
@@ -124,16 +107,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                /*
-                if(lastPositionOffset - positionOffset < -0.6) {
-                    if(position <= mMmaxQuotePosition - 5){
-                        mViewPager.setCurrentItem(mMmaxQuotePosition - 5);
-                    }
-                }
-                else {
-                    lastPositionOffset = positionOffset;
-                }
-                */
             }
 
             @Override
@@ -144,8 +117,6 @@ public class MainActivity extends AppCompatActivity
 
                     mMaxQuotePosition = mCurrentQuotePosition;
 
-                    // TODO
-
                     String[] preferences = {};
                     Category category = randomQuoteFromPreferences(preferences);
 
@@ -155,25 +126,25 @@ public class MainActivity extends AppCompatActivity
                     }catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    // API query for new quote
-                    // TMP add a quote
-                    count++;
                 }
-
-                Log.d("DEBUG", "count = " + count);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-            }}
-        );
-
-
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
+
+        Fragment frag_about = getSupportFragmentManager().findFragmentByTag("FRAG_ABOUT");
+
+        if(frag_about != null && frag_about.isVisible()) {
+            drawer.openDrawer(Gravity.START);
+            return;
+        }
+
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -206,20 +177,29 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
+
+            getSupportFragmentManager().beginTransaction().remove(new Fragment());
+
             Context context = getApplicationContext();
-            CharSequence texte = "buton camera clicked";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, texte, duration);
-            toast.setGravity(Gravity.CENTER_VERTICAL,0,0);
-            toast.show();
-            // Handle the home
+
+            /*
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+            */
+
         } else if (id == R.id.nav_favorites) {
             Context context = getApplicationContext();
-            CharSequence texte = "buton clicked";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, texte, duration);
-            toast.setGravity(Gravity.CENTER_VERTICAL,0,0);
-            toast.show();
+
+            /*
+            Intent intent = new Intent(MainActivity.this,FavoritesActivity.class);
+            startActivity(intent);
+            */
+            FavoritesListFragment fragment = new FavoritesListFragment();
+            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.container_main, fragment, "FRAG_FAVORITES_LIST");
+            ft.commit();
+
         } else if (id == R.id.nav_settings) {
             Context context = getApplicationContext();
             //Intent intent = new Intent(context,Settings.class);
@@ -227,6 +207,12 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_about) {
             Context context = getApplicationContext();
+
+            AboutFragment fragment = new AboutFragment();
+            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.container_main, fragment, "FRAG_ABOUT");
+            ft.commit();
+
             //Intent intent = new Intent(context,About.class);
             //startActivity(intent);
 

@@ -21,7 +21,7 @@ public class FavoritesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favorites_activity);
 
-        tv = findViewById(R.id.textview1);
+        //tv = findViewById(R.id.textview1);
 
         list = (ListView) findViewById(R.id.lview2);
         dbh = new DBHelper(this);

@@ -3,7 +3,6 @@ package com.ift2905.myquotes;
 import android.content.Context;
 import android.util.Log;
 
-import com.ift2905.myquotes.database.DBHelper;
 import com.ift2905.myquotes.theysaidso.Root;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;

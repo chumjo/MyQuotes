@@ -1,0 +1,100 @@
+package com.ift2905.myquotes;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import com.ift2905.myquotes.Category;
+import com.ift2905.myquotes.Quote;
+
+import java.util.ArrayList;
+
+/**
+ * Created by augus on 05/04/2018.
+ */
+
+public class DBHelper extends SQLiteOpenHelper {
+
+    static final String DB_NAME = "quotes.db";
+    static final int DB_VERSION = 1;
+
+    static final String TABLE_QUOTES = "quotes";
+    static final String Q_ID = "_id";
+    static final String Q_QUOTE = "quote";
+    static final String Q_AUTHOR = "author";
+    static final String Q_CATEGORY = "category";
+
+    //private static SQLiteDatabase db = null;
+    public static SQLiteDatabase db = null;
+
+    public DBHelper(Context context){
+        super(context, DB_NAME, null, DB_VERSION);
+        if (db==null){
+            db = getWritableDatabase();
+        }
+    }
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        String sql = "create table " + TABLE_QUOTES
+                +" ( "+Q_QUOTE + " text, "
+                + Q_AUTHOR+ " text, "
+                + Q_CATEGORY+ " text, "
+                +Q_ID+ " text )";
+        Log.d("SQL",sql);
+        db.execSQL(sql);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("drop table if exists " + TABLE_QUOTES);
+        onCreate(db);
+    }
+
+    public void addQuoteToFavorites(Quote quote){
+        ContentValues cv = new ContentValues();
+        cv.clear();
+        cv.put(Q_QUOTE,quote.getQuote());
+        cv.put(Q_AUTHOR,quote.getAuthor());
+        cv.put(Q_CATEGORY, quote.getCategory().toString());
+        cv.put(Q_ID,quote.getId());
+        try{
+            db.insertOrThrow(TABLE_QUOTES, null, cv);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteQuoteFromFavorites(String id) {
+        //db = this.getReadableDatabase();
+        db.delete(TABLE_QUOTES, Q_ID + " = ?", new String[]{id});
+        db.close();
+    }
+
+    public ArrayList<Quote> getFaroriteQuotes() {
+        //db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_QUOTES, null, null, null, null, null, null);
+        ArrayList<Quote> quotes = new ArrayList<Quote>();
+        Quote quote;
+        if (cursor.getCount() > 0) {
+            for (int i = 0; i < cursor.getCount(); i++) {
+                cursor.moveToNext();
+                quote = new Quote(cursor.getString(0),cursor.getString(1), Category.valueOf(cursor.getString(2)),cursor.getString(3));
+                quotes.add(quote);
+            }
+        }
+        cursor.close();
+        db.close();
+        return quotes;
+    }
+
+    public Cursor quotesList(){
+        Cursor c;
+        c = db.rawQuery("select * from " + TABLE_QUOTES + " ORDER BY " + Q_CATEGORY + " ASC",null);
+        return c;
+    }
+}
+

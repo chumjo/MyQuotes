@@ -19,6 +19,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     implementation 'com.squareup.okhttp3:okhttp:3.9.1'
     implementation 'com.squareup.moshi:moshi:1.5.0'
     implementation 'com.squareup.picasso:picasso:2.5.0'

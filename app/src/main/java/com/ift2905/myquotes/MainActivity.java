@@ -1,6 +1,7 @@
 package com.ift2905.myquotes;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -25,11 +26,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.ift2905.myquotes.R.id.container;
+import static java.lang.Math.random;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     public Quote quote;
+
+    public DrawerLayout drawer;
+
+    public int nb_init_quotes = 3;
 
     public ArrayList<Quote> mRandomQuoteArrayList;
     public int mCurrentQuotePosition;
@@ -53,18 +59,13 @@ public class MainActivity extends AppCompatActivity
         mCurrentQuotePosition = 0;
         mMaxQuotePosition = 0;
 
-        for (int i=0; i<2; i++){
-            quote = null;
-            RunAPI run = new RunAPI();
-            run.execute();
-            while(quote == null);
-            Log.d("OUPS", "on est sortie " + (quote == null));
-            //mRandomQuoteArrayList.add(new Quote("quote : "+i, "- jonathan", Category.MANAGEMENT,"id"+i));
-            mRandomQuoteArrayList.add(quote);
+        RunAPI run = new RunAPI(Category.management);
+        try{
+            while(run.execute().get().size() == 0);
+            nb_init_quotes = 1;
+        }catch (Exception e) {
+            e.printStackTrace();
         }
-
-        /*RunAPI run = new RunAPI();
-        run.execute();*/
 
         count = 100;
         // TMP END
@@ -81,15 +82,37 @@ public class MainActivity extends AppCompatActivity
         mViewPager = (ViewPager) findViewById(container);
         mViewPager.setAdapter(mQuoteFragmentPagerAdapter);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        
+        //navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+
+                        if(menuItem.getTitle().equals("Favorites")) {
+                            Intent intent = new Intent(MainActivity.this,FavoritesActivity.class);
+                            startActivity(intent);
+                        }
+
+                        // close drawer when item is tapped
+                        drawer.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
+
         // Page Change listener
         // Changes the different page counts
         // Laucnhes a query for a new quote if needed
@@ -123,16 +146,18 @@ public class MainActivity extends AppCompatActivity
 
                     // TODO
 
-                    RunAPI run = new RunAPI();
-                    run.execute();
+                    String[] preferences = {};
+                    Category category = randomQuoteFromPreferences(preferences);
 
-                    if(quote == null) {
-                        Log.d("OUPS", "Erreur");
+                    RunAPI run = new RunAPI(category);
+                    try{
+                        run.execute();
+                    }catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                     // API query for new quote
                     // TMP add a quote
-                    mRandomQuoteArrayList.add(quote);
                     count++;
                 }
 
@@ -143,11 +168,13 @@ public class MainActivity extends AppCompatActivity
             public void onPageScrollStateChanged(int state) {
             }}
         );
+
+
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -212,26 +239,50 @@ public class MainActivity extends AppCompatActivity
             toast.show();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
     }
 
-    public class RunAPI extends AsyncTask<String, Object, Quote> {
+    public class RunAPI extends AsyncTask<String, Object, ArrayList<Quote>> {
+
+        String[] preferences = {};
+        Category category = randomQuoteFromPreferences(preferences);
+
+        public RunAPI(Category category){
+            super();
+            this.category = category;
+        }
 
         @Override
-        protected Quote doInBackground(String... strings) {
+        protected ArrayList<Quote> doInBackground(String... strings) {
 
-            QuoteAPI web = new QuoteAPI(Category.MANAGEMENT);
+            for (int i=0; i<nb_init_quotes; i++){
+                this.category = randomQuoteFromPreferences(preferences);
+                QuoteAPI web = new QuoteAPI(category,MainActivity.this);
 
-            try {
-                quote = web.run();
-                //mRandomQuoteArrayList.add(quote);
-            } catch (IOException e) {
-                e.printStackTrace();
+                try {
+                    quote = web.run();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                mRandomQuoteArrayList.add(quote);
             }
-            return quote;
+
+            return mRandomQuoteArrayList;
         }
+    }
+
+    public Category randomQuoteFromPreferences(String[] preferences) {
+
+        if(preferences.length == 0) {
+            String[] default_preferences = {"inspire","management","sport","love","funny","art"};
+            preferences = default_preferences;
+        }
+        int i = (int) Math.floor(Math.random()*preferences.length);
+
+        return Category.valueOf(preferences[i]);
+
     }
 }

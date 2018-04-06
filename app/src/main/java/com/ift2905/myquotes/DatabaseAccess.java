@@ -97,3 +97,10 @@ public class DatabaseAccess {
         return quotes;
     }
 }
+
+/*
+    DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+    databaseAccess.open();
+    ArrayList<Quote> quotes = databaseAccess.getInitialQuotes();
+    databaseAccess.close();
+*/

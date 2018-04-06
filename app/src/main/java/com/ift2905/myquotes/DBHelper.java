@@ -59,7 +59,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.clear();
         cv.put(Q_QUOTE,quote.getQuote());
         cv.put(Q_AUTHOR,quote.getAuthor());
-        cv.put(Q_CATEGORY, quote.getCategory().toString());
+        cv.put(Q_CATEGORY, quote.getCategory().name());
         cv.put(Q_ID,quote.getId());
         try{
             db.insertOrThrow(TABLE_QUOTES, null, cv);

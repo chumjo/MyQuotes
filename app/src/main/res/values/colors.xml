@@ -4,4 +4,24 @@
     <color name="colorPrimaryDark">#28bab2</color>
     <color name="colorPrimaryLight">#d6fcfa</color>
     <color name="colorAccent">#deefef</color>
+
+
+    <!-- Colors for the different themes -->
+    <!-- Colors Theme 1 -->
+    <color name="colorPrimary1">#63d8d2</color>
+    <color name="colorPrimaryDark1">#28bab2</color>
+    <color name="colorPrimaryLight1">#d6fcfa</color>
+    <color name="colorAccent1">#deefef</color>
+
+    <!-- Colors Theme 2 -->
+    <color name="colorPrimary2">#d86393</color>
+    <color name="colorPrimaryDark2">#ba285d</color>
+    <color name="colorPrimaryLight2">#fcd6e5</color>
+    <color name="colorAccent2">#efdee3</color>
+
+    <!-- Colors Theme 3 -->
+    <color name="colorPrimary3">#d86393</color>
+    <color name="colorPrimaryDark3">#ba285d</color>
+    <color name="colorPrimaryLight3">#fcd6e5</color>
+    <color name="colorAccent3">#efdee3</color>
 </resources>

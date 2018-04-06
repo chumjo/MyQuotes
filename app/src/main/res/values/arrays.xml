@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
+    <!-- Pre-loaded fonts -->
     <array name="preloaded_fonts">
-
         <item>@font/font_title</item>
+    </array>
+
+    <!-- Settings Array -->
+    <array name="arr_categories">
+        <item>Inspirational</item>
+        <item>Management</item>
+        <item>Art</item>
+        <item>Sport</item>
+        <item>Love</item>
+        <item>Funny</item>
+    </array>
+
+    <array name="tmp">
 
     </array>
 

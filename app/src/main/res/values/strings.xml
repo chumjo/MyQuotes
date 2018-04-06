@@ -7,21 +7,32 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Temp Quote for testing -->
-    <string name="quote_test">\“I\'m selfish, impatient and a little insecure. I make mistakes,
-        I am out of control and at times hard to handle. But if you can\'t handle me at my worst,
-        then you sure as hell don\'t deserve me at my best.\”</string>
-    <string name="author_test">- Marilyn Monroe</string>
-
+    <string name="quote_welcome">\"Welcome to My Quotes!\nJust swipe right to begin.\nEnjoy!"\”</string>
+    <string name="app_author">Augusto Latge\n&amp; Dennis Orozco\n&amp; Jonathan Larose</string>
     <string name="apropos">
         \"L\'application My Quotes a été deéveloppée par les étudiants Jonathan Larose, Augusto
         Dos Santos et Dennis Orozco dans le cadre du cours Interfaces personne machine pour la
         session d\'hiver 2018 sous l\'enseignement du professeur Bernhard Thomaszewski de
         l\'université de Montréal\."
     </string>
-    <string name="Homme_id">Home</string>
+
+    <!-- Menu Text -->
+    <string name="qod">Quote of the Day</string>
+        <string name="qod_activate">Activate Quote of the Day</string>
+        <string name="qod_sound">Sound notification</string>
+        <string name="qod_time">Sound notification</string>
+    <string name="categories">Categories</string>
+    <string name="pref">Preferences</string>
+
+    <!-- Content Description -->
+    <string name="img_category">category</string>
+    <string name="btn_delete">button delete</string>
+
+    <!-- Naviguation Menu -->
+    <string name="Home_id">Home</string>
     <string name="Favorites_id">Favorites</string>
     <string name="Settings_id">Settings</string>
-    <string name="About_id">about</string>
+    <string name="About_id">About</string>
     <string name="Share_id">Share</string>
     <string name="Communicate_id">Communicate</string>
 </resources>

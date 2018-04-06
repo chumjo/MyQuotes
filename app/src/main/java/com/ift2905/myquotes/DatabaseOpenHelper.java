@@ -1,4 +1,4 @@
-package com.ift2905.myquotes.database;
+package com.ift2905.myquotes;
 
 import android.content.Context;
 

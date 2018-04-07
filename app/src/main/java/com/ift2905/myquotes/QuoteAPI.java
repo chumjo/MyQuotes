@@ -30,7 +30,7 @@ public class QuoteAPI {
         dbh = new DBHelper(context);
 
         /***** DEBUGGING LOG - REMOVE!!! *****/
-        Log.d("MY_QUOTES_DEBUG", url_final);
+        Log.d("@string/debugging", url_final);
     }
 
     public Quote run() throws IOException {
@@ -52,12 +52,6 @@ public class QuoteAPI {
                                 root.contents.id);
 
         dbh.addQuoteToFavorites(quote);
-
-        /***** DEBUGGING LOG - TEST DUPLICITY - REMOVE!!! *****/
-        /*quote = new Quote("A leader is best when people barely know he exists,"+
-        "when his work is done, his aim fulfilled, they will say: We did it ourselves.",
-        "Lao Tzu",Category.management,"6jubfcxQj5R23L7Bl7lxNAeF");
-        dbh.addQuoteToFavorites(quote);*/
 
         return quote;
     }

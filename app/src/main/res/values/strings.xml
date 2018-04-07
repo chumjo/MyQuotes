@@ -35,4 +35,7 @@
     <string name="About_id">About</string>
     <string name="Share_id">Share</string>
     <string name="Communicate_id">Communicate</string>
+
+    <!-- Debugging -->
+    <string name="debugging">MY_QUOTES_DEBUG</string>
 </resources>

@@ -11,10 +11,9 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private final int numberOfFragment;
     private ArrayList<Quote> mQuoteList;
-    private String[] preferences = {};
 
     public QuoteFragmentPagerAdapter(FragmentManager fm, int numberOfFragment,
-                                     ArrayList<Quote> quoteArrayList, String[] preferences) {
+                                     ArrayList<Quote> quoteArrayList) {
         super(fm);
         this.numberOfFragment = numberOfFragment;
         this.mQuoteList = quoteArrayList;
@@ -32,7 +31,7 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
             Log.d("MY_QUOTES_DEBUG", "quote from the web");
 
         } else {
-            quote = RandomQuoteInitialList.getRandomQuoteFromIntialList(preferences);
+            quote = RandomQuoteInitialList.getRandomQuoteFromIntialList(MainActivity.preferences);
 
             /***** DEBUGGING LOG - REMOVE!!! *****/
             Log.d("MY_QUOTES_DEBUG", "quote from initial list");

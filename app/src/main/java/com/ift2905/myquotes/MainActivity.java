@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
 
     public Quote quote;
 
-    public String[] preferences = {};
+    public static String[] preferences = {};
 
     public RandomQuoteInitialList randomQuoteInitialList;
 
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mQuoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(
-                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList, preferences);
+                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(container);

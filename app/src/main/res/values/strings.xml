@@ -8,7 +8,7 @@
 
     <!-- Temp Quote for testing -->
     <string name="quote_welcome">\"Welcome to My Quotes!\nJust swipe right to begin.\nEnjoy!"\”</string>
-    <string name="app_author">Augusto Latge\n&amp; Dennis Orozco\n&amp; Jonathan Larose</string>
+    <string name="app_author">Augusto Latgé\n&amp; Dennis Orozco\n&amp; Jonathan Larose</string>
     <string name="app_about">
         \"L\'application My Quotes a été développée par les étudiants Jonathan Larose, Augusto
         Dos Santos et Dennis Orozco dans le cadre du cours ift2905 - Interfaces personne-machine de la

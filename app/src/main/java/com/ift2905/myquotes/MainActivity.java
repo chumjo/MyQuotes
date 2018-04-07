@@ -2,15 +2,12 @@ package com.ift2905.myquotes;
 
 import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v4.view.GravityCompat;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
@@ -20,22 +17,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.TextView;
-import android.widget.Toast;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.ift2905.myquotes.R.id.container;
-import static com.ift2905.myquotes.R.id.drawer_layout;
-import static java.lang.Math.random;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -155,7 +144,7 @@ public class MainActivity extends AppCompatActivity
         // Get the fragments by tag
         Fragment frag_about = getSupportFragmentManager().findFragmentByTag("FRAG_ABOUT");
         Fragment frag_fav_list = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_LIST");
-        Fragment frag_fav_pager = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_PAGER");
+        Fragment frag_fav_vp = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_VP");
         android.app.Fragment frag_setting = getFragmentManager().findFragmentByTag("FRAG_SETTING");
 
         //--- DRAWER ---//
@@ -179,7 +168,7 @@ public class MainActivity extends AppCompatActivity
 
         //--- FRAG FAVORITE PAGER ---//
         // Return to the favorite list
-        else if(frag_fav_pager != null && frag_fav_pager.isVisible()) {
+        else if(frag_fav_vp != null && frag_fav_vp.isVisible()) {
 
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
@@ -239,19 +228,20 @@ public class MainActivity extends AppCompatActivity
             Context context = getApplicationContext();
             getSupportFragmentManager().beginTransaction().remove(new Fragment());
 
-
-
-            // Remove all Fragments to get back to the main activity
-            removeAllFragments();
+            // Hide all Fragments to get back to the main activity
+            hideAllFragments();
         }
 
         //--- FAVORITES ---//
         else if (id == R.id.nav_favorites) {
+
             Context context = getApplicationContext();
 
-            removeAllFragments();
+            Fragment frag_fav_list = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_LIST");
 
-            Fragment frag_fav_list = new FavoritesListFragment();
+            if(frag_fav_list == null)
+                frag_fav_list = new FavoritesListFragment();
+
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container_main, frag_fav_list, "FRAG_FAV_LIST");
             ft.commit();
@@ -261,9 +251,11 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_settings) {
             Context context = getApplicationContext();
 
-            removeAllFragments();
+            android.app.Fragment frag_setting = getFragmentManager().findFragmentByTag("FRAG_SETTING");
 
-            android.app.Fragment frag_setting = new SettingsFragment();
+            if(frag_setting == null)
+                frag_setting = new SettingsFragment();
+
             final FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.container_main, frag_setting, "FRAG_SETTING");
             ft.commit();
@@ -273,11 +265,13 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_about) {
             Context context = getApplicationContext();
 
-            removeAllFragments();
+            Fragment frag_about = getSupportFragmentManager().findFragmentByTag("FRAG_ABOUT");
 
-            AboutFragment fragment = new AboutFragment();
+            if(frag_about == null)
+                frag_about = new AboutFragment();
+
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.container_main, fragment, "FRAG_ABOUT");
+            ft.replace(R.id.container_main, frag_about, "FRAG_ABOUT");
             ft.commit();
         }
 
@@ -340,19 +334,19 @@ public class MainActivity extends AppCompatActivity
     }
     */
 
-    private void removeAllFragments(){
+    private void hideAllFragments(){
 
         for(Fragment fragment:getSupportFragmentManager().getFragments()){
             if(fragment instanceof QuoteFragment);
             else {
-                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                getSupportFragmentManager().beginTransaction().hide(fragment).commit();
             }
         }
 
         android.app.Fragment frag_setting = getFragmentManager().findFragmentByTag("FRAG_SETTING");
 
         if(frag_setting != null) {
-            getFragmentManager().beginTransaction().remove(frag_setting).commit();
+            getFragmentManager().beginTransaction().hide(frag_setting).commit();
         }
     }
 

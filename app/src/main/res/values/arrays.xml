@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources>
+<resources xmlns:android="http://schemas.android.com/tools">
     <!-- Pre-loaded fonts -->
     <array name="preloaded_fonts">
         <item>@font/font_title</item>
@@ -8,7 +8,7 @@
 
     <!-- Settings Array -->
     <array name="arr_categories">
-        <item>Inspirational</item>
+        <item>@drawable/icon_share</item>
         <item>Management</item>
         <item>Art</item>
         <item>Sport</item>

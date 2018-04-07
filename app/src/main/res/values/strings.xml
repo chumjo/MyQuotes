@@ -18,7 +18,7 @@
         l\'Université de Montréal\.\"
     </string>
 
-    <!-- Menu Text -->
+    <!-- Settings Text -->
     <string name="qod">Quote of the Day</string>
         <string name="qod_activate">Activate Quote of the Day</string>
         <string name="qod_sound">Sound notification</string>
@@ -26,6 +26,7 @@
     <string name="categories">Categories</string>
         <string name="categories_list">Categories List</string>
     <string name="pref">Preferences</string>
+        <string name="theme">Theme</string>
 
     <!-- Content Description -->
     <string name="img_category">category</string>

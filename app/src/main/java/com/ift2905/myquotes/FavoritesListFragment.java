@@ -53,8 +53,6 @@ public class FavoritesListFragment extends Fragment {
 
         this.inflater = inflater;
 
-
-
         View rootView = inflater.inflate(R.layout.fragment_favorite_listview, container, false);
         list = (ListView) rootView.findViewById(R.id.favorite_list);
         adapter = new MyAdapter();
@@ -65,9 +63,9 @@ public class FavoritesListFragment extends Fragment {
             {
                 Log.d("@string/debugging", "clicked");
                 Toast.makeText(getContext(), "Stop Clicking me: "+position, Toast.LENGTH_SHORT).show();
-                AboutFragment fragment = new AboutFragment();
+                FavoritesViewPagerFragment fragment = new FavoritesViewPagerFragment();
                 android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.container_main, fragment, "FRAG_ABOUT");
+                ft.replace(R.id.container_main, fragment, "FRAG_FAV_VP");
                 ft.commit();
             }
         });

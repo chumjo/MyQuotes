@@ -1,5 +1,6 @@
 package com.ift2905.myquotes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -63,9 +64,19 @@ public class QuoteFragment extends Fragment {
 
         // Adds a listener to the share button
         btn_share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
+            String textDesc = getResources().getString(R.string.share_desc) +
+                    quote.getAuthor().substring(1);
+            String textBody = quote.getQuote() + "\n" + quote.getAuthor();
+
+            @Override
+            public void onClick(View v) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "@string/app_name");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, textBody);
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent, textDesc));
             }
         });
 

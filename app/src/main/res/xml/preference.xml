@@ -10,14 +10,14 @@
 
         <SwitchPreference
             android:defaultValue="false"
-            android:key="qod_activate"
+            android:key="pref_qod_activate"
             android:title="@string/qod_activate"/>
 
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="qod_sound"
+            android:key="pref_qod_sound"
             android:title="@string/qod_sound"
-            android:dependency="qod_activate"/>
+            android:dependency="pref_qod_activate"/>
 
         <!--<com.ift2905.myquotes.TimePreference
             android:defaultValue="00:00"
@@ -32,18 +32,12 @@
         android:key="@string/categories"
         android:layout="@xml/preference_category">
 
-        <ListPreference
-            android:defaultValue="1"
-            android:entries="@array/arr_categories"
-            android:entryValues="@array/arr_categories"
-            android:key="list_preference_1"
-            android:title="List preference" />
         <MultiSelectListPreference
             android:defaultValue="@array/arr_categories"
             android:entries="@array/arr_categories"
             android:entryValues="@array/arr_categories"
-            android:key="multi_select_list_preference_1"
-            android:title="Multi select list preference" />
+            android:key="pref_cat_list"
+            android:title="@string/categories_list" />
 
     </PreferenceCategory>
 
@@ -51,6 +45,7 @@
     <PreferenceCategory android:title="@string/pref"
         android:key="@string/pref"
         android:layout="@xml/preference_category">
+
     </PreferenceCategory>
 
 </PreferenceScreen>

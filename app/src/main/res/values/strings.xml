@@ -6,9 +6,11 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!-- Temp Quote for testing -->
+    <!-- Welcome Quote -->
     <string name="quote_welcome">\"Welcome to My Quotes!\nJust swipe right to begin.\nEnjoy!"\”</string>
     <string name="app_author">Augusto Latgé\n&amp; Dennis Orozco\n&amp; Jonathan Larose</string>
+
+    <!-- About Text -->
     <string name="app_about">
         \"L\'application My Quotes a été développée par les étudiants Jonathan Larose, Augusto
         Dos Santos et Dennis Orozco dans le cadre du cours ift2905 - Interfaces personne-machine de la
@@ -22,6 +24,7 @@
         <string name="qod_sound">Sound notification</string>
         <string name="qod_time">Sound notification</string>
     <string name="categories">Categories</string>
+        <string name="categories_list">Categories List</string>
     <string name="pref">Preferences</string>
 
     <!-- Content Description -->
@@ -38,4 +41,7 @@
 
     <!-- Debugging -->
     <string name="debugging">MY_QUOTES_DEBUG</string>
+
+    <!-- Sharing -->
+    <string name="share_desc">My Quotes, quote by</string>
 </resources>

@@ -29,7 +29,6 @@ import java.util.ArrayList;
 
 import static com.ift2905.myquotes.R.id.container;
 import static com.ift2905.myquotes.R.id.drawer_layout;
-import static java.lang.Math.random;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{

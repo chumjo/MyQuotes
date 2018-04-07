@@ -30,7 +30,7 @@ public class QuoteAPI {
         dbh = new DBHelper(context);
 
         /***** DEBUGGING LOG - REMOVE!!! *****/
-        Log.d("MY_QUOTES_DEBUG", url_final);
+        Log.d("@string/debugging", url_final);
     }
 
     public Quote run() throws IOException {
@@ -46,18 +46,12 @@ public class QuoteAPI {
 
         Root root = jsonAdapter.fromJson(json);
 
-        Quote quote = new Quote(root.contents.quote,
+        /*Quote quote = new Quote(root.contents.quote,
                                 root.contents.author,
                                 category,
-                                root.contents.id);
+                                root.contents.id);*/
 
-        dbh.addQuoteToFavorites(quote);
-
-        /***** DEBUGGING LOG - TEST DUPLICITY - REMOVE!!! *****/
-        /*quote = new Quote("A leader is best when people barely know he exists,"+
-        "when his work is done, his aim fulfilled, they will say: We did it ourselves.",
-        "Lao Tzu",Category.management,"6jubfcxQj5R23L7Bl7lxNAeF");
-        dbh.addQuoteToFavorites(quote);*/
+        Quote quote = new Quote("blablabla","",Category.art,"id");
 
         return quote;
     }

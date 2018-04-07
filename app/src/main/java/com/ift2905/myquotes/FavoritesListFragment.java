@@ -31,7 +31,9 @@ public class FavoritesListFragment extends Fragment {
     ArrayList<Quote> list_favorite_quotes = DBHelper.getFaroriteQuotes();
     LayoutInflater inflater;
 
-    public FavoritesListFragment(){ super(); }
+    public FavoritesListFragment(){
+        super();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

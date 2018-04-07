@@ -235,8 +235,9 @@ public class MainActivity extends AppCompatActivity
 
         //--- FAVORITES ---//
         else if (id == R.id.nav_favorites) {
-
             Context context = getApplicationContext();
+
+            hideAllFragments();
 
             Fragment frag_fav_list = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_LIST");
 
@@ -245,12 +246,15 @@ public class MainActivity extends AppCompatActivity
 
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container_main, frag_fav_list, "FRAG_FAV_LIST");
+            ft.show(frag_fav_list);
             ft.commit();
         }
 
         //--- SETTINGS ---//
         else if (id == R.id.nav_settings) {
             Context context = getApplicationContext();
+
+            hideAllFragments();
 
             android.app.Fragment frag_setting = getFragmentManager().findFragmentByTag("FRAG_SETTING");
 
@@ -259,12 +263,15 @@ public class MainActivity extends AppCompatActivity
 
             final FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.container_main, frag_setting, "FRAG_SETTING");
+            ft.show(frag_setting);
             ft.commit();
 
         }
         //--- ABOUT ---//
         else if (id == R.id.nav_about) {
             Context context = getApplicationContext();
+
+            hideAllFragments();
 
             Fragment frag_about = getSupportFragmentManager().findFragmentByTag("FRAG_ABOUT");
 
@@ -273,6 +280,7 @@ public class MainActivity extends AppCompatActivity
 
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container_main, frag_about, "FRAG_ABOUT");
+            ft.show(frag_about);
             ft.commit();
         }
 

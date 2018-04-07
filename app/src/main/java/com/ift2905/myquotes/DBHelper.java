@@ -44,10 +44,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Q_QUOTE+ " text, "
                 + Q_AUTHOR+ " text, "
                 +Q_CATEGORY+ " text )";
-        Log.d("MY QUOTES DEBUG",sql);
+        Log.d("MY_QUOTES_DEBUG",sql);
         db.execSQL(sql);
     }
-
+    
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists " + TABLE_QUOTES);
@@ -65,7 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.d("MY_QUOTES_DEBUG", "quote inserted (unique)");
             db.insertOrThrow(TABLE_QUOTES, null, cv);
         } catch (SQLException e){
-            e.printStackTrace();
+            //e.printStackTrace();
             Log.d("MY_QUOTES_DEBUG", "quote not inserted (not unique)");
             return;
         }

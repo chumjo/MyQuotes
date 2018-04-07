@@ -8,7 +8,7 @@
 
     <!-- Settings Array -->
     <array name="arr_categories">
-        <item>@drawable/icon_share</item>
+        <item>Inspirational</item>
         <item>Management</item>
         <item>Art</item>
         <item>Sport</item>
@@ -16,8 +16,19 @@
         <item>Funny</item>
     </array>
 
-    <array name="tmp">
+    <!-- Settings Theme -->
+    <array name="Themes">
+        <item>theme1</item>
+        <item>theme2</item>
+        <item>theme3</item>
+        <item>theme4</item>
+    </array>
 
+    <array name="ThemeColors">
+        <item>Turquoise</item>
+        <item>Pink</item>
+        <item>Orange</item>
+        <item>Green</item>
     </array>
 
 </resources>

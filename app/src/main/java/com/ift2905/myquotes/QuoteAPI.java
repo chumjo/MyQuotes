@@ -46,12 +46,12 @@ public class QuoteAPI {
 
         Root root = jsonAdapter.fromJson(json);
 
-        Quote quote = new Quote(root.contents.quote,
+        /*Quote quote = new Quote(root.contents.quote,
                                 root.contents.author,
                                 category,
-                                root.contents.id);
+                                root.contents.id);*/
 
-        dbh.addQuoteToFavorites(quote);
+        Quote quote = new Quote("blablabla","",Category.art,"id");
 
         return quote;
     }

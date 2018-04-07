@@ -10,7 +10,7 @@ public enum Category {
     funny,
     art;
 
-    public String toString()
+    /*public String toString()
     {
         String toString = "";
 
@@ -37,5 +37,5 @@ public enum Category {
         }
 
         return toString;
-    }
+    }*/
 }

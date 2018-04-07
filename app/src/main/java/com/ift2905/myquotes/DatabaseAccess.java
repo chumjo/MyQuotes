@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -81,19 +82,20 @@ public class DatabaseAccess {
      * @return a List of quotes
      */
     public ArrayList<Quote> getInitialQuotes() {
-        //db = this.getReadableDatabase();
         Cursor cursor = database.query(TABLE_INITIAL_QUOTES, null, null, null, null, null, null);
         ArrayList<Quote> quotes = new ArrayList<Quote>();
         Quote quote;
         if (cursor.getCount() > 0) {
             for (int i = 0; i < cursor.getCount(); i++) {
                 cursor.moveToNext();
-                quote = new Quote(cursor.getString(0),cursor.getString(1), Category.valueOf(cursor.getString(2)),cursor.getString(3));
+                quote = new Quote(cursor.getString(1),cursor.getString(2), Category.valueOf(cursor.getString(3)),cursor.getString(0));
                 quotes.add(quote);
             }
         }
         cursor.close();
         database.close();
+
+        Log.d("MY_QUOTES_DEBUG", "initial quotes list size: "+quotes.size());
         return quotes;
     }
 }

@@ -10,41 +10,33 @@ import java.util.ArrayList;
 
 public class RandomQuoteInitialList {
 
-    DatabaseAccess bda;
-    ArrayList<Quote> quotes;
+    public DatabaseAccess dba;
+    public static ArrayList<Quote> quotes;
 
     public RandomQuoteInitialList(Context context) {
-        bda = DatabaseAccess.getInstance(context);
-        DatabaseAccess dba = DatabaseAccess.getInstance(context);
+        dba = DatabaseAccess.getInstance(context);
         dba.open();
         quotes = dba.getInitialQuotes();
         dba.close();
     }
 
-    public Quote getRandomQuoteFromIntialList(String[] preferences) {
+    public static Quote getRandomQuoteFromIntialList(String[] preferences) {
 
-        Quote quote = null;
         ArrayList<Quote> quotesOfCategory = new ArrayList<Quote>(0);
 
         // Loop while no quote from random category found
         while(quotesOfCategory.size() == 0) {
             Category category = MainActivity.randomQuoteFromPreferences(preferences);
 
-            for(Quote init_quote : quotes) {
+            for(Quote init_quote : RandomQuoteInitialList.quotes) {
                 if(init_quote.getCategory() == category) {
                     quotesOfCategory.add(init_quote);
                 }
             }
         }
 
+        int i = (int) Math.floor(Math.random()*quotesOfCategory.size());
 
-        return quote;
+        return quotesOfCategory.get(i);
     }
-
-    /*
-    DatabaseAccess dba = DatabaseAccess.getInstance(this);
-    dba.open();
-    quotes = dba.getInitialQuotes();
-    dba.close();
-    */
 }

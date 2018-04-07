@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity
 
     public Quote quote;
 
+    public String[] preferences = {};
+
     public RandomQuoteInitialList randomQuoteInitialList;
 
     public DrawerLayout drawer;
@@ -63,9 +65,13 @@ public class MainActivity extends AppCompatActivity
         mCurrentQuotePosition = 0;
         mMaxQuotePosition = 0;
 
-        RunAPI run = new RunAPI(Category.management);
+        for(int i=0; i<nb_init_quotes; i++) {
+            mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(preferences));
+        }
+
+        RunAPI run = new RunAPI();
         try{
-            while(run.execute().get().size() == 0);
+            run.execute();
             nb_init_quotes = 1;
         }catch (Exception e) {
             e.printStackTrace();
@@ -77,7 +83,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mQuoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList);
+        mQuoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(
+                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList, preferences);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(container);
@@ -115,10 +122,7 @@ public class MainActivity extends AppCompatActivity
 
                     mMaxQuotePosition = mCurrentQuotePosition;
 
-                    String[] preferences = {};
-                    Category category = randomQuoteFromPreferences(preferences);
-
-                    RunAPI run = new RunAPI(category);
+                    RunAPI run = new RunAPI();
                     try{
                         run.execute();
                     }catch (Exception e) {
@@ -276,20 +280,16 @@ public class MainActivity extends AppCompatActivity
 
     public class RunAPI extends AsyncTask<String, Object, ArrayList<Quote>> {
 
-        String[] preferences = {};
-        Category category = randomQuoteFromPreferences(preferences);
-
-        public RunAPI(Category category){
+        public RunAPI(){
             super();
-            this.category = category;
         }
 
         @Override
         protected ArrayList<Quote> doInBackground(String... strings) {
 
             for (int i=0; i<nb_init_quotes; i++){
-                this.category = randomQuoteFromPreferences(preferences);
-                QuoteAPI web = new QuoteAPI(category,MainActivity.this);
+
+                QuoteAPI web = new QuoteAPI(randomQuoteFromPreferences(preferences),MainActivity.this);
 
                 try {
                     quote = web.run();

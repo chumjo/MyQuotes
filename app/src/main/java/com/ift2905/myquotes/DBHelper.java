@@ -40,7 +40,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "create table " + TABLE_QUOTES
-                +" ( "+Q_ID + " text, "
+                +" ( "+Q_ID + " text UNIQUE, "
                 + Q_QUOTE+ " text, "
                 + Q_AUTHOR+ " text, "
                 +Q_CATEGORY+ " text )";
@@ -62,9 +62,12 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(Q_CATEGORY, quote.getCategory().name());
         cv.put(Q_ID,quote.getId());
         try{
+            Log.d("MY_QUOTES_DEBUG", "quote inserted (unique)");
             db.insertOrThrow(TABLE_QUOTES, null, cv);
         } catch (SQLException e){
             e.printStackTrace();
+            Log.d("MY_QUOTES_DEBUG", "quote not inserted (not unique)");
+            return;
         }
     }
 

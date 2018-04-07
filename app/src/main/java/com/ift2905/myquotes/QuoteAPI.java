@@ -26,8 +26,11 @@ public class QuoteAPI {
     public QuoteAPI(Category category, Context context) {
         this.category = category;
         url_begin = "http://quotes.rest/quote/search.json?maxlength=430&category=";
-        url_final = url_begin + category;Log.d("HELLO WORLD", url_final);
+        url_final = url_begin + category;
         dbh = new DBHelper(context);
+
+        /***** DEBUGGING LOG - REMOVE!!! *****/
+        Log.d("MY_QUOTES_DEBUG", url_final);
     }
 
     public Quote run() throws IOException {
@@ -43,13 +46,14 @@ public class QuoteAPI {
 
         Root root = jsonAdapter.fromJson(json);
 
-        System.out.println(root);
-
         Quote quote = new Quote(root.contents.quote,
                                 root.contents.author,
                                 category,
                                 root.contents.id);
 
+        dbh.addQuoteToFavorites(quote);
+
+        quote = new Quote("A leader is best when people barely know he exists, when his work is done, his aim fulfilled, they will say: We did it ourselves.","Lao Tzu",Category.management,"6jubfcxQj5R23L7Bl7lxNAeF");
         dbh.addQuoteToFavorites(quote);
 
         return quote;

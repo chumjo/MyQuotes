@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.ift2905.myquotes.R.id.container;
+import static com.ift2905.myquotes.R.id.drawer_layout;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{

@@ -40,6 +40,9 @@
     <string name="Share_id">Share</string>
     <string name="Communicate_id">Communicate</string>
 
+    <!-- Debugging -->
+    <string name="debugging">MY_QUOTES_DEBUG</string>
+
     <!-- Sharing -->
     <string name="share_desc">My Quotes, quote by</string>
 </resources>

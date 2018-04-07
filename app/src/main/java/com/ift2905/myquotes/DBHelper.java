@@ -19,10 +19,10 @@ import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    static final String DB_NAME = "quotes.db";
+    static final String DB_NAME = "favorite_quotes.db";
     static final int DB_VERSION = 1;
 
-    static final String TABLE_QUOTES = "quotes";
+    static final String TABLE_FAVORITE_QUOTES = "favorite_quotes";
     static final String Q_ID = "_id";
     static final String Q_QUOTE = "quote";
     static final String Q_AUTHOR = "author";
@@ -39,7 +39,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "create table " + TABLE_QUOTES
+        String sql = "create table " + TABLE_FAVORITE_QUOTES
                 +" ( "+Q_ID + " text UNIQUE, "
                 + Q_QUOTE+ " text, "
                 + Q_AUTHOR+ " text, "
@@ -50,7 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
     
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists " + TABLE_QUOTES);
+        db.execSQL("drop table if exists " + TABLE_FAVORITE_QUOTES);
         onCreate(db);
     }
 
@@ -62,24 +62,24 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(Q_CATEGORY, quote.getCategory().name());
         cv.put(Q_ID,quote.getId());
         try{
-            Log.d("MY_QUOTES_DEBUG", "quote inserted (unique)");
-            db.insertOrThrow(TABLE_QUOTES, null, cv);
+            Log.d("@string/debugging", "quote inserted (unique)");
+            db.insertOrThrow(TABLE_FAVORITE_QUOTES, null, cv);
         } catch (SQLException e){
             e.printStackTrace();
-            Log.d("MY_QUOTES_DEBUG", "quote not inserted (not unique)");
+            Log.d("@string/debugging", "quote not inserted (not unique)");
             return;
         }
     }
 
     public static void deleteQuoteFromFavorites(String id) {
-        //db = this.getReadableDatabase();
-        db.delete(TABLE_QUOTES, Q_ID + " = ?", new String[]{id});
-        db.close();
+        db.delete(TABLE_FAVORITE_QUOTES, Q_ID + " = ?", new String[]{id});
+        Log.d("@string/debugging", "deleted from favorites");
+        //db.close();
     }
 
     public static ArrayList<Quote> getFaroriteQuotes() {
         //db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_QUOTES, null, null, null, null, null, null);
+        Cursor cursor = db.query(TABLE_FAVORITE_QUOTES, null, null, null, null, null, null);
         ArrayList<Quote> quotes = new ArrayList<Quote>();
         Quote quote;
         if (cursor.getCount() > 0) {
@@ -90,13 +90,13 @@ public class DBHelper extends SQLiteOpenHelper {
             }
         }
         cursor.close();
-        db.close();
+        //db.close();
         return quotes;
     }
 
     public Cursor quotesList(){
         Cursor c;
-        c = db.rawQuery("select * from " + TABLE_QUOTES + " ORDER BY " + Q_CATEGORY + " ASC",null);
+        c = db.rawQuery("select * from " + TABLE_FAVORITE_QUOTES + " ORDER BY " + Q_CATEGORY + " ASC",null);
         return c;
     }
 }

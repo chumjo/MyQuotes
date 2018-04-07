@@ -46,13 +46,6 @@
         android:key="@string/pref"
         android:layout="@xml/preference_category">
 
-        <ListPreference
-            android:defaultValue="theme1"
-            android:entries="@array/ThemeColors"
-            android:entryValues="@array/Themes"
-            android:key="pref_theme"
-            android:title="@string/theme" />
-
     </PreferenceCategory>
 
 </PreferenceScreen>

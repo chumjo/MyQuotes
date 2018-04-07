@@ -12,11 +12,15 @@ public class Quote {
 
     // Getters
     public String getQuote() {
-        return quote;
+        return "\"" + quote + "\"";
     }
 
     public String getAuthor() {
-        return author;
+
+        if(author == null || author.equals(""))
+            return "- unkown author";
+        else
+            return "- " + author;
     }
 
     public Category getCategory() {

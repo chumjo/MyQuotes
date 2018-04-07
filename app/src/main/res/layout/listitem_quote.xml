@@ -19,6 +19,7 @@
         app:contentPadding="8dp">
 
         <android.support.constraint.ConstraintLayout
+            android:descendantFocusability="blocksDescendants"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

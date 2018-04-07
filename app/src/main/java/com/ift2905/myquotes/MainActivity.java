@@ -5,9 +5,12 @@ import android.app.FragmentTransaction;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.GravityCompat;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
@@ -16,8 +19,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -233,6 +239,8 @@ public class MainActivity extends AppCompatActivity
             Context context = getApplicationContext();
             getSupportFragmentManager().beginTransaction().remove(new Fragment());
 
+
+
             // Remove all Fragments to get back to the main activity
             removeAllFragments();
         }
@@ -241,9 +249,11 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_favorites) {
             Context context = getApplicationContext();
 
-            FavoritesListFragment fragment = new FavoritesListFragment();
+            removeAllFragments();
+
+            Fragment frag_fav_list = new FavoritesListFragment();
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.container_main, fragment, "FRAG_FAV_LIST");
+            ft.replace(R.id.container_main, frag_fav_list, "FRAG_FAV_LIST");
             ft.commit();
         }
 
@@ -251,15 +261,19 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_settings) {
             Context context = getApplicationContext();
 
-            SettingsFragment fragment = new SettingsFragment();
+            removeAllFragments();
+
+            android.app.Fragment frag_setting = new SettingsFragment();
             final FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.container_main, fragment, "FRAG_SETTING");
+            ft.replace(R.id.container_main, frag_setting, "FRAG_SETTING");
             ft.commit();
 
         }
         //--- ABOUT ---//
         else if (id == R.id.nav_about) {
             Context context = getApplicationContext();
+
+            removeAllFragments();
 
             AboutFragment fragment = new AboutFragment();
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -314,6 +328,17 @@ public class MainActivity extends AppCompatActivity
         return Category.valueOf(preferences[i]);
 
     }
+    /*
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String test = sharedPref.getString("pref_theme", "");
+        Log.d("LOL", "theme is : " + test);
+
+        return super.onCreateView(parent, name, context, attrs);
+    }
+    */
 
     private void removeAllFragments(){
 
@@ -329,5 +354,19 @@ public class MainActivity extends AppCompatActivity
         if(frag_setting != null) {
             getFragmentManager().beginTransaction().remove(frag_setting).commit();
         }
+    }
+
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+
+        View rootView = super.onCreateView(parent, name, context, attrs);
+
+        // Get the preference theme
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String theme = sharedPref.getString("pref_theme", "");
+
+        this.setTheme(SettingRessources.getTheme(theme));
+
+        return rootView;
     }
 }

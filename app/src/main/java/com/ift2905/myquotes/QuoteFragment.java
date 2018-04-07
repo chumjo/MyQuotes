@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -15,7 +16,7 @@ public class QuoteFragment extends Fragment {
 
     public Quote quote;
     public CheckBox chk_favorite;
-    public Button btn_share;
+    public ImageButton btn_share;
 
     public QuoteFragment() {
         super();
@@ -42,9 +43,9 @@ public class QuoteFragment extends Fragment {
 
         // Get the buttons
         chk_favorite = (CheckBox) rootView.findViewById(R.id.chk_favorite);
-        btn_share = (Button) rootView.findViewById(R.id.btn_share);
+        btn_share = (ImageButton) rootView.findViewById(R.id.btn_share);
 
-        // Adds a listener for the
+        // Adds a listener for the favorite checkbox
         chk_favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -60,6 +61,13 @@ public class QuoteFragment extends Fragment {
             }
         });
 
+        // Adds a listener to the share button
+        btn_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
 
         return rootView;

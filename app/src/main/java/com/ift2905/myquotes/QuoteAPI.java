@@ -54,8 +54,8 @@ public class QuoteAPI {
         dbh.addQuoteToFavorites(quote);
 
         /***** DEBUGGING LOG - TEST DUPLICITY - REMOVE!!! *****/
-        /*quote = new Quote("A leader is best when people barely know he exists,
-        when his work is done, his aim fulfilled, they will say: We did it ourselves.",
+        /*quote = new Quote("A leader is best when people barely know he exists,"+
+        "when his work is done, his aim fulfilled, they will say: We did it ourselves.",
         "Lao Tzu",Category.management,"6jubfcxQj5R23L7Bl7lxNAeF");
         dbh.addQuoteToFavorites(quote);*/
 

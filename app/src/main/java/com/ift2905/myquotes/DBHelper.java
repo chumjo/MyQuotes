@@ -65,7 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.d("MY_QUOTES_DEBUG", "quote inserted (unique)");
             db.insertOrThrow(TABLE_QUOTES, null, cv);
         } catch (SQLException e){
-            //e.printStackTrace();
+            e.printStackTrace();
             Log.d("MY_QUOTES_DEBUG", "quote not inserted (not unique)");
             return;
         }

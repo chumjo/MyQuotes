@@ -368,7 +368,7 @@ public class MainActivity extends AppCompatActivity
         android.app.Fragment frag_setting = getFragmentManager().findFragmentByTag("FRAG_SETTING");
 
         if(frag_setting != null) {
-            getFragmentManager().beginTransaction().hide(frag_setting).commit();
+            getFragmentManager().beginTransaction().remove(frag_setting).commit();
         }
     }
 

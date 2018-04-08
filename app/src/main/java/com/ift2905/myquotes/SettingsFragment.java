@@ -14,6 +14,7 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -27,17 +28,22 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        // Toast.makeText(getActivity(),"Pref changee : " + s, Toast.LENGTH_SHORT).show();
 
-        String theme = sharedPreferences.getString("pref_theme", "");
+        Log.d("SETTING", "changed : " + s);
 
-        Activity activity = getActivity();
-        activity.setTheme(SettingRessources.getTheme(theme));
+        // If the setting changed is the Theme
+        // Restarts the activity to force update the theme
+        if(s.equals("pref_theme")) {
+            String theme = sharedPreferences.getString("pref_theme", "");
 
+            Activity activity = getActivity();
+            activity.setTheme(SettingRessources.getTheme(theme));
 
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.putExtra("settings", true);
-        startActivity(intent);
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("settings", true);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -50,5 +56,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 .registerOnSharedPreferenceChangeListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 }

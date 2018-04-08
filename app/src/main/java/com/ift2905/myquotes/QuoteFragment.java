@@ -3,9 +3,14 @@ package com.ift2905.myquotes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +19,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -38,13 +44,17 @@ public class QuoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String theme = sharedPref.getString("pref_theme", "");
-
-        Context context = new ContextThemeWrapper(getActivity(), SettingRessources.getTheme(theme));
-        LayoutInflater localInflater = inflater.cloneInContext(context);
-
         View rootView = inflater.inflate(R.layout.fragment_quote, container, false);
+
+        // Set the image category icon
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = getContext().getTheme();
+        theme.resolveAttribute(R.attr.colorPrimary, typedValue,true);
+        @ColorInt int color = typedValue.data;
+
+        ImageView imgView = (ImageView) rootView.findViewById(R.id.imgCategory);
+        imgView.setImageDrawable(getResources().getDrawable(SettingRessources.getIcon(quote.getCategory())));
+        imgView.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
 
         // Fills the textview with the quote and the author
         TextView textViewQuote = (TextView) rootView.findViewById(R.id.quote);

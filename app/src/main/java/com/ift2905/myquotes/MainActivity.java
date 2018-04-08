@@ -3,7 +3,6 @@ package com.ift2905.myquotes;
 import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -25,7 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.ift2905.myquotes.R.id.container;
-import static com.ift2905.myquotes.R.id.drawer_layout;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -229,15 +227,16 @@ public class MainActivity extends AppCompatActivity
             Context context = getApplicationContext();
             getSupportFragmentManager().beginTransaction().remove(new Fragment());
 
-            // Hide all Fragments to get back to the main activity
-            hideAllFragments();
+            // removes all Fragments to get back to the main activity
+            // hides the setting fragment, does not delete it
+            removeAllFragments();
         }
 
         //--- FAVORITES ---//
         else if (id == R.id.nav_favorites) {
             Context context = getApplicationContext();
 
-            hideAllFragments();
+            removeAllFragments();
 
             Fragment frag_fav_list = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_LIST");
 
@@ -254,7 +253,7 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_settings) {
             Context context = getApplicationContext();
 
-            hideAllFragments();
+            removeAllFragments();
 
             android.app.Fragment frag_setting = getFragmentManager().findFragmentByTag("FRAG_SETTING");
 
@@ -271,7 +270,7 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_about) {
             Context context = getApplicationContext();
 
-            hideAllFragments();
+            removeAllFragments();
 
             Fragment frag_about = getSupportFragmentManager().findFragmentByTag("FRAG_ABOUT");
 
@@ -343,12 +342,12 @@ public class MainActivity extends AppCompatActivity
     }
     */
 
-    private void hideAllFragments(){
+    private void removeAllFragments(){
 
         for(Fragment fragment:getSupportFragmentManager().getFragments()){
             if(fragment instanceof QuoteFragment);
             else {
-                getSupportFragmentManager().beginTransaction().hide(fragment).commit();
+                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
             }
         }
 

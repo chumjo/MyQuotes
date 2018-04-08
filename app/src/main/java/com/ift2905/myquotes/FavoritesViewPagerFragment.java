@@ -31,7 +31,8 @@ public class FavoritesViewPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_favorite_viewpager, container, false);
         vp_favorites = (ViewPager) rootView.findViewById(R.id.favorites_viewpager);
-        quoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(getFragmentManager(),list_favorite_quotes.size(),list_favorite_quotes);
+        quoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(getFragmentManager(),
+                list_favorite_quotes.size(),list_favorite_quotes, RegularOrFavoriteQuote.FAVORITE_QUOTE);
         vp_favorites.setAdapter(quoteFragmentPagerAdapter);
 
         return rootView;

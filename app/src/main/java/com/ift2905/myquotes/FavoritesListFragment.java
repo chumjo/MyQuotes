@@ -61,8 +61,6 @@ public class FavoritesListFragment extends Fragment {
         {
             @Override public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
             {
-                Log.d("@string/debugging", "clicked");
-                Toast.makeText(getContext(), "Stop Clicking me: "+position, Toast.LENGTH_SHORT).show();
                 FavoritesViewPagerFragment fragment = new FavoritesViewPagerFragment();
                 android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.container_main, fragment, "FRAG_FAV_VP");
@@ -108,7 +106,7 @@ public class FavoritesListFragment extends Fragment {
                 public void onClick(View view) {
                     AlertDialog.Builder adb=new AlertDialog.Builder(getActivity());
                     adb.setTitle("Deleting quote from Favorites");
-                    adb.setMessage("Are you sure you want to delete it?");
+                    adb.setMessage("\nAre you sure you want to delete it?");
                     final int positionToRemove = (int)view.getTag();
                     adb.setNegativeButton("Cancel", null);
                     adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {

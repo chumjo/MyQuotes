@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mQuoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(
-                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList);
+                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList, RegularOrFavoriteQuote.REGULAR_QUOTE);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(container);

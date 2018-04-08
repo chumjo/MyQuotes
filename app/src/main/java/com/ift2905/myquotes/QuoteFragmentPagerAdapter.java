@@ -11,12 +11,15 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private final int numberOfFragment;
     private ArrayList<Quote> mQuoteList;
+    private RegularOrFavoriteQuote regularOrFavoriteQuote;
 
     public QuoteFragmentPagerAdapter(FragmentManager fm, int numberOfFragment,
-                                     ArrayList<Quote> quoteArrayList) {
+                                     ArrayList<Quote> quoteArrayList,
+                                     RegularOrFavoriteQuote regularOrFavoriteQuote) {
         super(fm);
         this.numberOfFragment = numberOfFragment;
         this.mQuoteList = quoteArrayList;
+        this.regularOrFavoriteQuote = regularOrFavoriteQuote;
     }
 
     @Override
@@ -37,7 +40,14 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
             Log.d("@string/debugging", "quote from initial list");
         }
 
-        return QuoteFragment.newInstance(position + 1, quote);
+        switch (regularOrFavoriteQuote) {
+            case REGULAR_QUOTE:
+                return QuoteFragment.newInstance(position, quote);
+            case FAVORITE_QUOTE:
+                return FavoriteQuoteFragment.newInstance(position, quote);
+            default:
+                return null;
+        }
     }
 
     @Override

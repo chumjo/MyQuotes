@@ -40,7 +40,7 @@ public class AlarmeReceiver extends BroadcastReceiver {
                 .setContentText(quote_notification.getQuote() + "\n" + quote_notification.getAuthor())
                 .setTicker("new message from My Quotes")
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.icon_management)
+                .setSmallIcon(R.drawable.ic_action_name)
                 .setContentIntent(pendingIntent).build();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -147,6 +147,11 @@ public class MainActivity extends AppCompatActivity
                 Log.d("LOL", "Came here from settting");
                 goSetting();
             }
+            else if(bundle.containsKey("qod_key")){
+                String [] qod = bundle.getStringArray("qod_key");
+                Quote quote = stringArrToQuote(qod);
+                goQod(quote);
+            }
         }
 
         //-- NOTIFICATIONS --//
@@ -175,6 +180,7 @@ public class MainActivity extends AppCompatActivity
         Fragment frag_about = getSupportFragmentManager().findFragmentByTag("FRAG_ABOUT");
         Fragment frag_fav_list = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_LIST");
         Fragment frag_fav_vp = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_VP");
+        Fragment frag_qod = getSupportFragmentManager().findFragmentByTag("FRAG_QOD");
         android.app.Fragment frag_setting = getFragmentManager().findFragmentByTag("FRAG_SETTING");
 
         //--- DRAWER ---//
@@ -217,6 +223,14 @@ public class MainActivity extends AppCompatActivity
         // Return to the favorite list
         else if(frag_setting != null && frag_setting.isVisible()) {
             drawer.openDrawer(Gravity.START);
+        }
+
+        //--- QOD ---//
+        // Restart the main activity
+        else if(frag_qod != null && frag_qod.isVisible()){
+            Log.d("LOL", "lol on rentre ici!");
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
 
         // Else we call the normal back pressed
@@ -408,5 +422,21 @@ public class MainActivity extends AppCompatActivity
         ft.replace(R.id.container_main, frag_about, "FRAG_ABOUT");
         ft.show(frag_about);
         ft.commit();
+    }
+
+    private void goQod(Quote quote){
+        removeAllFragments();
+
+        QuoteFragment frag_qod = QuoteFragment.newInstance(0, quote);
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.container_main, frag_qod, "FRAG_QOD");
+        ft.show(frag_qod);
+        ft.commit();
+    }
+
+    private Quote stringArrToQuote(String [] strArr){
+
+        Quote quote = new Quote(strArr[0], strArr[1], Category.valueOf(strArr[2]), strArr[3]);
+        return quote;
     }
 }

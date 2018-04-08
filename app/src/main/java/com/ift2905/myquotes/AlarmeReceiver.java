@@ -7,6 +7,7 @@ import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.os.Build;
 import android.app.NotificationChannel;
@@ -25,7 +26,17 @@ public class AlarmeReceiver extends BroadcastReceiver {
 
         Quote quote_notification = RandomQuoteInitialList.getRandomQuoteFromIntialList(MainActivity.preferences);
 
+        String [] qod = new String [4];
+        qod [0] = quote_notification.getQuote();
+        qod [1] = quote_notification.getAuthor();
+        qod [2] = quote_notification.getCategory().toString();
+        qod [3] = quote_notification.getId();
+
+        Bundle bundleQod = new Bundle();
+        bundleQod.putStringArray("qod_key", qod);
+
         Intent notificationIntent = new Intent(context, MainActivity.class);
+        notificationIntent.putExtras(bundleQod);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(MainActivity.class);

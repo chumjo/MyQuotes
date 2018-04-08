@@ -194,6 +194,12 @@ public class MainActivity extends AppCompatActivity
                 ft.commit();
             }
             else {
+                for(Fragment fragment:getSupportFragmentManager().getFragments()){
+                    if(fragment instanceof FavoriteQuoteFragment)
+                        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                    if(fragment instanceof FavoritesViewPagerFragment)
+                        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                }
                 FavoritesListFragment fragment = new FavoritesListFragment();
                 ft.replace(R.id.container_main, fragment, "FRAG_FAV_LIST");
                 ft.commit();

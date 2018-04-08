@@ -62,18 +62,18 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(Q_CATEGORY, quote.getCategory().name());
         cv.put(Q_ID,quote.getId());
         try{
-            Log.d("@string/debugging", "quote inserted (unique)");
+            Log.d("@MY_QUOTES_DEBUG", "quote inserted (unique)");
             db.insertOrThrow(TABLE_FAVORITE_QUOTES, null, cv);
         } catch (SQLException e){
             e.printStackTrace();
-            Log.d("@string/debugging", "quote not inserted (not unique)");
+            Log.d("@MY_QUOTES_DEBUG", "quote not inserted (not unique)");
             return;
         }
     }
 
     public static void deleteQuoteFromFavorites(String id) {
         db.delete(TABLE_FAVORITE_QUOTES, Q_ID + " = ?", new String[]{id});
-        Log.d("@string/debugging", "deleted from favorites");
+        Log.d("@MY_QUOTES_DEBUG", "deleted from favorites");
         //db.close();
     }
 

@@ -2,6 +2,7 @@ package com.ift2905.myquotes;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.content.SharedPreferences;
@@ -31,10 +32,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         String theme = sharedPreferences.getString("pref_theme", "");
 
         Activity activity = getActivity();
+        activity.setTheme(SettingRessources.getTheme(theme));
 
-        Log.d("LOL", "activity is null : " + (activity==null));
 
-        //activity.setTheme(SettingRessources.getTheme(theme));
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.putExtra("settings", true);
+        startActivity(intent);
+
     }
 
     @Override

@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/round_corner"
+                android:background="@drawable/text_zone_round_corner"
                 android:lineSpacingExtra="5sp"
                 android:padding="16dp"
                 android:text="@string/quote_welcome"
@@ -81,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/round_corner"
+                android:background="@drawable/text_zone_round_corner"
                 android:paddingBottom="8dp"
                 android:paddingLeft="16sp"
                 android:paddingRight="16sp"
@@ -101,10 +101,10 @@
                     android:id="@+id/btn_share"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/circle_shape"
+                    android:background="@drawable/button_image_share"
                     android:contentDescription="@string/Share_id"
                     android:src="@android:drawable/ic_menu_share"
-                    android:tint="#00bfff" />
+                    android:tintMode="multiply" />
             </LinearLayout>
 
         </LinearLayout>

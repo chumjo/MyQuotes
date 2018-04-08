@@ -7,15 +7,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -49,9 +46,6 @@ public class FavoriteQuoteFragment extends Fragment {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         String theme = sharedPref.getString("pref_theme", "");
 
-        Context context = new ContextThemeWrapper(getActivity(), SettingRessources.getTheme(theme));
-        LayoutInflater localInflater = inflater.cloneInContext(context);
-
         View rootView = inflater.inflate(R.layout.fragment_favorite_quote, container, false);
 
         // Fills the textview with the quote and the author
@@ -64,10 +58,12 @@ public class FavoriteQuoteFragment extends Fragment {
         btn_delete = (ImageButton) rootView.findViewById(R.id.btn_delete);
         btn_share = (ImageButton) rootView.findViewById(R.id.btn_share);
 
-        // Adds a listener for the favorite checkbox
+        // Adds a listener for the favorite delete button
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // Deletion alert
                 DBHelper.deleteQuoteFromFavorites(quote.getId());
                 AlertDialog.Builder adb=new AlertDialog.Builder(getActivity());
                 adb.setTitle("Deleting quote from Favorites");
@@ -75,8 +71,11 @@ public class FavoriteQuoteFragment extends Fragment {
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        // Remove quote from Favorites Database
                         DBHelper.deleteQuoteFromFavorites(quote.getId());
 
+                        // Remove all exitant FavoriteQuoteFragments and FavoritesViewPagerFragments
+                        // to be recretated
                         for(Fragment fragment:getFragmentManager().getFragments()){
                             if(fragment instanceof FavoriteQuoteFragment)
                                 getFragmentManager().beginTransaction().remove(fragment).commit();
@@ -84,14 +83,37 @@ public class FavoriteQuoteFragment extends Fragment {
                                 getFragmentManager().beginTransaction().remove(fragment).commit();
                         }
 
-                        Fragment frag_fav_vp = new FavoritesViewPagerFragment();
-                        android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.replace(R.id.container_main, frag_fav_vp, "FRAG_FAV_VP");
-                        ft.commit();
+                        // Verify if Favorites Database is not empty
+                        if(DBHelper.getFaroriteQuotes().size() != 0) {
+                            // Recreate FavoritesViewPagerFragment without deleted quote
+                            Fragment frag_fav_vp = new FavoritesViewPagerFragment();
+
+                            // Position of next item
+                            Bundle bundle=new Bundle();
+                            bundle.putInt("position_selected",position);
+                            frag_fav_vp.setArguments(bundle);
+
+                            // Replace current fragment
+                            android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            ft.replace(R.id.container_main, frag_fav_vp, "FRAG_FAV_VP");
+                            ft.commit();
+
+                        // If Favorites Database is empty
+                        } else {
+                            // Remove FavoritesListFragment to be recreated empty
+                            for(Fragment fragment:getFragmentManager().getFragments()) {
+                                if (fragment instanceof FavoritesListFragment)
+                                    getFragmentManager().beginTransaction().remove(fragment).commit();
+                            }
+                            // Recreate empty FavoritesListFragment
+                            Fragment frag_fav_list = new FavoritesListFragment();
+
+                            android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            ft.replace(R.id.container_main, frag_fav_list, "FRAG_FAV_LIST");
+                            ft.commit();
+                        }
                     }});
                 adb.show();
-
-                Log.d("MY_QUOTES_DEBUG","CONTINUE TO EXIST");
             }
         });
 

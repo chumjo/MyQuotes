@@ -53,7 +53,7 @@ public class FavoritesListFragment extends Fragment {
 
         this.inflater = inflater;
 
-        View rootView = inflater.inflate(R.layout.fragment_favorite_listview, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_favorite_listview, container, false);
         list = (ListView) rootView.findViewById(R.id.favorite_list);
         adapter = new MyAdapter();
         list.setAdapter(adapter);
@@ -61,11 +61,14 @@ public class FavoritesListFragment extends Fragment {
         {
             @Override public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
             {
-
                 Fragment frag_fav_vp = getFragmentManager().findFragmentByTag("FRAG_FAV_VP");
 
                 if(frag_fav_vp == null)
                     frag_fav_vp = new FavoritesViewPagerFragment();
+
+                Bundle bundle=new Bundle();
+                bundle.putInt("position_selected",position);
+                frag_fav_vp.setArguments(bundle);
 
                 android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.container_main, frag_fav_vp, "FRAG_FAV_VP");

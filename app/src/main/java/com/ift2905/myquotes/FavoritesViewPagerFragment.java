@@ -7,8 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -34,6 +32,9 @@ public class FavoritesViewPagerFragment extends Fragment {
         quoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(getFragmentManager(),
                 list_favorite_quotes.size(),list_favorite_quotes, RegularOrFavoriteQuote.FAVORITE_QUOTE);
         vp_favorites.setAdapter(quoteFragmentPagerAdapter);
+
+        int position = getArguments().getInt("position_selected");
+        vp_favorites.setCurrentItem(position);
 
         return rootView;
     }

@@ -1,7 +1,9 @@
 package com.ift2905.myquotes;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,14 +18,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.ift2905.myquotes.R.id.container;
 
@@ -146,6 +147,23 @@ public class MainActivity extends AppCompatActivity
                 Log.d("LOL", "Came here from settting");
                 goSetting();
             }
+            else if(bundle.containsKey("qod_key")){
+                String [] qod = bundle.getStringArray("qod_key");
+                Quote quote = stringArrToQuote(qod);
+                goQod(quote);
+            }
+        }
+
+        //-- NOTIFICATIONS --//
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.SECOND,4);
+
+        Intent intent = new Intent(this,AlarmeReceiver.class);
+        PendingIntent broadcast = PendingIntent.getBroadcast(this,100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (alarmManager != null) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),broadcast);
         }
     }
 
@@ -162,6 +180,7 @@ public class MainActivity extends AppCompatActivity
         Fragment frag_about = getSupportFragmentManager().findFragmentByTag("FRAG_ABOUT");
         Fragment frag_fav_list = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_LIST");
         Fragment frag_fav_vp = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_VP");
+        Fragment frag_qod = getSupportFragmentManager().findFragmentByTag("FRAG_QOD");
         android.app.Fragment frag_setting = getFragmentManager().findFragmentByTag("FRAG_SETTING");
 
         //--- DRAWER ---//
@@ -210,6 +229,14 @@ public class MainActivity extends AppCompatActivity
         // Return to the favorite list
         else if(frag_setting != null && frag_setting.isVisible()) {
             drawer.openDrawer(Gravity.START);
+        }
+
+        //--- QOD ---//
+        // Restart the main activity
+        else if(frag_qod != null && frag_qod.isVisible()){
+            Log.d("LOL", "lol on rentre ici!");
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
 
         // Else we call the normal back pressed
@@ -266,9 +293,13 @@ public class MainActivity extends AppCompatActivity
             goAbout();
         }
 
-        // TO REMOVE
+        // --SHARE MYQUOTES --//
         else if (id == R.id.nav_share) {
-            Context context = getApplicationContext();
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, "Share My Quotes with your friends/");
+            startActivity(Intent.createChooser(intent, "Share with"));
         }
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -397,5 +428,21 @@ public class MainActivity extends AppCompatActivity
         ft.replace(R.id.container_main, frag_about, "FRAG_ABOUT");
         ft.show(frag_about);
         ft.commit();
+    }
+
+    private void goQod(Quote quote){
+        removeAllFragments();
+
+        QuoteFragment frag_qod = QuoteFragment.newInstance(0, quote);
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.container_main, frag_qod, "FRAG_QOD");
+        ft.show(frag_qod);
+        ft.commit();
+    }
+
+    private Quote stringArrToQuote(String [] strArr){
+
+        Quote quote = new Quote(strArr[0], strArr[1], Category.valueOf(strArr[2]), strArr[3]);
+        return quote;
     }
 }

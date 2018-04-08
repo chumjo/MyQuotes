@@ -35,6 +35,8 @@ import static com.ift2905.myquotes.R.id.container;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
+    int time_notification = 1;       // default time in hours to receive a notification
+
     public Quote quote;
 
     public static String[] preferences = {};
@@ -161,21 +163,20 @@ public class MainActivity extends AppCompatActivity
         //-- NOTIFICATIONS --//
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY,14);
-        calendar.add(Calendar.MINUTE,17);
+        //calendar.add(Calendar.HOUR,time_notification);
         calendar.add(Calendar.SECOND,4);
 
         Intent intent = new Intent(this,AlarmeReceiver.class);
-        PendingIntent broadcast = PendingIntent.getBroadcast(getApplicationContext(),100,
+        PendingIntent broadcast = PendingIntent.getBroadcast(this,100,
                 intent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-        //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,broadcast);
-
 
         if (alarmManager != null) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),broadcast);
         }
+    }
 
+    public void setTime_notification(int time_notification){
+        this.time_notification = time_notification;
     }
 
     @Override

@@ -24,8 +24,14 @@
     <color name="colorAccent2">#efdee3</color>
 
     <!-- Colors Theme 3 -->
-    <color name="colorPrimary3">#d86393</color>
-    <color name="colorPrimaryDark3">#ba285d</color>
-    <color name="colorPrimaryLight3">#fcd6e5</color>
-    <color name="colorAccent3">#efdee3</color>
+    <color name="colorPrimary3">#d88263</color>
+    <color name="colorPrimaryDark3">#ba5d28</color>
+    <color name="colorPrimaryLight3">#fce0d6</color>
+    <color name="colorAccent3">#efe3de</color>
+
+    <!-- Colors Theme 4 -->
+    <color name="colorPrimary4">#63d863</color>
+    <color name="colorPrimaryDark4">#42ba28</color>
+    <color name="colorPrimaryLight4">#ddfcd6</color>
+    <color name="colorAccent4">#e2efde</color>
 </resources>

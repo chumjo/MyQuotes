@@ -31,13 +31,13 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
             quote = mQuoteList.get(position);
 
             /***** DEBUGGING LOG - REMOVE!!! *****/
-            Log.d("@string/debugging", "quote from the web");
+            Log.d("MY_QUOTES_DEBUG", "quote from the web");
 
         } else {
             quote = RandomQuoteInitialList.getRandomQuoteFromIntialList(MainActivity.preferences);
 
             /***** DEBUGGING LOG - REMOVE!!! *****/
-            Log.d("@string/debugging", "quote from initial list");
+            Log.d("MY_QUOTES_DEBUG", "quote from initial list");
         }
 
         switch (regularOrFavoriteQuote) {

@@ -25,26 +25,23 @@
             <ImageView
                 android:id="@+id/imgCategory"
                 android:layout_width="30dp"
-                android:layout_height="40dp"
-                android:layout_marginBottom="39dp"
-                android:layout_marginTop="38dp"
+                android:layout_height="103dp"
                 android:contentDescription="@string/img_category"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/icon_management" />
+                app:srcCompat="@drawable/icon_management"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="-32dp" />
 
             <TextView
                 android:id="@+id/quote"
-                android:layout_width="269dp"
-                android:layout_height="84dp"
+                android:layout_width="0dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/round_corner"
                 android:padding="8dp"
                 android:text="@string/quote_welcome"
                 android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/author"
                 app:layout_constraintEnd_toStartOf="@+id/delete_button"
                 app:layout_constraintHorizontal_bias="0.666"
                 app:layout_constraintStart_toEndOf="@+id/imgCategory"
@@ -53,8 +50,7 @@
             <TextView
                 android:id="@+id/author"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="@dimen/li_author_height"
                 android:background="@drawable/round_corner"
                 android:padding="4dp"
                 android:paddingEnd="16dp"
@@ -65,13 +61,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/quote"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/quote"
-                app:layout_constraintTop_toBottomOf="@+id/quote"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintStart_toStartOf="@+id/quote" />
 
             <ImageButton
                 android:id="@+id/delete_button"
-                android:layout_width="30dp"
+                android:layout_width="40dp"
                 android:layout_height="0dp"
                 android:adjustViewBounds="false"
                 android:backgroundTint="@android:color/holo_red_light"

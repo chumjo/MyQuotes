@@ -25,15 +25,17 @@
             <ImageView
                 android:id="@+id/imgCategory"
                 android:layout_width="30dp"
-                android:layout_height="103dp"
+                android:layout_height="0dp"
                 android:contentDescription="@string/img_category"
-                app:srcCompat="@drawable/icon_management"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="-32dp" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_management" />
 
             <TextView
                 android:id="@+id/quote"
                 android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"

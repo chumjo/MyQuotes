@@ -38,7 +38,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.putExtra("settings", true);
         startActivity(intent);
-
     }
 
     @Override

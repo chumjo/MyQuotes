@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,17 +76,22 @@ public class FavoriteQuoteFragment extends Fragment {
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         DBHelper.deleteQuoteFromFavorites(quote.getId());
+
+                        for(Fragment fragment:getFragmentManager().getFragments()){
+                            if(fragment instanceof FavoriteQuoteFragment)
+                                getFragmentManager().beginTransaction().remove(fragment).commit();
+                            if(fragment instanceof FavoritesViewPagerFragment)
+                                getFragmentManager().beginTransaction().remove(fragment).commit();
+                        }
+
+                        Fragment frag_fav_vp = new FavoritesViewPagerFragment();
+                        android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.container_main, frag_fav_vp, "FRAG_FAV_VP");
+                        ft.commit();
                     }});
                 adb.show();
 
-                FavoriteQuoteFragment myFragment = (FavoriteQuoteFragment)getFragmentManager().findFragmentByTag("MY_FRAGMENT");
-                if (myFragment != null && myFragment.isVisible()) {
-                    // add your code here
-                }
-                /*FavoriteQuoteFragment fragment = getView().getFragment(index);
-                android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.container_main, get, "FRAG_FAV_VP");
-                ft.commit();*/
+                Log.d("MY_QUOTES_DEBUG","CONTINUE TO EXIST");
             }
         });
 

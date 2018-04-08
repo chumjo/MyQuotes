@@ -25,17 +25,17 @@
     </style>
 
     <style name="AppThemeColor3">
-        <item name="colorPrimary">@color/colorPrimary2</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark2</item>
-        <item name="colorPrimaryLight">@color/colorPrimaryLight2</item>
-        <item name="colorAccent">@color/colorAccent2</item>
+        <item name="colorPrimary">@color/colorPrimary3</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark3</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight3</item>
+        <item name="colorAccent">@color/colorAccent3</item>
     </style>
 
     <style name="AppThemeColor4">
-        <item name="colorPrimary">@color/colorPrimary2</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark2</item>
-        <item name="colorPrimaryLight">@color/colorPrimaryLight2</item>
-        <item name="colorAccent">@color/colorAccent2</item>
+        <item name="colorPrimary">@color/colorPrimary4</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark4</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight4</item>
+        <item name="colorAccent">@color/colorAccent4</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

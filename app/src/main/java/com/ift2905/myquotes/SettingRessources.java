@@ -6,6 +6,7 @@ package com.ift2905.myquotes;
 
 public class SettingRessources {
 
+    // Returns the theme
     static int getTheme(String theme){
 
         if(theme.equals("theme1"))

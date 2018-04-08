@@ -74,6 +74,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String theme = sharedPreferences.getString("pref_theme", "");
+        setTheme(SettingRessources.getTheme(theme));
+
+
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -132,15 +139,13 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        Log.d("LOL", "Create Activity");
+        Bundle bundle = getIntent().getExtras();
 
-        Bundle lol = getIntent().getExtras();
-
-        if(lol != null){
-
-            Log.d("LOL", "Came here from somewhere");
-            if(lol.containsKey("settings"))
+        if(bundle != null){
+            if(bundle.containsKey("settings")) {
                 Log.d("LOL", "Came here from settting");
+                goSetting();
+            }
         }
     }
 
@@ -237,63 +242,22 @@ public class MainActivity extends AppCompatActivity
 
         //--- HOME ---//
         if (id == R.id.nav_home) {
-            Context context = getApplicationContext();
-            getSupportFragmentManager().beginTransaction().remove(new Fragment());
-
-            // removes all Fragments to get back to the main activity
-            // hides the setting fragment, does not delete it
-            removeAllFragments();
+            goHome();
         }
 
         //--- FAVORITES ---//
         else if (id == R.id.nav_favorites) {
-            Context context = getApplicationContext();
-
-            removeAllFragments();
-
-            Fragment frag_fav_list = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_LIST");
-
-            if(frag_fav_list == null)
-                frag_fav_list = new FavoritesListFragment();
-
-            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.container_main, frag_fav_list, "FRAG_FAV_LIST");
-            ft.show(frag_fav_list);
-            ft.commit();
+            goFavorite();
         }
 
         //--- SETTINGS ---//
         else if (id == R.id.nav_settings) {
-            Context context = getApplicationContext();
-
-            removeAllFragments();
-
-            android.app.Fragment frag_setting = getFragmentManager().findFragmentByTag("FRAG_SETTING");
-
-            if(frag_setting == null)
-                frag_setting = new SettingsFragment();
-
-            final FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.container_main, frag_setting, "FRAG_SETTING");
-            ft.show(frag_setting);
-            ft.commit();
-
+            goSetting();
         }
+
         //--- ABOUT ---//
         else if (id == R.id.nav_about) {
-            Context context = getApplicationContext();
-
-            removeAllFragments();
-
-            Fragment frag_about = getSupportFragmentManager().findFragmentByTag("FRAG_ABOUT");
-
-            if(frag_about == null)
-                frag_about = new AboutFragment();
-
-            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.container_main, frag_about, "FRAG_ABOUT");
-            ft.show(frag_about);
-            ft.commit();
+            goAbout();
         }
 
         // TO REMOVE
@@ -371,21 +335,61 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-
-        View rootView = super.onCreateView(parent, name, context, attrs);
-
-        // Get the preference theme
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        String theme = sharedPref.getString("pref_theme", "");
-
-        this.setTheme(SettingRessources.getTheme(theme));
-
-        return rootView;
-    }
 
     private void goHome(){
+        Context context = getApplicationContext();
+        getSupportFragmentManager().beginTransaction().remove(new Fragment());
 
+        // removes all Fragments to get back to the main activity
+        // hides the setting fragment, does not delete it
+        removeAllFragments();
+    }
+
+    private void goFavorite(){
+        Context context = getApplicationContext();
+
+        removeAllFragments();
+
+        Fragment frag_fav_list = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_LIST");
+
+        if(frag_fav_list == null)
+            frag_fav_list = new FavoritesListFragment();
+
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.container_main, frag_fav_list, "FRAG_FAV_LIST");
+        ft.show(frag_fav_list);
+        ft.commit();
+    }
+
+    private void goSetting(){
+        Context context = getApplicationContext();
+
+        removeAllFragments();
+
+        android.app.Fragment frag_setting = getFragmentManager().findFragmentByTag("FRAG_SETTING");
+
+        if(frag_setting == null)
+            frag_setting = new SettingsFragment();
+
+        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.container_main, frag_setting, "FRAG_SETTING");
+        ft.show(frag_setting);
+        ft.commit();
+    }
+
+    private void goAbout(){
+        Context context = getApplicationContext();
+
+        removeAllFragments();
+
+        Fragment frag_about = getSupportFragmentManager().findFragmentByTag("FRAG_ABOUT");
+
+        if(frag_about == null)
+            frag_about = new AboutFragment();
+
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.container_main, frag_about, "FRAG_ABOUT");
+        ft.show(frag_about);
+        ft.commit();
     }
 }

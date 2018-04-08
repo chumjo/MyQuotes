@@ -273,9 +273,13 @@ public class MainActivity extends AppCompatActivity
             goAbout();
         }
 
-        // TO REMOVE
+        // --SHARE MYQUOTES --//
         else if (id == R.id.nav_share) {
-            Context context = getApplicationContext();
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, "Share My Quotes with your friends/");
+            startActivity(Intent.createChooser(intent, "Share with"));
         }
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

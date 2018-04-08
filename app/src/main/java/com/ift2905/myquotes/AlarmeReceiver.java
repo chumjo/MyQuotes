@@ -15,7 +15,7 @@ import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 /*
 - Classe por la gestion de notifications de l'application
 - Affiche une quote avec auteur dans la notification
- */
+*/
 
 public class AlarmeReceiver extends BroadcastReceiver {
     private static final String CHANNEL_ID = "com.singhajit.notificationDemo.channelId";

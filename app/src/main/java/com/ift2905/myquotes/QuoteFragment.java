@@ -49,8 +49,8 @@ public class QuoteFragment extends Fragment {
         // Fills the textview with the quote and the author
         TextView textViewQuote = (TextView) rootView.findViewById(R.id.quote);
         TextView textViewAuthor = (TextView) rootView.findViewById(R.id.author);
-        textViewQuote.setText(quote.getQuote());
-        textViewAuthor.setText(quote.getAuthor());
+        textViewQuote.setText("\""+quote.getQuote()+"\"");
+        textViewAuthor.setText("- "+quote.getAuthor());
 
         // Get the buttons
         chk_favorite = (CheckBox) rootView.findViewById(R.id.chk_favorite);
@@ -77,7 +77,7 @@ public class QuoteFragment extends Fragment {
 
             String textDesc = getResources().getString(R.string.share_desc) +
                     quote.getAuthor().substring(1);
-            String textBody = quote.getQuote() + "\n" + quote.getAuthor();
+            String textBody = "\""+quote.getQuote()+"\"" + "\n" + "- "+quote.getAuthor();
 
             @Override
             public void onClick(View v) {

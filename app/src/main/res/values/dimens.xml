@@ -13,7 +13,8 @@
     <dimen name="qf_button_share">40dp</dimen>
 
     <!-- List Item Quote -->
-    <dimen name="li_height">400px</dimen>
-    <dimen name="li_quote_height">250px</dimen>
+    <dimen name="li_height">120dp</dimen>
+    <dimen name="li_quote_height">80dp</dimen>
+    <dimen name="li_author_height">25dp</dimen>
     <dimen name="li_button_width">20dp</dimen>
 </resources>

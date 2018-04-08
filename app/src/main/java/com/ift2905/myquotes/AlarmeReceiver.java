@@ -7,6 +7,8 @@ import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.os.Build;
@@ -47,11 +49,15 @@ public class AlarmeReceiver extends BroadcastReceiver {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
+        // default sound notification
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
         Notification notification = builder.setContentTitle("My Quotes notification")
                 .setContentText(quote_notification.getQuote() + "\n" + quote_notification.getAuthor())
                 .setTicker("new message from My Quotes")
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.ic_action_name)
+                .setSound(uri)
                 .setContentIntent(pendingIntent).build();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

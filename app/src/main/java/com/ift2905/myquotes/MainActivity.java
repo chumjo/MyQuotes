@@ -4,12 +4,16 @@ import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
@@ -30,6 +34,8 @@ import static com.ift2905.myquotes.R.id.container;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
+
+    int time_notification = 1;       // default time in hours to receive a notification
 
     public Quote quote;
 
@@ -157,19 +163,24 @@ public class MainActivity extends AppCompatActivity
         //-- NOTIFICATIONS --//
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
+        //calendar.add(Calendar.HOUR,time_notification);
         calendar.add(Calendar.SECOND,4);
 
         Intent intent = new Intent(this,AlarmeReceiver.class);
-        PendingIntent broadcast = PendingIntent.getBroadcast(this,100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent broadcast = PendingIntent.getBroadcast(this,100,
+                intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (alarmManager != null) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),broadcast);
         }
     }
 
+    public void setTime_notification(int time_notification){
+        this.time_notification = time_notification;
+    }
+
     @Override
     protected void onPause() {
-        
         super.onPause();
     }
 
@@ -234,7 +245,6 @@ public class MainActivity extends AppCompatActivity
         //--- QOD ---//
         // Restart the main activity
         else if(frag_qod != null && frag_qod.isVisible()){
-            Log.d("LOL", "lol on rentre ici!");
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
@@ -243,8 +253,6 @@ public class MainActivity extends AppCompatActivity
         else{
             super.onBackPressed();
         }
-
-
     }
 
     @Override
@@ -269,7 +277,6 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -359,7 +366,8 @@ public class MainActivity extends AppCompatActivity
     private void removeAllFragments(){
 
         for(Fragment fragment:getSupportFragmentManager().getFragments()){
-            if(fragment instanceof QuoteFragment);
+
+            if(fragment instanceof QuoteFragment && !(fragment.getTag().equals("FRAG_QOD")));
             else {
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
             }

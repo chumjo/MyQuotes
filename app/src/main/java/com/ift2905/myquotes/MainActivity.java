@@ -21,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mQuoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(
-                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList, RegularOrFavoriteQuote.REGULAR_QUOTE);
+                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(container);
@@ -165,6 +166,24 @@ public class MainActivity extends AppCompatActivity
         if (alarmManager != null) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),broadcast);
         }
+    }
+
+    // Uncheck the Favorite Star Icon in activty_main layout when quote removed from Favorites
+    public void unCheckFavoriteState(String quote_id) {
+        Log.d("MY_QUOTES_DEBUG","quote_id: "+quote_id);
+        int position;
+        for(position=0; position<mRandomQuoteArrayList.size(); position++) {
+            if(mRandomQuoteArrayList.get(position).getId().equals(quote_id))
+                break;
+        }
+        Log.d("MY_QUOTES_DEBUG","position: "+position);
+
+        QuoteFragment quoteFragment = (QuoteFragment) mQuoteFragmentPagerAdapter.getItem(position);
+
+        Log.d("MY_QUOTES_DEBUG", ""+(quoteFragment==null));
+
+        CheckBox checkBox = (CheckBox) findViewById(R.id.chk_favorite);
+        checkBox.setChecked(false);
     }
 
     @Override

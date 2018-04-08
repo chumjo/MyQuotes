@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -123,6 +124,7 @@ public class FavoritesListFragment extends Fragment {
                             DBHelper.deleteQuoteFromFavorites(id);
                             list_favorite_quotes.remove(positionToRemove);
                             adapter.notifyDataSetChanged();
+                            ((MainActivity)getActivity()).unCheckFavoriteState(id);
                         }});
                     adb.show();
                 }

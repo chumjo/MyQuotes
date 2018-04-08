@@ -1,36 +1,43 @@
 package com.ift2905.myquotes;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-public class QuoteFragment extends Fragment {
+/**
+ * Created by augus on 07/04/2018.
+ */
+
+public class FavoriteQuoteFragment extends Fragment {
 
     public Quote quote;
-    public CheckBox chk_favorite;
+    public ImageButton btn_delete;
     public ImageButton btn_share;
+    public int position;
 
-    public QuoteFragment() {
+    public FavoriteQuoteFragment() {
         super();
     }
 
-    public static QuoteFragment newInstance(int sectionNumber, Quote quote) {
+    public static FavoriteQuoteFragment newInstance(int position, Quote quote) {
 
-        QuoteFragment fragment = new QuoteFragment();
+        FavoriteQuoteFragment fragment = new FavoriteQuoteFragment();
         fragment.quote = quote;
+        fragment.position = position;
 
         return fragment;
     }
@@ -44,31 +51,41 @@ public class QuoteFragment extends Fragment {
         Context context = new ContextThemeWrapper(getActivity(), SettingRessources.getTheme(theme));
         LayoutInflater localInflater = inflater.cloneInContext(context);
 
-        View rootView = inflater.inflate(R.layout.fragment_quote, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_favorite_quote, container, false);
 
         // Fills the textview with the quote and the author
         TextView textViewQuote = (TextView) rootView.findViewById(R.id.quote);
         TextView textViewAuthor = (TextView) rootView.findViewById(R.id.author);
-        textViewQuote.setText("\""+quote.getQuote()+"\"");
-        textViewAuthor.setText("- "+quote.getAuthor());
+        textViewQuote.setText(quote.getQuote());
+        textViewAuthor.setText(quote.getAuthor());
 
         // Get the buttons
-        chk_favorite = (CheckBox) rootView.findViewById(R.id.chk_favorite);
+        btn_delete = (ImageButton) rootView.findViewById(R.id.btn_delete);
         btn_share = (ImageButton) rootView.findViewById(R.id.btn_share);
 
         // Adds a listener for the favorite checkbox
-        chk_favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View view) {
+                DBHelper.deleteQuoteFromFavorites(quote.getId());
+                AlertDialog.Builder adb=new AlertDialog.Builder(getActivity());
+                adb.setTitle("Deleting quote from Favorites");
+                adb.setMessage("\nAre you sure you want to delete it?");
+                adb.setNegativeButton("Cancel", null);
+                adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        DBHelper.deleteQuoteFromFavorites(quote.getId());
+                    }});
+                adb.show();
 
-                if(b){
-                    // Adds the quote to the favorite database
-                    DBHelper.addQuoteToFavorites(quote);
+                FavoriteQuoteFragment myFragment = (FavoriteQuoteFragment)getFragmentManager().findFragmentByTag("MY_FRAGMENT");
+                if (myFragment != null && myFragment.isVisible()) {
+                    // add your code here
                 }
-                else {
-                    // Removes the quote to the favorite database
-                    DBHelper.deleteQuoteFromFavorites(quote.getId());
-                }
+                /*FavoriteQuoteFragment fragment = getView().getFragment(index);
+                android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.container_main, get, "FRAG_FAV_VP");
+                ft.commit();*/
             }
         });
 
@@ -77,7 +94,7 @@ public class QuoteFragment extends Fragment {
 
             String textDesc = getResources().getString(R.string.share_desc) +
                     quote.getAuthor().substring(1);
-            String textBody = "\""+quote.getQuote()+"\"" + "\n" + "- "+quote.getAuthor();
+            String textBody = quote.getQuote() + "\n" + quote.getAuthor();
 
             @Override
             public void onClick(View v) {
@@ -92,6 +109,4 @@ public class QuoteFragment extends Fragment {
 
         return rootView;
     }
-
-
 }

@@ -2,13 +2,17 @@ package com.ift2905.myquotes;
 
 import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,6 +137,15 @@ public class FavoritesListFragment extends Fragment {
             quote = list_favorite_quotes.get(i);
             tv_quote.setText(quote.getQuote());
             tv_author.setText(quote.getAuthor());
+
+            // Set the image category icon
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = getContext().getTheme();
+            theme.resolveAttribute(R.attr.colorPrimary, typedValue,true);
+            @ColorInt int color = typedValue.data;
+
+            im_category.setImageDrawable(getResources().getDrawable(SettingRessources.getIcon(quote.getCategory())));
+            im_category.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
 
             //String url = films.LineupItems.get(i).ImagePlayerNormalC;
 

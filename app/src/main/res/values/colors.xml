@@ -4,10 +4,10 @@
     <!-- default colors -->
     <color name="white">#ffffff</color>
 
-    <color name="colorPrimary">#63d8d2</color>
-    <color name="colorPrimaryDark">#28bab2</color>
-    <color name="colorPrimaryLight">#d6fcfa</color>
-    <color name="colorAccent">#deefef</color>
+    <color name="colorPrimary">#b2b2b2</color>
+    <color name="colorPrimaryDark">#686868</color>
+    <color name="colorPrimaryLight">#d3d3d3</color>
+    <color name="colorAccent">#e5e5e5</color>
 
 
     <!-- Colors for the different themes -->

@@ -40,6 +40,9 @@
     <string name="Share_id">Share</string>
     <string name="Communicate_id">Communicate</string>
 
+    <!-- keys -->
+    <string name="bundle_set">bundle_key_setting</string>
+
     <!-- Debugging -->
     <string name="debugging">MY_QUOTES_DEBUG</string>
 

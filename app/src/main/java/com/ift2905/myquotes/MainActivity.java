@@ -3,6 +3,7 @@ package com.ift2905.myquotes;
 import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -129,6 +131,17 @@ public class MainActivity extends AppCompatActivity
             public void onPageScrollStateChanged(int state) {
             }
         });
+
+        Log.d("LOL", "Create Activity");
+
+        Bundle lol = getIntent().getExtras();
+
+        if(lol != null){
+
+            Log.d("LOL", "Came here from somewhere");
+            if(lol.containsKey("settings"))
+                Log.d("LOL", "Came here from settting");
+        }
     }
 
     @Override
@@ -370,5 +383,9 @@ public class MainActivity extends AppCompatActivity
         this.setTheme(SettingRessources.getTheme(theme));
 
         return rootView;
+    }
+
+    private void goHome(){
+
     }
 }

@@ -25,7 +25,7 @@ public class QuoteAPI {
 
     public QuoteAPI(Category category, Context context) {
         this.category = category;
-        url_begin = "http://quotes.rest/quote/search.json?maxlength=430&category=";
+        url_begin = "http://quotes.rest/quote/search.json?category=";
         url_final = url_begin + category;
         dbh = new DBHelper(context);
 

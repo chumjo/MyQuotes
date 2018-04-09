@@ -5,7 +5,7 @@
     android:innerRadius="2dp">
 
     <solid
-        android:color="#cef2ff"/>
+        android:color="#00bfff"/>
 
     <stroke
         android:color="#00bfff"

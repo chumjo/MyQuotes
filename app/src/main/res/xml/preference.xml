@@ -19,6 +19,8 @@
             android:title="@string/qod_sound"
             android:dependency="pref_qod_activate"/>
 
+
+
         <!--<com.ift2905.myquotes.TimePreference
             android:defaultValue="00:00"
             android:key="qod_time"

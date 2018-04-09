@@ -7,12 +7,17 @@ import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.os.Build;
 import android.app.NotificationChannel;
+import android.util.Log;
+
 import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 
 /*
@@ -21,7 +26,10 @@ import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 */
 
 public class AlarmeReceiver extends BroadcastReceiver {
+
+    Uri uri;
     private static final String CHANNEL_ID = "com.singhajit.notificationDemo.channelId";
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -49,8 +57,15 @@ public class AlarmeReceiver extends BroadcastReceiver {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
-        // default sound notification
-        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        // check state of sound option notifications
+        if (sharedPreferences.getBoolean("pref_qod_sound",false)){
+            // default sound notification
+            uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        } else {
+            uri = null;
+        }
 
         Notification notification = builder.setContentTitle("My Quotes notification")
                 .setContentText(quote_notification.getQuote() + "\n" + quote_notification.getAuthor())

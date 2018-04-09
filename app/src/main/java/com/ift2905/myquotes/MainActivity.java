@@ -161,17 +161,35 @@ public class MainActivity extends AppCompatActivity
         }
 
         //-- NOTIFICATIONS --//
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        sendNotification();
+    }
+
+    public void sendNotification(){
+
+        int hour = 12;
+        int minute = 30;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // check state in notification settings option
+        if(!sharedPreferences.getBoolean("pref_qod_activate", false)){
+            return;
+        }
+
         Calendar calendar = Calendar.getInstance();
-        //calendar.add(Calendar.HOUR,time_notification);
-        calendar.add(Calendar.SECOND,4);
+        calendar.set(Calendar.HOUR_OF_DAY,hour);
+        calendar.set(Calendar.MINUTE,minute);
+        calendar.set(Calendar.SECOND,0);
 
         Intent intent = new Intent(this,AlarmeReceiver.class);
-        PendingIntent broadcast = PendingIntent.getBroadcast(this,100,
-                intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,100,intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
 
         if (alarmManager != null) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),broadcast);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY, pendingIntent);
         }
     }
 

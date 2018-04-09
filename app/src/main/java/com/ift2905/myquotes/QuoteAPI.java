@@ -30,7 +30,7 @@ public class QuoteAPI {
         dbh = new DBHelper(context);
 
         /***** DEBUGGING LOG - REMOVE!!! *****/
-        Log.d("MY_QUOTES_DEBUG", url_final);
+        //Log.d("MY_QUOTES_DEBUG", url_final);
     }
 
     public Quote run() throws IOException {

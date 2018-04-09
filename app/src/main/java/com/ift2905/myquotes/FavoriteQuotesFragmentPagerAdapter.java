@@ -32,14 +32,14 @@ public class FavoriteQuotesFragmentPagerAdapter extends FragmentPagerAdapter {
             quote = mQuoteList.get(position);
 
             /***** DEBUGGING LOG - REMOVE!!! *****/
-            Log.d("MY_QUOTES_DEBUG", "quote from the web");
+            //Log.d("MY_QUOTES_DEBUG", "quote from the web");
 
         } else {
             quote = RandomQuoteInitialList.getRandomQuoteFromIntialList(MainActivity.preferences);
             mQuoteList.add(quote);
 
             /***** DEBUGGING LOG - REMOVE!!! *****/
-            Log.d("MY_QUOTES_DEBUG", "quote from initial list");
+            //Log.d("MY_QUOTES_DEBUG", "quote from initial list");
         }
 
         return FavoriteQuoteFragment.newInstance(position, quote);

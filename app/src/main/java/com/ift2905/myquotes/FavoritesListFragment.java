@@ -87,23 +87,28 @@ public class FavoritesListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder adb=new AlertDialog.Builder(getActivity());
-                adb.setTitle(R.string.delete_all);
-                adb.setMessage(R.string.delete_all_question);
-                adb.setNegativeButton("Cancel", null);
-                adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d("MY_QUOTES_DEBUG","******** list_favorite_quotes.size() "+list_favorite_quotes.size());
-                        int fav_liste_size = list_favorite_quotes.size();
-                        for(int i=0; i<fav_liste_size; i++) {
-                            Log.d("MY_QUOTES_DEBUG","i: "+i);
-                            String id = list_favorite_quotes.get(0).getId();
-                            DBHelper.deleteQuoteFromFavorites(id);
-                            list_favorite_quotes.remove(0);
-                            adapter.notifyDataSetChanged();
-                            ((MainActivity)getActivity()).unCheckFavoriteState(id);
-                        }
-                    }});
-
+                if(list_favorite_quotes.size() != 0) {
+                    adb.setTitle(R.string.delete_all);
+                    adb.setMessage(R.string.delete_all_question);
+                    adb.setNegativeButton(R.string.cancel_btn, null);
+                    adb.setPositiveButton(R.string.ok_btn, new AlertDialog.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.d("MY_QUOTES_DEBUG","******** list_favorite_quotes.size() "+list_favorite_quotes.size());
+                            int fav_liste_size = list_favorite_quotes.size();
+                            for(int i=0; i<fav_liste_size; i++) {
+                                Log.d("MY_QUOTES_DEBUG","i: "+i);
+                                String id = list_favorite_quotes.get(0).getId();
+                                DBHelper.deleteQuoteFromFavorites(id);
+                                list_favorite_quotes.remove(0);
+                                adapter.notifyDataSetChanged();
+                                ((MainActivity)getActivity()).unCheckFavoriteState(id);
+                            }
+                        }});
+                } else {
+                    adb.setTitle(R.string.delete_all_empty);
+                    adb.setMessage(R.string.delete_all_empty_question);
+                    adb.setNeutralButton(R.string.back_btn, null);
+                }
                 adb.show();
             }
         });
@@ -148,8 +153,8 @@ public class FavoritesListFragment extends Fragment {
                     adb.setTitle(R.string.delete_one);
                     adb.setMessage(R.string.delete_one_question);
                     final int positionToRemove = (int)view.getTag();
-                    adb.setNegativeButton("Cancel", null);
-                    adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                    adb.setNegativeButton(R.string.cancel_btn, null);
+                    adb.setPositiveButton(R.string.ok_btn, new AlertDialog.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             String id = list_favorite_quotes.get(positionToRemove).getId();
                             DBHelper.deleteQuoteFromFavorites(id);

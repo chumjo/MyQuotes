@@ -203,70 +203,32 @@ public class MainActivity extends AppCompatActivity
     public void unCheckFavoriteState(String quote_id) {
         Log.d("MY_QUOTES_DEBUG","quote_id: "+quote_id);
         int position;
-        Quote replacementQuote = null;
+        Quote uncheckQuote = null;
         for(position=0; position<mRandomQuoteArrayList.size(); position++) {
-            if(mRandomQuoteArrayList.get(position).getId().equals(quote_id))
-                replacementQuote = mRandomQuoteArrayList.get(position);
+            if(mRandomQuoteArrayList.get(position).getId().equals(quote_id)) {
+                uncheckQuote = mRandomQuoteArrayList.get(position);
+                if (uncheckQuote != null) {
+                    Log.d("MY_QUOTES_DEBUG", "uncheckQuote: " + uncheckQuote.getQuote());
+                } else {
+                    Log.d("MY_QUOTES_DEBUG", "uncheckQuote: " + null);
+                }
                 break;
-        }
-        Log.d("MY_QUOTES_DEBUG","position: "+position);
-
-        int currentPosition = mViewPager.getCurrentItem();
-
-        Log.d("MY_QUOTES_DEBUG","current position: "+currentPosition);
-
-        mViewPager.setCurrentItem(position);
-
-        currentPosition = mViewPager.getCurrentItem();
-
-        //View view = (View) mViewPager.getRootView();
-
-        Log.d("MY_QUOTES_DEBUG","current position: "+currentPosition);
-
-        QuoteFragment quoteFragment = (QuoteFragment) mQuoteFragmentPagerAdapter.getItem(position);
-
-        Log.d("MY_QUOTES_DEBUG","quoteFragment: "+quoteFragment.quote.getQuote());
-
-        quoteFragment.isFavorite = false;
-
-        mViewPager.setCurrentItem(position+2);
-        mViewPager.setCurrentItem(position+1);
-        mViewPager.setCurrentItem(position);
-        mViewPager.setCurrentItem(currentPosition);
-
-        //quoteFragment.chk_favorite.setChecked(false);
-
-        //mViewPager.setCurrentItem(currentPosition);
-
-        //CheckBox checkBox = (CheckBox) view.findViewById(R.id.chk_favorite);
-
-        //checkBox.setChecked(false);
-
-        //quoteFragment.setUnchecked();
-
-
-
-        //CheckBox checkBox = (CheckBox) quoteFragment.getChkFavorite();
-
-        //checkBox.setChecked(false);
-
-        /*QuoteFragment replacementQuoteFragment = QuoteFragment.newInstance(position, replacementQuote);
-
-        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.container_main, replacementQuoteFragment, "FRAG_VP");
-        ft.commit();*/
-        //quoteFragment.setUnchecked();
-
-        /*View view = quoteFragment.getView();
-        if (view !=null) {
-            CheckBox checkBox = (CheckBox) view.findViewById(R.id.chk_favorite);
-            checkBox.setChecked(false);
-            Log.d("MY_QUOTES_DEBUG", "view is not null");
+            }
         }
 
-        Log.d("MY_QUOTES_DEBUG", "is null: "+(quoteFragment==null));
+        if(uncheckQuote != null) {
+            Log.d("MY_QUOTES_DEBUG","position: "+position);
 
-        //CheckBox checkBox = (CheckBox) findViewById(R.id.chk_favorite);*/
+            int currentPosition = mViewPager.getCurrentItem();
+
+            Log.d("MY_QUOTES_DEBUG","current position: "+currentPosition);
+
+            mViewPager.setCurrentItem(position);
+
+            //TO DO
+
+            mViewPager.setCurrentItem(currentPosition);
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.ift2905.myquotes;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +31,7 @@ public class QuoteFragment extends Fragment {
     public Quote quote;
     public CheckBox chk_favorite;
     public ImageButton btn_share;
+    public ImageButton btn_search;
     public boolean isFavorite = false;
 
     public QuoteFragment() {
@@ -47,7 +49,7 @@ public class QuoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Log.d("MY_QUOTES_DEBUG", "on create view: "+quote.getQuote());
+        //Log.d("MY_QUOTES_DEBUG", "on create view: "+quote.getQuote());
 
         View rootView = inflater.inflate(R.layout.fragment_quote, container, false);
 
@@ -70,6 +72,7 @@ public class QuoteFragment extends Fragment {
         // Get the buttons
         chk_favorite = (CheckBox) rootView.findViewById(R.id.chk_favorite);
         btn_share = (ImageButton) rootView.findViewById(R.id.btn_share);
+        btn_search = (ImageButton) rootView.findViewById(R.id.btn_search);
 
         chk_favorite.setChecked(isFavorite);
 
@@ -110,6 +113,18 @@ public class QuoteFragment extends Fragment {
                 sendIntent.putExtra(Intent.EXTRA_TEXT, textBody);
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent, textDesc));
+            }
+        });
+
+        btn_search.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                String searchFor= "https://wikipedia.org/wiki/"+quote.getAuthor();
+                Intent viewSearch = new Intent(Intent.ACTION_WEB_SEARCH);
+                viewSearch.putExtra(SearchManager.QUERY, searchFor);
+                startActivity(viewSearch);
             }
         });
 

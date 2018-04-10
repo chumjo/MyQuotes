@@ -62,11 +62,11 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(Q_CATEGORY, quote.getCategory().name());
         cv.put(Q_ID,quote.getId());
         try{
-            //Log.d("@MY_QUOTES_DEBUG", "quote inserted (unique)");
+            Log.d("@MY_QUOTES_DEBUG", "quote inserted (unique)");
             db.insertOrThrow(TABLE_FAVORITE_QUOTES, null, cv);
         } catch (SQLException e){
             e.printStackTrace();
-            //Log.d("@MY_QUOTES_DEBUG", "quote not inserted (not unique)");
+            Log.d("@MY_QUOTES_DEBUG", "quote not inserted (not unique)");
             return;
         }
     }

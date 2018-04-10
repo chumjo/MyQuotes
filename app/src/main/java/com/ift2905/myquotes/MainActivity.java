@@ -71,7 +71,12 @@ public class MainActivity extends AppCompatActivity
         mMaxQuotePosition = 0;
 
         for(int i=0; i<nb_init_quotes; i++) {
-            mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(preferences));
+            quote = randomQuoteInitialList.getRandomQuoteFromIntialList(preferences);
+            if(quote != null) {
+                Log.d("MY_QUOTES_DEBUG",quote.getQuote());
+                mRandomQuoteArrayList.add(quote);
+            }
+            //mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(preferences));
         }
 
         RunAPI run = new RunAPI();

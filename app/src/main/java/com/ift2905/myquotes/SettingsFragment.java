@@ -48,6 +48,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             startActivity(intent);
         }
 
+        // Changing quotes random requests according to user selection of categories
         if(s.equals("pref_cat_list")) {
             Set<String> set = new HashSet<String>();
             set = sharedPreferences.getStringSet("pref_cat_list", null);
@@ -79,6 +80,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     i++;
                 }
             }
+            // Change preferences of categories in MainActivity
             MainActivity.preferences = new_preferences;
         }
     }

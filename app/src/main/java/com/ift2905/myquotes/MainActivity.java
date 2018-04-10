@@ -35,7 +35,7 @@ import java.util.Calendar;
 import static com.ift2905.myquotes.R.id.container;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     int time_notification = 1;       // default time in hours to receive a notification
 
@@ -225,8 +225,11 @@ public class MainActivity extends AppCompatActivity
 
             mViewPager.setCurrentItem(position);
 
-            //TO DO
+            CheckBox checkBox = (CheckBox) mViewPager.getRootView().findViewById(R.id.chk_favorite);
+            checkBox.setChecked(false);
 
+            mViewPager.setCurrentItem(position+1);
+            mViewPager.setCurrentItem(position+2);
             mViewPager.setCurrentItem(currentPosition);
         }
     }

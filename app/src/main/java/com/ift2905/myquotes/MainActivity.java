@@ -35,7 +35,7 @@ import java.util.Calendar;
 import static com.ift2905.myquotes.R.id.container;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     int time_notification = 1;       // default time in hours to receive a notification
 
@@ -71,7 +71,12 @@ public class MainActivity extends AppCompatActivity
         mMaxQuotePosition = 0;
 
         for(int i=0; i<nb_init_quotes; i++) {
-            mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(preferences));
+            quote = randomQuoteInitialList.getRandomQuoteFromIntialList(preferences);
+            if(quote != null) {
+                Log.d("MY_QUOTES_DEBUG",quote.getQuote());
+                mRandomQuoteArrayList.add(quote);
+            }
+            //mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(preferences));
         }
 
         RunAPI run = new RunAPI();
@@ -203,70 +208,35 @@ public class MainActivity extends AppCompatActivity
     public void unCheckFavoriteState(String quote_id) {
         Log.d("MY_QUOTES_DEBUG","quote_id: "+quote_id);
         int position;
-        Quote replacementQuote = null;
+        Quote uncheckQuote = null;
         for(position=0; position<mRandomQuoteArrayList.size(); position++) {
-            if(mRandomQuoteArrayList.get(position).getId().equals(quote_id))
-                replacementQuote = mRandomQuoteArrayList.get(position);
+            if(mRandomQuoteArrayList.get(position).getId().equals(quote_id)) {
+                uncheckQuote = mRandomQuoteArrayList.get(position);
+                if (uncheckQuote != null) {
+                    Log.d("MY_QUOTES_DEBUG", "uncheckQuote: " + uncheckQuote.getQuote());
+                } else {
+                    Log.d("MY_QUOTES_DEBUG", "uncheckQuote: " + null);
+                }
                 break;
+            }
         }
-        Log.d("MY_QUOTES_DEBUG","position: "+position);
 
-        int currentPosition = mViewPager.getCurrentItem();
+        if(uncheckQuote != null) {
+            Log.d("MY_QUOTES_DEBUG","position: "+position);
 
-        Log.d("MY_QUOTES_DEBUG","current position: "+currentPosition);
+            int currentPosition = mViewPager.getCurrentItem();
 
-        mViewPager.setCurrentItem(position);
+            Log.d("MY_QUOTES_DEBUG","current position: "+currentPosition);
 
-        currentPosition = mViewPager.getCurrentItem();
+            mViewPager.setCurrentItem(position);
 
-        //View view = (View) mViewPager.getRootView();
-
-        Log.d("MY_QUOTES_DEBUG","current position: "+currentPosition);
-
-        QuoteFragment quoteFragment = (QuoteFragment) mQuoteFragmentPagerAdapter.getItem(position);
-
-        Log.d("MY_QUOTES_DEBUG","quoteFragment: "+quoteFragment.quote.getQuote());
-
-        quoteFragment.isFavorite = false;
-
-        mViewPager.setCurrentItem(position+2);
-        mViewPager.setCurrentItem(position+1);
-        mViewPager.setCurrentItem(position);
-        mViewPager.setCurrentItem(currentPosition);
-
-        //quoteFragment.chk_favorite.setChecked(false);
-
-        //mViewPager.setCurrentItem(currentPosition);
-
-        //CheckBox checkBox = (CheckBox) view.findViewById(R.id.chk_favorite);
-
-        //checkBox.setChecked(false);
-
-        //quoteFragment.setUnchecked();
-
-
-
-        //CheckBox checkBox = (CheckBox) quoteFragment.getChkFavorite();
-
-        //checkBox.setChecked(false);
-
-        /*QuoteFragment replacementQuoteFragment = QuoteFragment.newInstance(position, replacementQuote);
-
-        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.container_main, replacementQuoteFragment, "FRAG_VP");
-        ft.commit();*/
-        //quoteFragment.setUnchecked();
-
-        /*View view = quoteFragment.getView();
-        if (view !=null) {
-            CheckBox checkBox = (CheckBox) view.findViewById(R.id.chk_favorite);
+            CheckBox checkBox = (CheckBox) mViewPager.getRootView().findViewById(R.id.chk_favorite);
             checkBox.setChecked(false);
-            Log.d("MY_QUOTES_DEBUG", "view is not null");
+
+            mViewPager.setCurrentItem(position+1);
+            mViewPager.setCurrentItem(position+2);
+            mViewPager.setCurrentItem(currentPosition);
         }
-
-        Log.d("MY_QUOTES_DEBUG", "is null: "+(quoteFragment==null));
-
-        //CheckBox checkBox = (CheckBox) findViewById(R.id.chk_favorite);*/
     }
 
     @Override

@@ -78,10 +78,10 @@ public class FavoriteQuoteFragment extends Fragment {
                 // Deletion alert
                 DBHelper.deleteQuoteFromFavorites(quote.getId());
                 AlertDialog.Builder adb=new AlertDialog.Builder(getActivity());
-                adb.setTitle("Deleting quote from Favorites");
-                adb.setMessage("\nAre you sure you want to delete it?");
-                adb.setNegativeButton("Cancel", null);
-                adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                adb.setTitle(R.string.delete_one);
+                adb.setMessage(R.string.delete_one_question);
+                adb.setNegativeButton(R.string.cancel_btn, null);
+                adb.setPositiveButton(R.string.ok_btn, new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Remove quote from Favorites Database
                         DBHelper.deleteQuoteFromFavorites(quote.getId());

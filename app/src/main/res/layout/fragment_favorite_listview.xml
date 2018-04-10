@@ -4,10 +4,17 @@
     android:layout_height="match_parent"
     android:background="?colorPrimary">
 
+    <Button
+        android:id="@+id/btn_delete_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete all quotes" />
+
     <ListView
         android:id="@+id/favorite_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/btn_delete_all">
 
     </ListView>
 </RelativeLayout>

@@ -7,12 +7,16 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
+/**
+ * Created by augus on 08/04/2018.
+ */
+
+public class FavoriteQuotesFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private final int numberOfFragment;
     private ArrayList<Quote> mQuoteList;
 
-    public QuoteFragmentPagerAdapter(FragmentManager fm, int numberOfFragment,
+    public FavoriteQuotesFragmentPagerAdapter(FragmentManager fm, int numberOfFragment,
                                      ArrayList<Quote> quoteArrayList) {
         super(fm);
         this.numberOfFragment = numberOfFragment;
@@ -38,7 +42,7 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
             //Log.d("MY_QUOTES_DEBUG", "quote from initial list");
         }
 
-        return QuoteFragment.newInstance(position, quote);
+        return FavoriteQuoteFragment.newInstance(position, quote);
     }
 
     @Override

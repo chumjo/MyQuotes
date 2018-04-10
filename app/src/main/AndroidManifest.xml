@@ -32,7 +32,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
         <receiver android:name=".AlarmeReceiver"/>
     </application>
 

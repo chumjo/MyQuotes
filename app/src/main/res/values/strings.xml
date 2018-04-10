@@ -48,6 +48,10 @@
 
     <!-- Sharing -->
     <string name="share_desc">My Quotes, quote by</string>
+    <string name="share_app">Hey! I\'m using the app My Quotes. Go check it out!</string>
+
+    <!-- Button -->
+    <string name="btn_delete_all">delete all</string>
 
     <!-- Alert messages -->
     <string name="delete_one">Deleting quote from Favorites</string>
@@ -55,7 +59,7 @@
     <string name="delete_all">Deleting all your favorite quotes</string>
     <string name="delete_all_question">\nAre you sure you want to delete them all?</string>
     <string name="delete_all_empty">Nothing to delete!</string>
-    <string name="delete_all_empty_question">\nNo, not any more, favorite quotes yet...</string>
+    <string name="delete_all_empty_question">\nNo favorite quotes to delete...</string>
     <string name="ok_btn">Ok</string>
     <string name="cancel_btn">Cancel</string>
     <string name="back_btn">Back</string>

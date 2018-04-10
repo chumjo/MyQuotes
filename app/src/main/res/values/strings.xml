@@ -48,4 +48,10 @@
 
     <!-- Sharing -->
     <string name="share_desc">My Quotes, quote by</string>
+
+    <!-- Alert messages -->
+    <string name="delete_one">Deleting quote from Favorites</string>
+    <string name="delete_one_question">\nAre you sure you want to delete it?</string>
+    <string name="delete_all">Deleting all your favorite quotes</string>
+    <string name="delete_all_question">\nAre you sure you want to delete them all?</string>
 </resources>

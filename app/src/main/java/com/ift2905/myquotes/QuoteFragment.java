@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ public class QuoteFragment extends Fragment {
     public Quote quote;
     public CheckBox chk_favorite;
     public ImageButton btn_share;
+    public boolean isFavorite = false;
 
     public QuoteFragment() {
         super();
@@ -44,6 +46,8 @@ public class QuoteFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        Log.d("MY_QUOTES_DEBUG", "on create view: "+quote.getQuote());
 
         View rootView = inflater.inflate(R.layout.fragment_quote, container, false);
 
@@ -67,10 +71,17 @@ public class QuoteFragment extends Fragment {
         chk_favorite = (CheckBox) rootView.findViewById(R.id.chk_favorite);
         btn_share = (ImageButton) rootView.findViewById(R.id.btn_share);
 
+        chk_favorite.setChecked(isFavorite);
+
         // Adds a listener for the favorite checkbox
         chk_favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if(chk_favorite.isChecked())
+                    isFavorite = true;
+                else
+                    isFavorite = false;
 
                 if(b){
                     // Adds the quote to the favorite database
@@ -105,5 +116,17 @@ public class QuoteFragment extends Fragment {
         return rootView;
     }
 
+    /*@Override
+    public void onStart() {
+        super.onStart();
 
+        Log.d("MY_QUOTES_DEBUG", "On start isFavorite: "+isFavorite);
+
+        if(isFavorite == false)
+            chk_favorite.setChecked(false);
+    }*/
+
+    /*public void setUnchecked() {
+        chk_favorite.setChecked(false);
+    }*/
 }

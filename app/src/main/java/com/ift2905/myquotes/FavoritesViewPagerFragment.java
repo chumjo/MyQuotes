@@ -7,8 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -19,7 +17,7 @@ import java.util.ArrayList;
 public class FavoritesViewPagerFragment extends Fragment {
 
     ViewPager vp_favorites;
-    QuoteFragmentPagerAdapter quoteFragmentPagerAdapter;
+    FavoriteQuotesFragmentPagerAdapter favoriteQuoteFragmentPagerAdapter;
     ArrayList<Quote> list_favorite_quotes = DBHelper.getFaroriteQuotes();
 
     public FavoritesViewPagerFragment() {
@@ -31,9 +29,12 @@ public class FavoritesViewPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_favorite_viewpager, container, false);
         vp_favorites = (ViewPager) rootView.findViewById(R.id.favorites_viewpager);
-        quoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(getFragmentManager(),
-                list_favorite_quotes.size(),list_favorite_quotes, RegularOrFavoriteQuote.FAVORITE_QUOTE);
-        vp_favorites.setAdapter(quoteFragmentPagerAdapter);
+        favoriteQuoteFragmentPagerAdapter = new FavoriteQuotesFragmentPagerAdapter(getFragmentManager(),
+                list_favorite_quotes.size(),list_favorite_quotes);
+        vp_favorites.setAdapter(favoriteQuoteFragmentPagerAdapter);
+
+        int position = getArguments().getInt("position_selected");
+        vp_favorites.setCurrentItem(position);
 
         return rootView;
     }

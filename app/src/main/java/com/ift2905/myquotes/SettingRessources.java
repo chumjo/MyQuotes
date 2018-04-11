@@ -1,10 +1,55 @@
 package com.ift2905.myquotes;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Jonathan on 2018-04-07.
  */
 
 public class SettingRessources {
+
+    static String[] getPrefCategories(Context context){
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        // Changing quotes random requests according to user selection of categories
+        Set<String> set = new HashSet<String>();
+        set = sharedPreferences.getStringSet("pref_cat_list", null);
+        String[] new_preferences = null;
+        if(set != null) {
+            new_preferences = new String[set.size()];
+            int i = 0;
+            for (String str : set) {
+                switch (str) {
+                    case "Inspirational":
+                        new_preferences[i] = "inspire";
+                        break;
+                    case "Management":
+                        new_preferences[i] = "management";
+                        break;
+                    case "Sport":
+                        new_preferences[i] = "sport";
+                        break;
+                    case "Love":
+                        new_preferences[i] = "love";
+                        break;
+                    case "Funny":
+                        new_preferences[i] = "funny";
+                        break;
+                    case "Art":
+                        new_preferences[i] = "art";
+                        break;
+                }
+                i++;
+            }
+        }
+        return new_preferences;
+    }
 
     // Returns the drawable icon of correspondant category
     static int getIcon(Category category){

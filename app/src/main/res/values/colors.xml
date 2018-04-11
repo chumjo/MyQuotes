@@ -9,7 +9,6 @@
     <color name="colorPrimaryLight">#d3d3d3</color>
     <color name="colorAccent">#e5e5e5</color>
 
-
     <!-- Colors for the different themes -->
     <!-- Colors Theme 1 -->
     <color name="colorPrimary1">#63d8d2</color>
@@ -24,8 +23,8 @@
     <color name="colorAccent2">#efdee3</color>
 
     <!-- Colors Theme 3 -->
-    <color name="colorPrimary3">#d88263</color>
-    <color name="colorPrimaryDark3">#ba5d28</color>
+    <color name="colorPrimary3">#f28259</color>
+    <color name="colorPrimaryDark3">#ba541a</color>
     <color name="colorPrimaryLight3">#fce0d6</color>
     <color name="colorAccent3">#efe3de</color>
 

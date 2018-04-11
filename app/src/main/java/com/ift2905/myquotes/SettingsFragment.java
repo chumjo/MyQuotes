@@ -16,6 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -43,6 +46,42 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("settings", true);
             startActivity(intent);
+        }
+
+        // Changing quotes random requests according to user selection of categories
+        if(s.equals("pref_cat_list")) {
+            Set<String> set = new HashSet<String>();
+            set = sharedPreferences.getStringSet("pref_cat_list", null);
+            String[] new_preferences = null;
+            if(set != null) {
+                new_preferences = new String[set.size()];
+                int i = 0;
+                for(String str : set) {
+                    switch (str) {
+                        case "Inspirational":
+                            new_preferences[i] = "inspire";
+                            break;
+                        case "Management":
+                            new_preferences[i] = "management";
+                            break;
+                        case "Sport":
+                            new_preferences[i] = "sport";
+                            break;
+                        case "Love":
+                            new_preferences[i] = "love";
+                            break;
+                        case "Funny":
+                            new_preferences[i] = "funny";
+                            break;
+                        case "Art":
+                            new_preferences[i] = "art";
+                            break;
+                    }
+                    i++;
+                }
+            }
+            // Change preferences of categories in MainActivity
+            MainActivity.preferences = new_preferences;
         }
     }
 

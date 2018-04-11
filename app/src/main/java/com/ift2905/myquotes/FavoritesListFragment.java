@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.ift2905.myquotes.R.id.container;
+import static com.ift2905.myquotes.R.id.favorite_list;
 
 /**
  * Created by Jonathan on 2018-04-06.
@@ -45,6 +47,7 @@ public class FavoritesListFragment extends Fragment {
     TextView tv_author;
     ImageView im_category;
     ImageButton btn_delete;
+    Button btn_delete_all;
     ArrayList<Quote> list_favorite_quotes = DBHelper.getFaroriteQuotes();
     LayoutInflater inflater;
 
@@ -56,8 +59,7 @@ public class FavoritesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         this.inflater = inflater;
-
-        View rootView = inflater.inflate(R.layout.fragment_favorite_listview, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_favorite_listview, container, false);
         list = (ListView) rootView.findViewById(R.id.favorite_list);
         adapter = new MyAdapter();
         list.setAdapter(adapter);
@@ -65,15 +67,49 @@ public class FavoritesListFragment extends Fragment {
         {
             @Override public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3)
             {
-
                 Fragment frag_fav_vp = getFragmentManager().findFragmentByTag("FRAG_FAV_VP");
 
                 if(frag_fav_vp == null)
                     frag_fav_vp = new FavoritesViewPagerFragment();
 
+                Bundle bundle=new Bundle();
+                bundle.putInt("position_selected",position);
+                frag_fav_vp.setArguments(bundle);
+
                 android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.container_main, frag_fav_vp, "FRAG_FAV_VP");
                 ft.commit();
+            }
+        });
+
+        btn_delete_all = (Button) rootView.findViewById(R.id.btn_delete_all);
+        btn_delete_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder adb=new AlertDialog.Builder(getActivity());
+                if(list_favorite_quotes.size() != 0) {
+                    adb.setTitle(R.string.delete_all);
+                    adb.setMessage(R.string.delete_all_question);
+                    adb.setNegativeButton(R.string.cancel_btn, null);
+                    adb.setPositiveButton(R.string.ok_btn, new AlertDialog.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.d("MY_QUOTES_DEBUG","******** list_favorite_quotes.size() "+list_favorite_quotes.size());
+                            int fav_liste_size = list_favorite_quotes.size();
+                            for(int i=0; i<fav_liste_size; i++) {
+                                Log.d("MY_QUOTES_DEBUG","i: "+i);
+                                String id = list_favorite_quotes.get(0).getId();
+                                DBHelper.deleteQuoteFromFavorites(id);
+                                list_favorite_quotes.remove(0);
+                                adapter.notifyDataSetChanged();
+                                ((MainActivity)getActivity()).unCheckFavoriteState(id);
+                            }
+                        }});
+                } else {
+                    adb.setTitle(R.string.delete_all_empty);
+                    adb.setMessage(R.string.delete_all_empty_question);
+                    adb.setNeutralButton(R.string.back_btn, null);
+                }
+                adb.show();
             }
         });
 
@@ -114,16 +150,17 @@ public class FavoritesListFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder adb=new AlertDialog.Builder(getActivity());
-                    adb.setTitle("Deleting quote from Favorites");
-                    adb.setMessage("\nAre you sure you want to delete it?");
+                    adb.setTitle(R.string.delete_one);
+                    adb.setMessage(R.string.delete_one_question);
                     final int positionToRemove = (int)view.getTag();
-                    adb.setNegativeButton("Cancel", null);
-                    adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                    adb.setNegativeButton(R.string.cancel_btn, null);
+                    adb.setPositiveButton(R.string.ok_btn, new AlertDialog.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             String id = list_favorite_quotes.get(positionToRemove).getId();
                             DBHelper.deleteQuoteFromFavorites(id);
                             list_favorite_quotes.remove(positionToRemove);
                             adapter.notifyDataSetChanged();
+                            ((MainActivity)getActivity()).unCheckFavoriteState(id);
                         }});
                     adb.show();
                 }
@@ -141,10 +178,6 @@ public class FavoritesListFragment extends Fragment {
 
             im_category.setImageDrawable(getResources().getDrawable(SettingRessources.getIcon(quote.getCategory())));
             im_category.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
-
-            //String url = films.LineupItems.get(i).ImagePlayerNormalC;
-
-            //Picasso.with(getApplicationContext()).load(url).into(im);
             return view;
         }
     }

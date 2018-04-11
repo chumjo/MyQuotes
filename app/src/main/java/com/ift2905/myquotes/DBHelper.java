@@ -44,7 +44,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Q_QUOTE+ " text, "
                 + Q_AUTHOR+ " text, "
                 +Q_CATEGORY+ " text )";
-        Log.d("MY_QUOTES_DEBUG",sql);
+        //Log.d("MY_QUOTES_DEBUG",sql);
         db.execSQL(sql);
     }
     
@@ -73,7 +73,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static void deleteQuoteFromFavorites(String id) {
         db.delete(TABLE_FAVORITE_QUOTES, Q_ID + " = ?", new String[]{id});
-        Log.d("@MY_QUOTES_DEBUG", "deleted from favorites");
+        //Log.d("@MY_QUOTES_DEBUG", "deleted from favorites");
         //db.close();
     }
 

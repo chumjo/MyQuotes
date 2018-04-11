@@ -25,6 +25,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ import java.util.Calendar;
 import static com.ift2905.myquotes.R.id.container;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     int time_notification = 1;       // default time in hours to receive a notification
 
@@ -69,7 +71,12 @@ public class MainActivity extends AppCompatActivity
         mMaxQuotePosition = 0;
 
         for(int i=0; i<nb_init_quotes; i++) {
-            mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(preferences));
+            quote = randomQuoteInitialList.getRandomQuoteFromIntialList(preferences);
+            if(quote != null) {
+                Log.d("MY_QUOTES_DEBUG",quote.getQuote());
+                mRandomQuoteArrayList.add(quote);
+            }
+            //mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(preferences));
         }
 
         RunAPI run = new RunAPI();
@@ -94,7 +101,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mQuoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(
-                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList, RegularOrFavoriteQuote.REGULAR_QUOTE);
+                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(container);
@@ -195,6 +202,41 @@ public class MainActivity extends AppCompatActivity
 
     public void setTime_notification(int time_notification){
         this.time_notification = time_notification;
+    }
+
+    // Uncheck the Favorite Star Icon in activty_main layout when quote removed from Favorites
+    public void unCheckFavoriteState(String quote_id) {
+        Log.d("MY_QUOTES_DEBUG","quote_id: "+quote_id);
+        int position;
+        Quote uncheckQuote = null;
+        for(position=0; position<mRandomQuoteArrayList.size(); position++) {
+            if(mRandomQuoteArrayList.get(position).getId().equals(quote_id)) {
+                uncheckQuote = mRandomQuoteArrayList.get(position);
+                if (uncheckQuote != null) {
+                    Log.d("MY_QUOTES_DEBUG", "uncheckQuote: " + uncheckQuote.getQuote());
+                } else {
+                    Log.d("MY_QUOTES_DEBUG", "uncheckQuote: " + null);
+                }
+                break;
+            }
+        }
+
+        if(uncheckQuote != null) {
+            Log.d("MY_QUOTES_DEBUG","position: "+position);
+
+            int currentPosition = mViewPager.getCurrentItem();
+
+            Log.d("MY_QUOTES_DEBUG","current position: "+currentPosition);
+
+            mViewPager.setCurrentItem(position);
+
+            CheckBox checkBox = (CheckBox) mViewPager.getRootView().findViewById(R.id.chk_favorite);
+            checkBox.setChecked(false);
+
+            mViewPager.setCurrentItem(position+1);
+            mViewPager.setCurrentItem(position+2);
+            mViewPager.setCurrentItem(currentPosition);
+        }
     }
 
     @Override
@@ -323,7 +365,7 @@ public class MainActivity extends AppCompatActivity
 
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_TEXT, "Share My Quotes with your friends/");
+            intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_app));
             startActivity(Intent.createChooser(intent, "Share with"));
         }
 
@@ -369,17 +411,6 @@ public class MainActivity extends AppCompatActivity
         return Category.valueOf(preferences[i]);
 
     }
-    /*
-    @Override
-    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String test = sharedPref.getString("pref_theme", "");
-        Log.d("LOL", "theme is : " + test);
-
-        return super.onCreateView(parent, name, context, attrs);
-    }
-    */
 
     private void removeAllFragments(){
 
@@ -400,7 +431,6 @@ public class MainActivity extends AppCompatActivity
 
 
     private void goHome(){
-        Context context = getApplicationContext();
         getSupportFragmentManager().beginTransaction().remove(new Fragment());
 
         // removes all Fragments to get back to the main activity
@@ -409,13 +439,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void goFavorite(){
-        Context context = getApplicationContext();
-
-        removeAllFragments();
 
         Fragment frag_fav_list = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_LIST");
 
-        if(frag_fav_list == null)
+        if(frag_fav_list != null && frag_fav_list.isInLayout())
+            return;
+        else if(frag_fav_list == null)
             frag_fav_list = new FavoritesListFragment();
 
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -425,14 +454,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void goSetting(){
-        Context context = getApplicationContext();
 
         removeAllFragments();
 
-        android.app.Fragment frag_setting = getFragmentManager().findFragmentByTag("FRAG_SETTING");
-
-        if(frag_setting == null)
-            frag_setting = new SettingsFragment();
+        android.app.Fragment frag_setting = new SettingsFragment();
 
         final FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.container_main, frag_setting, "FRAG_SETTING");
@@ -441,13 +466,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void goAbout(){
-        Context context = getApplicationContext();
-
-        removeAllFragments();
 
         Fragment frag_about = getSupportFragmentManager().findFragmentByTag("FRAG_ABOUT");
 
-        if(frag_about == null)
+        if(frag_about != null && frag_about.isInLayout())
+            return;
+        else if(frag_about == null)
             frag_about = new AboutFragment();
 
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

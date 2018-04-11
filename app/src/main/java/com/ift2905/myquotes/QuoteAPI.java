@@ -30,7 +30,7 @@ public class QuoteAPI {
         dbh = new DBHelper(context);
 
         /***** DEBUGGING LOG - REMOVE!!! *****/
-        Log.d("MY_QUOTES_DEBUG", url_final);
+        //Log.d("MY_QUOTES_DEBUG", url_final);
     }
 
     public Quote run() throws IOException {
@@ -46,10 +46,19 @@ public class QuoteAPI {
 
         Root root = jsonAdapter.fromJson(json);
 
-        Quote quote = new Quote(root.contents.quote,
-                                root.contents.author,
-                                category,
-                                root.contents.id);
+        Quote quote;
+
+        if(root.contents == null) {
+            quote = new Quote("Blablabla",
+                    "",
+                    category,
+                    "blablablaLOL");
+        } else {
+            quote = new Quote(root.contents.quote,
+                    root.contents.author,
+                    category,
+                    root.contents.id);
+        }
 
         return quote;
     }

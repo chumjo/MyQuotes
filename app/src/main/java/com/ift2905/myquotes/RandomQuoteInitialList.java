@@ -1,6 +1,7 @@
 package com.ift2905.myquotes;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -38,5 +39,9 @@ public class RandomQuoteInitialList {
         int i = (int) Math.floor(Math.random()*quotesOfCategory.size());
 
         return quotesOfCategory.get(i);
+    }
+
+    public static int getInitialQuoteListSize() {
+        return quotes.size();
     }
 }

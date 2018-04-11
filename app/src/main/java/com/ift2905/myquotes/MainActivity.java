@@ -4,16 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
@@ -25,7 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CheckBox;
 
 import java.io.IOException;
@@ -42,7 +36,6 @@ public class MainActivity extends AppCompatActivity
     int time_notification = 1;       // default time in hours to receive a notification
     public Quote quote;
     public SharedPreferences sharedPreferences;
-    public static String[] preferences = {};
     public RandomQuoteInitialList randomQuoteInitialList;
     public DrawerLayout drawer;
     public int nb_init_quotes = 3;
@@ -65,18 +58,17 @@ public class MainActivity extends AppCompatActivity
         mCurrentQuotePosition = 0;
         mMaxQuotePosition = 0;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        updateCategories();
 
         String theme = sharedPreferences.getString("pref_theme", "");
         setTheme(SettingRessources.getTheme(theme));
 
         for(int i=0; i<nb_init_quotes; i++) {
-            quote = randomQuoteInitialList.getRandomQuoteFromIntialList(preferences);
+            quote = randomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(this));
             if(quote != null) {
                 Log.d("MY_QUOTES_DEBUG",quote.getQuote());
                 mRandomQuoteArrayList.add(quote);
             }
-            //mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(preferences));
+            //mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(prefCategories));
         }
 
         RunAPI run = new RunAPI();
@@ -96,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mQuoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(
-                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList);
+                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList, this);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(container);
@@ -381,14 +373,16 @@ public class MainActivity extends AppCompatActivity
 
             for (int i=0; i<nb_init_quotes; i++){
 
-                QuoteAPI web = new QuoteAPI(randomQuoteFromPreferences(preferences),MainActivity.this);
+                QuoteAPI web = new QuoteAPI(randomQuoteFromPreferences(SettingRessources.getPrefCategories(MainActivity.this))
+                        ,MainActivity.this);
 
                 try {
                     quote = web.run();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                mRandomQuoteArrayList.add(quote);
+                if(quote != null)
+                    mRandomQuoteArrayList.add(quote);
             }
 
             return mRandomQuoteArrayList;
@@ -490,40 +484,4 @@ public class MainActivity extends AppCompatActivity
         Quote quote = new Quote(strArr[0], strArr[1], Category.valueOf(strArr[2]), strArr[3]);
         return quote;
     }
-
-    public void updateCategories(){
-        // Changing quotes random requests according to user selection of categories
-        Set<String> set = new HashSet<String>();
-        set = sharedPreferences.getStringSet("pref_cat_list", null);
-        String[] new_preferences = null;
-        if(set != null) {
-            new_preferences = new String[set.size()];
-            int i = 0;
-            for(String str : set) {
-                switch (str) {
-                    case "Inspirational":
-                        new_preferences[i] = "inspire";
-                        break;
-                    case "Management":
-                        new_preferences[i] = "management";
-                        break;
-                    case "Sport":
-                        new_preferences[i] = "sport";
-                        break;
-                    case "Love":
-                        new_preferences[i] = "love";
-                        break;
-                    case "Funny":
-                        new_preferences[i] = "funny";
-                        break;
-                    case "Art":
-                        new_preferences[i] = "art";
-                        break;
-                }
-                i++;
-            }
-        }
-        // Change preferences of categories in MainActivity
-        MainActivity.preferences = new_preferences;
-}
 }

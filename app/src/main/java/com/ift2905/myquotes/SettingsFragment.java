@@ -47,11 +47,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             intent.putExtra("settings", true);
             startActivity(intent);
         }
-
-        // Changing quotes random requests according to user selection of categories
-        if(s.equals("pref_cat_list")) {
-            ((MainActivity) getActivity()).updateCategories();
-        }
     }
 
     @Override

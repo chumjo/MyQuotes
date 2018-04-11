@@ -4,16 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
@@ -25,7 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CheckBox;
 
 import java.io.IOException;
@@ -42,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     int time_notification = 1;       // default time in hours to receive a notification
     public Quote quote;
     public SharedPreferences sharedPreferences;
-    public static String[] preferences = {};
+    public String[] prefCategories = {};
     public RandomQuoteInitialList randomQuoteInitialList;
     public DrawerLayout drawer;
     public int nb_init_quotes = 3;
@@ -71,12 +65,12 @@ public class MainActivity extends AppCompatActivity
         setTheme(SettingRessources.getTheme(theme));
 
         for(int i=0; i<nb_init_quotes; i++) {
-            quote = randomQuoteInitialList.getRandomQuoteFromIntialList(preferences);
+            quote = randomQuoteInitialList.getRandomQuoteFromIntialList(prefCategories);
             if(quote != null) {
                 Log.d("MY_QUOTES_DEBUG",quote.getQuote());
                 mRandomQuoteArrayList.add(quote);
             }
-            //mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(preferences));
+            //mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(prefCategories));
         }
 
         RunAPI run = new RunAPI();
@@ -96,7 +90,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mQuoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(
-                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList);
+                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList, this);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(container);
@@ -381,7 +375,7 @@ public class MainActivity extends AppCompatActivity
 
             for (int i=0; i<nb_init_quotes; i++){
 
-                QuoteAPI web = new QuoteAPI(randomQuoteFromPreferences(preferences),MainActivity.this);
+                QuoteAPI web = new QuoteAPI(randomQuoteFromPreferences(prefCategories),MainActivity.this);
 
                 try {
                     quote = web.run();
@@ -523,7 +517,7 @@ public class MainActivity extends AppCompatActivity
                 i++;
             }
         }
-        // Change preferences of categories in MainActivity
-        MainActivity.preferences = new_preferences;
+        // Change prefCategories of categories in MainActivity
+        prefCategories = new_preferences;
 }
 }

@@ -34,7 +34,7 @@ public class AlarmeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Quote quote_notification = RandomQuoteInitialList.getRandomQuoteFromIntialList(MainActivity.preferences);
+        Quote quote_notification = RandomQuoteInitialList.getRandomQuoteFromIntialList(((MainActivity)context).prefCategories);
 
         String [] qod = new String [4];
         qod [0] = quote_notification.getQuote();

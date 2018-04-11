@@ -37,6 +37,16 @@ public class RandomQuoteInitialList {
 
         int i = (int) Math.floor(Math.random()*quotesOfCategory.size());
 
+        Quote quoteOfCategory = quotesOfCategory.get(i);
+
+        for(int j=0; j<quotes.size(); j++)
+            if(quotes.get(i).getId().equals(quoteOfCategory.getId()))
+                quotes.remove(i);
+
         return quotesOfCategory.get(i);
+    }
+
+    public static int getInitialQuoteListSize() {
+        return quotes.size();
     }
 }

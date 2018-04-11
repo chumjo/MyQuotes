@@ -1,7 +1,6 @@
 package com.ift2905.myquotes;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ift2905.myquotes.theysaidso.Root;
 import com.squareup.moshi.JsonAdapter;
@@ -21,10 +20,12 @@ public class QuoteAPI {
     private String url_begin;
     private String url_final;
     private Category category;
+    private Context context;
     DBHelper dbh ;
 
     public QuoteAPI(Category category, Context context) {
         this.category = category;
+        this.context = context;
         url_begin = "http://quotes.rest/quote/search.json?category=";
         url_final = url_begin + category;
         dbh = new DBHelper(context);
@@ -49,10 +50,14 @@ public class QuoteAPI {
         Quote quote;
 
         if(root.contents == null) {
-            quote = new Quote("Blablabla",
-                    "",
-                    category,
-                    "blablablaLOL");
+            if(RandomQuoteInitialList.getInitialQuoteListSize() == 0) {
+                quote = new Quote("Blablabla",
+                        "",
+                        category,
+                        "blablablaLOL");
+            } else {
+                quote = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(context));
+            }
         } else {
             quote = new Quote(root.contents.quote,
                     root.contents.author,

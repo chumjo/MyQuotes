@@ -52,6 +52,7 @@ public class QuoteAPI {
         Quote quote = null;
 
         if(connected) {
+
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder().url(url_final).header("X-TheySaidSo-Api-Secret", "zFq239fxPR_Y_MxmgZ1rlAeF").build();
             Response response = client.newCall(request).execute();
@@ -61,12 +62,11 @@ public class QuoteAPI {
             JsonAdapter<Root> jsonAdapter = moshi.adapter(Root.class);
 
             Root root = jsonAdapter.fromJson(json);
-
             if (root.contents != null) {
                 quote = new Quote(root.contents.quote,
-                        root.contents.author,
-                        category,
-                        root.contents.id);
+                    root.contents.author,
+                    category,
+                    root.contents.id);
             }
         }
         return quote;

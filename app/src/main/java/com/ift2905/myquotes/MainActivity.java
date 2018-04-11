@@ -31,6 +31,8 @@ import android.widget.CheckBox;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.ift2905.myquotes.R.id.container;
 
@@ -38,23 +40,16 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     int time_notification = 1;       // default time in hours to receive a notification
-
     public Quote quote;
-
+    public SharedPreferences sharedPreferences;
     public static String[] preferences = {};
-
     public RandomQuoteInitialList randomQuoteInitialList;
-
     public DrawerLayout drawer;
-
     public int nb_init_quotes = 3;
-
     public ArrayList<Quote> mRandomQuoteArrayList;
     public int mCurrentQuotePosition;
     public int mMaxQuotePosition;
-
     private final int mNumberOfFragment = 1000;
-
     private QuoteFragmentPagerAdapter mQuoteFragmentPagerAdapter;
     private ViewPager mViewPager;
 
@@ -69,6 +64,11 @@ public class MainActivity extends AppCompatActivity
         mRandomQuoteArrayList = new ArrayList<Quote>(0);
         mCurrentQuotePosition = 0;
         mMaxQuotePosition = 0;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        updateCategories();
+
+        String theme = sharedPreferences.getString("pref_theme", "");
+        setTheme(SettingRessources.getTheme(theme));
 
         for(int i=0; i<nb_init_quotes; i++) {
             quote = randomQuoteInitialList.getRandomQuoteFromIntialList(preferences);
@@ -88,11 +88,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         super.onCreate(savedInstanceState);
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String theme = sharedPreferences.getString("pref_theme", "");
-        setTheme(SettingRessources.getTheme(theme));
-
 
 
         setContentView(R.layout.activity_main);
@@ -495,4 +490,40 @@ public class MainActivity extends AppCompatActivity
         Quote quote = new Quote(strArr[0], strArr[1], Category.valueOf(strArr[2]), strArr[3]);
         return quote;
     }
+
+    public void updateCategories(){
+        // Changing quotes random requests according to user selection of categories
+        Set<String> set = new HashSet<String>();
+        set = sharedPreferences.getStringSet("pref_cat_list", null);
+        String[] new_preferences = null;
+        if(set != null) {
+            new_preferences = new String[set.size()];
+            int i = 0;
+            for(String str : set) {
+                switch (str) {
+                    case "Inspirational":
+                        new_preferences[i] = "inspire";
+                        break;
+                    case "Management":
+                        new_preferences[i] = "management";
+                        break;
+                    case "Sport":
+                        new_preferences[i] = "sport";
+                        break;
+                    case "Love":
+                        new_preferences[i] = "love";
+                        break;
+                    case "Funny":
+                        new_preferences[i] = "funny";
+                        break;
+                    case "Art":
+                        new_preferences[i] = "art";
+                        break;
+                }
+                i++;
+            }
+        }
+        // Change preferences of categories in MainActivity
+        MainActivity.preferences = new_preferences;
+}
 }

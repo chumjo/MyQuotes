@@ -98,7 +98,8 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@android:color/transparent"
+                            android:background="@drawable/button_image_share"
+                            android:contentDescription="@strings/btn_search"
                             android:src="@android:drawable/ic_menu_search" />
 
                         <TextView
@@ -126,7 +127,7 @@
                 android:layout_marginEnd="228dp"
                 android:layout_marginStart="4dp"
                 android:background="@drawable/button_image_share"
-                android:contentDescription="@string/Share_id"
+                android:contentDescription="@string/btn_share"
                 android:src="@android:drawable/ic_menu_share"
                 android:tintMode="multiply"
                 app:layout_constraintBottom_toBottomOf="parent"

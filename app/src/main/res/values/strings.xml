@@ -52,6 +52,8 @@
 
     <!-- Button -->
     <string name="btn_delete_all">delete all</string>
+    <string name="btn_share">share</string>
+    <string name="btn_search">search</string>
 
     <!-- Alert messages -->
     <string name="delete_one">Deleting quote from Favorites</string>

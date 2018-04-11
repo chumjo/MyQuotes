@@ -29,15 +29,9 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
         if(position < mQuoteList.size()) {
             quote = mQuoteList.get(position);
 
-            /***** DEBUGGING LOG - REMOVE!!! *****/
-            //Log.d("MY_QUOTES_DEBUG", "quote from the web");
-
         } else {
             quote = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(context));
             mQuoteList.add(quote);
-
-            /***** DEBUGGING LOG - REMOVE!!! *****/
-            //Log.d("MY_QUOTES_DEBUG", "quote from initial list");
         }
 
         return QuoteFragment.newInstance(position, quote);

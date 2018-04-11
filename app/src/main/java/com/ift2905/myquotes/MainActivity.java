@@ -381,7 +381,8 @@ public class MainActivity extends AppCompatActivity
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                mRandomQuoteArrayList.add(quote);
+                if(quote != null)
+                    mRandomQuoteArrayList.add(quote);
             }
 
             return mRandomQuoteArrayList;

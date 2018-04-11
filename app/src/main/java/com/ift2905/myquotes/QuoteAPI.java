@@ -1,6 +1,9 @@
 package com.ift2905.myquotes;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
 
 import com.ift2905.myquotes.theysaidso.Root;
 import com.squareup.moshi.JsonAdapter;
@@ -36,35 +39,36 @@ public class QuoteAPI {
 
     public Quote run() throws IOException {
 
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(url_final).header("X-TheySaidSo-Api-Secret","zFq239fxPR_Y_MxmgZ1rlAeF").build();
-        Response response = client.newCall(request).execute();
-        String json = response.body().string();
-
-        Moshi moshi = new Moshi.Builder().build();
-
-        JsonAdapter<Root> jsonAdapter = moshi.adapter(Root.class);
-
-        Root root = jsonAdapter.fromJson(json);
-
-        Quote quote;
-
-        if(root.contents == null) {
-            if(RandomQuoteInitialList.getInitialQuoteListSize() == 0) {
-                quote = new Quote("Blablabla",
-                        "",
-                        category,
-                        "blablablaLOL");
-            } else {
-                quote = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(context));
-            }
-        } else {
-            quote = new Quote(root.contents.quote,
-                    root.contents.author,
-                    category,
-                    root.contents.id);
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
         }
+        else
+            connected = false;
 
+        Quote quote = null;
+
+        if(connected) {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder().url(url_final).header("X-TheySaidSo-Api-Secret", "zFq239fxPR_Y_MxmgZ1rlAeF").build();
+            Response response = client.newCall(request).execute();
+            String json = response.body().string();
+            Moshi moshi = new Moshi.Builder().build();
+
+            JsonAdapter<Root> jsonAdapter = moshi.adapter(Root.class);
+
+            Root root = jsonAdapter.fromJson(json);
+
+            if (root.contents != null) {
+                quote = new Quote(root.contents.quote,
+                        root.contents.author,
+                        category,
+                        root.contents.id);
+            }
+        }
         return quote;
     }
 }

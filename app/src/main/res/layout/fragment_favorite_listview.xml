@@ -1,13 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorPrimary">
 
+    <Button
+        android:id="@+id/btn_delete_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@drawable/button_delete_all"
+        android:contentDescription="@string/btn_delete_all"
+        android:text="@string/btn_delete_all"
+        android:textColor="?colorPrimaryDark"
+        android:visibility="visible" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/kaushan_script_regular"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/favorites"
+        android:textAlignment="center"
+        android:textColor="?colorPrimaryLight"
+        android:textSize="30sp" />
+
     <ListView
         android:id="@+id/favorite_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/btn_delete_all"
+        android:divider="@null"
+        android:dividerHeight="0dp">
 
     </ListView>
 </RelativeLayout>

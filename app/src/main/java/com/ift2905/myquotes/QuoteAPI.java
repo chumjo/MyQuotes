@@ -56,7 +56,7 @@ public class QuoteAPI {
                         category,
                         "blablablaLOL");
             } else {
-                quote = RandomQuoteInitialList.getRandomQuoteFromIntialList(((MainActivity) context).prefCategories);
+                quote = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(context));
             }
         } else {
             quote = new Quote(root.contents.quote,

@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        PreferenceManager.setDefaultValues(this, R.xml.preference, false);
+
         randomQuoteInitialList = new RandomQuoteInitialList(this);
 
         // Initialise une liste de random quote vide
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity
         setTheme(SettingRessources.getTheme(theme));
 
         for(int i=0; i<nb_init_quotes; i++) {
+            String[] test = SettingRessources.getPrefCategories(this);
+
             quote = randomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(this));
             if(quote != null) {
                 Log.d("MY_QUOTES_DEBUG",quote.getQuote());

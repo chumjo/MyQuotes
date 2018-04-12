@@ -1,5 +1,6 @@
 package com.ift2905.myquotes;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -19,14 +20,17 @@ import android.os.Build;
 import android.app.NotificationChannel;
 import android.util.Log;
 
+import java.util.Calendar;
+
 import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
+import static android.content.Context.ALARM_SERVICE;
 
 /*
 - Classe por la gestion de notifications de l'application
 - Affiche une quote avec auteur dans la notification
 */
 
-public class SendNotification extends BroadcastReceiver {
+public class SendNotificationOld extends BroadcastReceiver {
 
     Uri uri;
     private static final String CHANNEL_ID = "com.singhajit.notificationDemo.channelId";
@@ -80,8 +84,8 @@ public class SendNotification extends BroadcastReceiver {
             builder.setChannelId(CHANNEL_ID);
         }
 
-        //NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);
+        //SendNotificationManager notificationManager = (SendNotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        android.app.NotificationManager notificationManager = (android.app.NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
@@ -100,4 +104,33 @@ public class SendNotification extends BroadcastReceiver {
         }
 
     }
+
+    /*public void sendNotification(){
+
+        int hour = 12;
+        int minute = 30;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // check state in notification settings option
+        if(!sharedPreferences.getBoolean("pref_qod_activate", false)){
+            return;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,hour);
+        calendar.set(Calendar.MINUTE,minute);
+        calendar.set(Calendar.SECOND,0);
+
+        Intent intent = new Intent(this,AlarmeReceiver.class);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,100,intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+        if (alarmManager != null) {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
+    }*/
 }

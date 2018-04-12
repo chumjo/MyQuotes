@@ -35,30 +35,44 @@ import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 
 public class SendNotificationManager extends BroadcastReceiver {
 
+    boolean notifSound;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
             Log.d("MY_QUOTES","SendNotificationManager");
-            String yourDate = "12/04/2018";
-            String yourHour = "17:46";
+
             Date d = new Date();
 
-            String prefTime = PreferenceManager.getDefaultSharedPreferences(context)
-                    .getString("pref_qod_clock", null);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+            boolean notifActive = sharedPreferences.getBoolean("pref_qod_activate", false);
+            notifSound = sharedPreferences.getBoolean("pref_qod_sound", false);
+            String prefTime = sharedPreferences.getString("pref_qod_clock", null);
+
+            if(!notifActive)
+                return;
 
             Log.d("MY_QUOTES", "prefTime" + prefTime);
+            String[] parsedPrefTime = prefTime.split(":");
+            Log.d("MY_QUOTES", "hour" + parsedPrefTime[0]);
+            Log.d("MY_QUOTES", "minute" + parsedPrefTime[1]);
 
-            DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
-            DateFormat hour = new SimpleDateFormat("HH:mm");
-            String sdate = date.format(d);
-            String shour = hour.format(d);
+            DateFormat hourFormat = new SimpleDateFormat("HH:mm");
+            String strHour = hourFormat.format(d);
+            String[] parsedCurrentTime = strHour.split(":");
 
-            Log.d("MY_QUOTES", "date: "+sdate);
-            Log.d("MY_QUOTES", "hour: "+shour);
+            int prefHour = Integer.parseInt(parsedPrefTime[0]);
+            int prefMin = Integer.parseInt(parsedPrefTime[1]);
+            int currHour = Integer.parseInt(parsedCurrentTime[0]);
+            int currMin = Integer.parseInt(parsedCurrentTime[1]);
+
+            Log.d("MY_QUOTES", "hour: "+strHour);
             //if (date.equals(yourDate) && hour.equals(yourHour)) {
-            if (sdate.equals(yourDate) && shour.equals(yourHour)) {
+            if (prefHour == currHour && prefMin == currMin) {
                 Log.d("MY_QUOTES", "heure match");
                 Intent it = new Intent(context, MainActivity.class);
+                it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 createNotification(context, it, "new mensage", "body!", "this is a mensage");
             }
         } catch (Exception e) {
@@ -68,8 +82,24 @@ public class SendNotificationManager extends BroadcastReceiver {
 
 
     public void createNotification(Context context, Intent intent, CharSequence ticker, CharSequence title, CharSequence descricao) {
-        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        PendingIntent p = PendingIntent.getActivity(context, 0, intent, 0);
+
+        // Create the quote to send and put it in a bundle
+        Quote quote_notification = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(context));
+
+        String [] qod = new String [4];
+        qod [0] = quote_notification.getQuote();
+        qod [1] = quote_notification.getAuthor();
+        qod [2] = quote_notification.getCategory().toString();
+        qod [3] = quote_notification.getId();
+
+        Bundle bundleQod = new Bundle();
+        bundleQod.putStringArray("qod_key", qod);
+
+        intent.putExtras(bundleQod);
+
+
+        NotificationManager nm = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        PendingIntent p = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setTicker(ticker);
@@ -91,4 +121,6 @@ public class SendNotificationManager extends BroadcastReceiver {
         } catch (Exception e) {
         }
     }
+
+
 }

@@ -25,8 +25,6 @@ import android.widget.CheckBox;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
 
 import static com.ift2905.myquotes.R.id.container;
 
@@ -201,33 +199,40 @@ public class MainActivity extends AppCompatActivity
 
     // Uncheck the Favorite Star Icon in activty_main layout when quote removed from Favorites
     public void unCheckFavoriteState(String quote_id) {
-        Log.d("MY_QUOTES_DEBUG","quote_id: "+quote_id);
+
         int position;
         Quote uncheckQuote = null;
+
+        // Get quote position if displayed in MainActivity ViewPager (mViewPager)
         for(position=0; position<mRandomQuoteArrayList.size(); position++) {
+
+            // If the id of the quote to remove from Favorites is in the list of displayed quotes
+            // get its position
             if(mRandomQuoteArrayList.get(position).getId().equals(quote_id)) {
                 uncheckQuote = mRandomQuoteArrayList.get(position);
-                if (uncheckQuote != null) {
-                    Log.d("MY_QUOTES_DEBUG", "uncheckQuote: " + uncheckQuote.getQuote());
-                } else {
-                    Log.d("MY_QUOTES_DEBUG", "uncheckQuote: " + null);
-                }
                 break;
             }
         }
 
+        // If correspondence found (not null), the quote is displayed)
         if(uncheckQuote != null) {
 
+            // Get position of quote currently displayed in mViewPager
             int currentPosition = mViewPager.getCurrentItem();
 
+            // Switch current quote to the quote removed from Favorites
             mViewPager.setCurrentItem(position);
 
+            // Get quote's Fragment
             QuoteFragment quoteFragment = (QuoteFragment) mQuoteFragmentPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem());
 
+            // Get quote's Fragment CheckBox
             CheckBox checkBox = (CheckBox) quoteFragment.getView().findViewById(R.id.chk_favorite);
 
+            // Uncheck Favorite's star
             checkBox.setChecked(false);
 
+            // Return previously displayed quote to currently displayed position
             mViewPager.setCurrentItem(currentPosition);
         }
     }
@@ -384,6 +389,7 @@ public class MainActivity extends AppCompatActivity
                 QuoteAPI web = new QuoteAPI(randomQuoteFromPreferences(SettingRessources.getPrefCategories(MainActivity.this))
                         ,MainActivity.this);
 
+                // Run QuoteAPI
                 try {
                     quote = web.run();
                 } catch (IOException e) {

@@ -25,10 +25,18 @@ public class QuoteAPI {
     private Category category;
     private Context context;
     DBHelper dbh ;
+    //private static boolean art_sport = true;
 
     // QuoteAPI constructor
     public QuoteAPI(Category category, Context context) {
         this.category = category;
+        /*if (art_sport) {
+            this.category = Category.sport;
+            art_sport = false;
+        } else {
+            this.category = Category.art;
+            art_sport = true;
+        }*/
         this.context = context;
         url_begin = "http://quotes.rest/quote/search.json?category=";
         url_final = url_begin + category;
@@ -70,8 +78,10 @@ public class QuoteAPI {
                     root.contents.author,
                     category,
                     root.contents.id);
+                //DBHelper.addQuoteToFavorites(quote);
             }
         }
+
         return quote;
     }
 }

@@ -19,13 +19,10 @@
             android:title="@string/qod_sound"
             android:dependency="pref_qod_activate"/>
 
-
-
-        <!--<com.ift2905.myquotes.TimePreference
-            android:defaultValue="00:00"
-            android:key="qod_time"
-            android:title="@string/qod_time"
-            android:dependency="@string/qod_activate"/>-->
+        <com.ift2905.myquotes.TimePreference
+            android:key="pref_qod_clock"
+            android:title="@string/qod_time">
+        </com.ift2905.myquotes.TimePreference>
 
     </PreferenceCategory>
 
@@ -39,7 +36,7 @@
             android:entries="@array/arr_categories"
             android:entryValues="@array/arr_categories"
             android:key="pref_cat_list"
-            android:title="@string/categories_list" />
+            android:title="@string/categories_list"/>
 
     </PreferenceCategory>
 

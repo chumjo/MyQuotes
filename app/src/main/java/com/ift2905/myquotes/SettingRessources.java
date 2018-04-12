@@ -83,6 +83,14 @@ public class SettingRessources {
             return R.style.AppThemeColor3;
         else if(theme.equals("theme4"))
             return R.style.AppThemeColor4;
+        else if(theme.equals("theme5"))
+            return R.style.AppThemeColor5;
+        else if(theme.equals("theme6"))
+            return R.style.AppThemeColor6;
+        else if(theme.equals("theme7"))
+            return R.style.AppThemeColor7;
+        else if(theme.equals("theme8"))
+            return R.style.AppThemeColor8;
 
         else return R.style.AppThemeColor1;
     }

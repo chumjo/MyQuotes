@@ -2,4 +2,5 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     style="?android:attr/listSeparatorTextViewStyle"
     android:textColor="?colorPrimaryDark"
+    android:textSize="12dp"
     android:id="@+android:id/title"/>

@@ -38,6 +38,34 @@
         <item name="colorAccent">@color/colorAccent4</item>
     </style>
 
+    <style name="AppThemeColor5">
+        <item name="colorPrimary">@color/colorPrimary5</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark5</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight5</item>
+        <item name="colorAccent">@color/colorAccent5</item>
+    </style>
+
+    <style name="AppThemeColor6">
+        <item name="colorPrimary">@color/colorPrimary6</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark6</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight6</item>
+        <item name="colorAccent">@color/colorAccent6</item>
+    </style>
+
+    <style name="AppThemeColor7">
+        <item name="colorPrimary">@color/colorPrimary7</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark7</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight7</item>
+        <item name="colorAccent">@color/colorAccent7</item>
+    </style>
+
+    <style name="AppThemeColor8">
+        <item name="colorPrimary">@color/colorPrimary8</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark8</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight8</item>
+        <item name="colorAccent">@color/colorAccent8</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

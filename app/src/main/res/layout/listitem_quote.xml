@@ -13,14 +13,14 @@
         android:layout_margin="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        app:cardBackgroundColor="?colorAccent"
+        app:cardBackgroundColor="?colorPrimaryLight"
         app:cardCornerRadius="10dp"
         app:contentPadding="8dp">
 
         <android.support.constraint.ConstraintLayout
-            android:descendantFocusability="blocksDescendants"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants">
 
             <ImageView
                 android:id="@+id/imgCategory"

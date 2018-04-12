@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
     public SharedPreferences sharedPreferences;
     public RandomQuoteInitialList randomQuoteInitialList;
     public DrawerLayout drawer;
-    public int nb_init_quotes = 3;
+    public int nb_init_quotes = 2;
     public ArrayList<Quote> mRandomQuoteArrayList;
     public int mCurrentQuotePosition;
     public int mMaxQuotePosition;
@@ -66,8 +66,12 @@ public class MainActivity extends AppCompatActivity
 
         for(int i=0; i<nb_init_quotes; i++) {
             String[] test = SettingRessources.getPrefCategories(this);
-
-            quote = randomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(this));
+            // welcome quote
+            if(i==0)
+                quote = new Quote(getResources().getString(R.string.quote_welcome),getResources().getString(R.string.app_author),Category.love,"welcome_quote");
+            // random quote
+            else
+                quote = randomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(this));
             if(quote != null) {
                 Log.d("MY_QUOTES_DEBUG",quote.getQuote());
                 mRandomQuoteArrayList.add(quote);
@@ -213,19 +217,17 @@ public class MainActivity extends AppCompatActivity
         }
 
         if(uncheckQuote != null) {
-            Log.d("MY_QUOTES_DEBUG","position: "+position);
 
             int currentPosition = mViewPager.getCurrentItem();
 
-            Log.d("MY_QUOTES_DEBUG","current position: "+currentPosition);
-
             mViewPager.setCurrentItem(position);
 
-            CheckBox checkBox = (CheckBox) mViewPager.getRootView().findViewById(R.id.chk_favorite);
+            QuoteFragment quoteFragment = (QuoteFragment) mQuoteFragmentPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem());
+
+            CheckBox checkBox = (CheckBox) quoteFragment.getView().findViewById(R.id.chk_favorite);
+
             checkBox.setChecked(false);
 
-            mViewPager.setCurrentItem(position+1);
-            mViewPager.setCurrentItem(position+2);
             mViewPager.setCurrentItem(currentPosition);
         }
     }
@@ -366,6 +368,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    // Asynchronous task to acquire quotes from the internet (run in background)
     public class RunAPI extends AsyncTask<String, Object, ArrayList<Quote>> {
 
         public RunAPI(){
@@ -377,6 +380,7 @@ public class MainActivity extends AppCompatActivity
 
             for (int i=0; i<nb_init_quotes; i++){
 
+                // Pass random category to QuoteAPI
                 QuoteAPI web = new QuoteAPI(randomQuoteFromPreferences(SettingRessources.getPrefCategories(MainActivity.this))
                         ,MainActivity.this);
 
@@ -385,6 +389,7 @@ public class MainActivity extends AppCompatActivity
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                // If no quote acquired from the web API
                 if(quote != null)
                     mRandomQuoteArrayList.add(quote);
             }
@@ -393,16 +398,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public static Category randomQuoteFromPreferences(String[] preferences) {
-
-        if(preferences.length == 0) {
-            String[] default_preferences = {"inspire","management","sport","love","funny","art"};
-            preferences = default_preferences;
-        }
-        int i = (int) Math.floor(Math.random()*preferences.length);
-
-        return Category.valueOf(preferences[i]);
-
+    // Generates random category from user's preferences
+    public static Category randomQuoteFromPreferences(String[] prefCategories) {
+        int i = (int) Math.floor(Math.random()*prefCategories.length);
+        return Category.valueOf(prefCategories[i]);
     }
 
     private void removeAllFragments(){

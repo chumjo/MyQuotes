@@ -7,7 +7,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Welcome Quote -->
-    <string name="quote_welcome">\"Welcome to My Quotes!\nJust swipe right to begin.\nEnjoy!"\”</string>
+    <string name="quote_welcome">Welcome to My Quotes!\n\nJust swipe right to begin.\n\nEnjoy!</string>
     <string name="app_author">Augusto Latgé\n&amp; Dennis Orozco\n&amp; Jonathan Larose</string>
 
     <!-- About Text -->

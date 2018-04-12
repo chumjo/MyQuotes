@@ -19,7 +19,10 @@
             android:title="@string/qod_sound"
             android:dependency="pref_qod_activate"/>
 
-        <EditTextPreference/>
+        <com.ift2905.myquotes.TimePreference
+            android:key="pref_qod_clock"
+            android:title="@string/qod_time">
+        </com.ift2905.myquotes.TimePreference>
 
     </PreferenceCategory>
 

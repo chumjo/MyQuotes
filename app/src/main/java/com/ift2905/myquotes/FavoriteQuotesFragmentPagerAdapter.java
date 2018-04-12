@@ -3,6 +3,7 @@ package com.ift2905.myquotes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  * Created by augus on 08/04/2018.
  */
 
-public class FavoriteQuotesFragmentPagerAdapter extends FragmentPagerAdapter {
+public class FavoriteQuotesFragmentPagerAdapter extends FragmentStatePagerAdapter /*FragmentPagerAdapter*/ {
 
     private final int numberOfFragment;
     private ArrayList<Quote> mQuoteList;

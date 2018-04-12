@@ -17,6 +17,9 @@ import okhttp3.Response;
 
 /**
  * Created by augus on 02/04/2018.
+ *
+ * Get quote json from web API http://quotes.rest/
+ * Parse it into a Quote object and return it
  */
 
 public class QuoteAPI {
@@ -26,19 +29,19 @@ public class QuoteAPI {
     private Context context;
     DBHelper dbh ;
 
+    // QuoteAPI constructor
     public QuoteAPI(Category category, Context context) {
         this.category = category;
         this.context = context;
         url_begin = "http://quotes.rest/quote/search.json?category=";
         url_final = url_begin + category;
         dbh = new DBHelper(context);
-
-        /***** DEBUGGING LOG - REMOVE!!! *****/
-        //Log.d("MY_QUOTES_DEBUG", url_final);
     }
 
+    // Asynchronous method to retrieve json from the web API
     public Quote run() throws IOException {
 
+        // Check if connected to the web
         boolean connected = false;
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
@@ -51,6 +54,7 @@ public class QuoteAPI {
 
         Quote quote = null;
 
+        // If connected, get json, parse it into Quote and return it. Else, return null
         if(connected) {
 
             OkHttpClient client = new OkHttpClient();
@@ -62,6 +66,8 @@ public class QuoteAPI {
             JsonAdapter<Root> jsonAdapter = moshi.adapter(Root.class);
 
             Root root = jsonAdapter.fromJson(json);
+
+            // If web API quota exceeded do nothing and return null in the end of the method
             if (root.contents != null) {
                 quote = new Quote(root.contents.quote,
                     root.contents.author,

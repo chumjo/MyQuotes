@@ -27,6 +27,8 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String Q_QUOTE = "quote";
     static final String Q_AUTHOR = "author";
     static final String Q_CATEGORY = "category";
+    //static int count = 0;
+    //static int added = 0;
 
     //private static SQLiteDatabase db = null;
     public static SQLiteDatabase db = null;
@@ -62,18 +64,22 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(Q_CATEGORY, quote.getCategory().name());
         cv.put(Q_ID,quote.getId());
         try{
-            Log.d("@MY_QUOTES_DEBUG", "quote inserted (unique)");
+            //count++;
+            //Log.d("FAV_DATABASE", "quote category: "+quote.getCategory().name()+" count: "+count);
+
             db.insertOrThrow(TABLE_FAVORITE_QUOTES, null, cv);
+            //Log.d("FAV_DATABASE", "quote inserted (unique) add :" + added);
+            //added++;
         } catch (SQLException e){
             e.printStackTrace();
-            Log.d("@MY_QUOTES_DEBUG", "quote not inserted (not unique)");
+            //Log.d("FAV_DATABASE", "quote not inserted (not unique)");
             return;
         }
     }
 
     public static void deleteQuoteFromFavorites(String id) {
         db.delete(TABLE_FAVORITE_QUOTES, Q_ID + " = ?", new String[]{id});
-        //Log.d("@MY_QUOTES_DEBUG", "deleted from favorites");
+        Log.d("MY_QUOTES_DEBUG", "deleted from favorites");
         //db.close();
     }
 

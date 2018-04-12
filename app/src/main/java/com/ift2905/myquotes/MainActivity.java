@@ -4,16 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
@@ -25,7 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CheckBox;
 
 import java.io.IOException;
@@ -38,23 +32,15 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     int time_notification = 1;       // default time in hours to receive a notification
-
     public Quote quote;
-
-    public static String[] preferences = {};
-
+    public SharedPreferences sharedPreferences;
     public RandomQuoteInitialList randomQuoteInitialList;
-
     public DrawerLayout drawer;
-
-    public int nb_init_quotes = 3;
-
+    public int nb_init_quotes = 2;
     public ArrayList<Quote> mRandomQuoteArrayList;
     public int mCurrentQuotePosition;
     public int mMaxQuotePosition;
-
     private final int mNumberOfFragment = 1000;
-
     private QuoteFragmentPagerAdapter mQuoteFragmentPagerAdapter;
     private ViewPager mViewPager;
 
@@ -63,20 +49,32 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        PreferenceManager.setDefaultValues(this, R.xml.preference, false);
+
         randomQuoteInitialList = new RandomQuoteInitialList(this);
 
         // Initialise une liste de random quote vide
         mRandomQuoteArrayList = new ArrayList<Quote>(0);
         mCurrentQuotePosition = 0;
         mMaxQuotePosition = 0;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String theme = sharedPreferences.getString("pref_theme", "");
+        setTheme(SettingRessources.getTheme(theme));
 
         for(int i=0; i<nb_init_quotes; i++) {
-            quote = randomQuoteInitialList.getRandomQuoteFromIntialList(preferences);
+            String[] test = SettingRessources.getPrefCategories(this);
+            // welcome quote
+            if(i==0)
+                quote = new Quote(getResources().getString(R.string.quote_welcome),getResources().getString(R.string.app_author),Category.love,"welcome_quote");
+            // random quote
+            else
+                quote = randomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(this));
             if(quote != null) {
                 Log.d("MY_QUOTES_DEBUG",quote.getQuote());
                 mRandomQuoteArrayList.add(quote);
             }
-            //mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(preferences));
+            //mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(prefCategories));
         }
 
         RunAPI run = new RunAPI();
@@ -89,11 +87,6 @@ public class MainActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String theme = sharedPreferences.getString("pref_theme", "");
-        setTheme(SettingRessources.getTheme(theme));
-
-
 
         setContentView(R.layout.activity_main);
 
@@ -101,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mQuoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(
-                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList);
+                getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList, this);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(container);
@@ -206,35 +199,40 @@ public class MainActivity extends AppCompatActivity
 
     // Uncheck the Favorite Star Icon in activty_main layout when quote removed from Favorites
     public void unCheckFavoriteState(String quote_id) {
-        Log.d("MY_QUOTES_DEBUG","quote_id: "+quote_id);
+
         int position;
         Quote uncheckQuote = null;
+
+        // Get quote position if displayed in MainActivity ViewPager (mViewPager)
         for(position=0; position<mRandomQuoteArrayList.size(); position++) {
+
+            // If the id of the quote to remove from Favorites is in the list of displayed quotes
+            // get its position
             if(mRandomQuoteArrayList.get(position).getId().equals(quote_id)) {
                 uncheckQuote = mRandomQuoteArrayList.get(position);
-                if (uncheckQuote != null) {
-                    Log.d("MY_QUOTES_DEBUG", "uncheckQuote: " + uncheckQuote.getQuote());
-                } else {
-                    Log.d("MY_QUOTES_DEBUG", "uncheckQuote: " + null);
-                }
                 break;
             }
         }
 
+        // If correspondence found (not null), the quote is displayed)
         if(uncheckQuote != null) {
-            Log.d("MY_QUOTES_DEBUG","position: "+position);
 
+            // Get position of quote currently displayed in mViewPager
             int currentPosition = mViewPager.getCurrentItem();
 
-            Log.d("MY_QUOTES_DEBUG","current position: "+currentPosition);
-
+            // Switch current quote to the quote removed from Favorites
             mViewPager.setCurrentItem(position);
 
-            CheckBox checkBox = (CheckBox) mViewPager.getRootView().findViewById(R.id.chk_favorite);
+            // Get quote's Fragment
+            QuoteFragment quoteFragment = (QuoteFragment) mQuoteFragmentPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem());
+
+            // Get quote's Fragment CheckBox
+            CheckBox checkBox = (CheckBox) quoteFragment.getView().findViewById(R.id.chk_favorite);
+
+            // Uncheck Favorite's star
             checkBox.setChecked(false);
 
-            mViewPager.setCurrentItem(position+1);
-            mViewPager.setCurrentItem(position+2);
+            // Return previously displayed quote to currently displayed position
             mViewPager.setCurrentItem(currentPosition);
         }
     }
@@ -375,6 +373,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    // Asynchronous task to acquire quotes from the internet (run in background)
     public class RunAPI extends AsyncTask<String, Object, ArrayList<Quote>> {
 
         public RunAPI(){
@@ -386,30 +385,29 @@ public class MainActivity extends AppCompatActivity
 
             for (int i=0; i<nb_init_quotes; i++){
 
-                QuoteAPI web = new QuoteAPI(randomQuoteFromPreferences(preferences),MainActivity.this);
+                // Pass random category to QuoteAPI
+                QuoteAPI web = new QuoteAPI(randomQuoteFromPreferences(SettingRessources.getPrefCategories(MainActivity.this))
+                        ,MainActivity.this);
 
+                // Run QuoteAPI
                 try {
                     quote = web.run();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                mRandomQuoteArrayList.add(quote);
+                // If no quote acquired from the web API
+                if(quote != null)
+                    mRandomQuoteArrayList.add(quote);
             }
 
             return mRandomQuoteArrayList;
         }
     }
 
-    public static Category randomQuoteFromPreferences(String[] preferences) {
-
-        if(preferences.length == 0) {
-            String[] default_preferences = {"inspire","management","sport","love","funny","art"};
-            preferences = default_preferences;
-        }
-        int i = (int) Math.floor(Math.random()*preferences.length);
-
-        return Category.valueOf(preferences[i]);
-
+    // Generates random category from user's preferences
+    public static Category randomQuoteFromPreferences(String[] prefCategories) {
+        int i = (int) Math.floor(Math.random()*prefCategories.length);
+        return Category.valueOf(prefCategories[i]);
     }
 
     private void removeAllFragments(){
@@ -483,7 +481,7 @@ public class MainActivity extends AppCompatActivity
     private void goQod(Quote quote){
         removeAllFragments();
 
-        QuoteFragment frag_qod = QuoteFragment.newInstance(0, quote);
+        QuoteFragment frag_qod = QuoteFragment.newInstance(quote);
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.container_main, frag_qod, "FRAG_QOD");
         ft.show(frag_qod);

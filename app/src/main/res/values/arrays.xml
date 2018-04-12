@@ -22,6 +22,10 @@
         <item>theme2</item>
         <item>theme3</item>
         <item>theme4</item>
+        <item>theme5</item>
+        <item>theme6</item>
+        <item>theme7</item>
+        <item>theme8</item>
     </array>
 
     <array name="ThemeColors">
@@ -29,6 +33,10 @@
         <item>Pink</item>
         <item>Orange</item>
         <item>Green</item>
+        <item>Gold</item>
+        <item>Blue</item>
+        <item>Awesome Grey</item>
+        <item>Oh Well...</item>
     </array>
 
 </resources>

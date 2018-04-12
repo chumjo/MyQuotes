@@ -1,30 +1,25 @@
 package com.ift2905.myquotes;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
+
+/**
+ * Fragment containing the view of a Quote to be displayed in the MainActivity ViewPager (mViewPager)
+ */
 
 public class QuoteFragment extends Fragment {
 
@@ -32,13 +27,12 @@ public class QuoteFragment extends Fragment {
     public CheckBox chk_favorite;
     public ImageButton btn_share;
     public ImageButton btn_search;
-    public boolean isFavorite = false;
 
     public QuoteFragment() {
         super();
     }
 
-    public static QuoteFragment newInstance(int sectionNumber, Quote quote) {
+    public static QuoteFragment newInstance(Quote quote) {
 
         QuoteFragment fragment = new QuoteFragment();
         fragment.quote = quote;
@@ -48,8 +42,6 @@ public class QuoteFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        //Log.d("MY_QUOTES_DEBUG", "on create view: "+quote.getQuote());
 
         View rootView = inflater.inflate(R.layout.fragment_quote, container, false);
 
@@ -74,17 +66,10 @@ public class QuoteFragment extends Fragment {
         btn_share = (ImageButton) rootView.findViewById(R.id.btn_share);
         btn_search = (ImageButton) rootView.findViewById(R.id.btn_search);
 
-        chk_favorite.setChecked(isFavorite);
-
         // Adds a listener for the favorite checkbox
         chk_favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
-                if(chk_favorite.isChecked())
-                    isFavorite = true;
-                else
-                    isFavorite = false;
 
                 if(b){
                     // Adds the quote to the favorite database
@@ -130,18 +115,4 @@ public class QuoteFragment extends Fragment {
 
         return rootView;
     }
-
-    /*@Override
-    public void onStart() {
-        super.onStart();
-
-        Log.d("MY_QUOTES_DEBUG", "On start isFavorite: "+isFavorite);
-
-        if(isFavorite == false)
-            chk_favorite.setChecked(false);
-    }*/
-
-    /*public void setUnchecked() {
-        chk_favorite.setChecked(false);
-    }*/
 }

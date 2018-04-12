@@ -2,16 +2,15 @@ package com.ift2905.myquotes;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
 /**
- * Created by augus on 08/04/2018.
+ * PagerAdapter to display the fragments of the Favorite quotes into it's ViewPager
  */
 
-public class FavoriteQuotesFragmentPagerAdapter extends FragmentPagerAdapter {
+public class FavoriteQuotesFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private final int numberOfFragment;
     private ArrayList<Quote> mQuoteList;
@@ -23,24 +22,11 @@ public class FavoriteQuotesFragmentPagerAdapter extends FragmentPagerAdapter {
         this.mQuoteList = quoteArrayList;
     }
 
+    // Returns the quote at "position" to be displayed by the ViewPager
     @Override
     public Fragment getItem(int position) {
 
-        Quote quote;
-
-        if(position < mQuoteList.size()) {
-            quote = mQuoteList.get(position);
-
-            /***** DEBUGGING LOG - REMOVE!!! *****/
-            //Log.d("MY_QUOTES_DEBUG", "quote from the web");
-
-        } else {
-            quote = RandomQuoteInitialList.getRandomQuoteFromIntialList(MainActivity.preferences);
-            mQuoteList.add(quote);
-
-            /***** DEBUGGING LOG - REMOVE!!! *****/
-            //Log.d("MY_QUOTES_DEBUG", "quote from initial list");
-        }
+        Quote quote = mQuoteList.get(position);
 
         return FavoriteQuoteFragment.newInstance(position, quote);
     }

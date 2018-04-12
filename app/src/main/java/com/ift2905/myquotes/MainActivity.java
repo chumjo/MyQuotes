@@ -475,7 +475,7 @@ public class MainActivity extends AppCompatActivity
     private void goQod(Quote quote){
         removeAllFragments();
 
-        QuoteFragment frag_qod = QuoteFragment.newInstance(0, quote);
+        QuoteFragment frag_qod = QuoteFragment.newInstance(quote);
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.container_main, frag_qod, "FRAG_QOD");
         ft.show(frag_qod);

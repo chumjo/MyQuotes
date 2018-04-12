@@ -37,7 +37,7 @@ public class QuoteFragment extends Fragment {
         super();
     }
 
-    public static QuoteFragment newInstance(int sectionNumber, Quote quote) {
+    public static QuoteFragment newInstance(Quote quote) {
 
         QuoteFragment fragment = new QuoteFragment();
         fragment.quote = quote;

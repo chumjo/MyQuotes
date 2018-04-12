@@ -47,7 +47,7 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
         ft.add(quoteFragment, quote.getId());
         ft.commit();*/
 
-        return QuoteFragment.newInstance(position, quote);
+        return QuoteFragment.newInstance(quote);
         //return quoteFragment;
     }
 

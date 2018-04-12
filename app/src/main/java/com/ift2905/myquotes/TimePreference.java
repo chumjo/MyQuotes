@@ -1,5 +1,5 @@
 /**
- * Code pris d'ici :
+ * Code form :
  * https://stackoverflow.com/questions/5533078/timepicker-in-preferencescreen
  */
 
@@ -12,8 +12,11 @@ import android.widget.TimePicker;
 import android.content.Context;
 import android.content.res.TypedArray;
 
-public class TimePreference extends DialogPreference {
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
+public class TimePreference extends DialogPreference {
     private int lastHour=0;
     private int lastMinute=0;
     private TimePicker picker=null;
@@ -60,7 +63,10 @@ public class TimePreference extends DialogPreference {
             lastHour=picker.getCurrentHour();
             lastMinute=picker.getCurrentMinute();
 
-            String time=String.valueOf(lastHour)+":"+String.valueOf(lastMinute);
+            setSummary(getSummary());
+
+            String lastMinuteString = String.valueOf(lastMinute);
+            String time = String.valueOf(lastHour) + ":" + (lastMinuteString.length() == 1 ? "0" + lastMinuteString : lastMinuteString);
 
             if (callChangeListener(time)) {
                 persistString(time);
@@ -75,21 +81,32 @@ public class TimePreference extends DialogPreference {
 
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-        String time=null;
 
-        if (restoreValue) {
-            if (defaultValue==null) {
-                time=getPersistedString("00:00");
-            }
-            else {
-                time=getPersistedString(defaultValue.toString());
-            }
-        }
+        String time;
+        String defaultValueStr = (defaultValue != null) ? defaultValue.toString() : "00:00";
+        if (restoreValue)
+            time = getPersistedString(defaultValueStr);
         else {
-            time=defaultValue.toString();
+            time = defaultValueStr;
+            if (shouldPersist())
+                persistString(defaultValueStr);
         }
 
         lastHour=getHour(time);
         lastMinute=getMinute(time);
+
+        setSummary(getSummary());
     }
+
+    @Override
+    public CharSequence getSummary() {
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, lastHour);
+        cal.set(Calendar.MINUTE, lastMinute);
+        DateFormat sdf = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT);
+
+        return sdf.format(cal.getTime());
+    }
+
 }

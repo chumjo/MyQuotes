@@ -4,25 +4,27 @@
     android:title="@string/Settings_id">
 
     <!-- QUOTE OF THE DAY -->
-    <PreferenceCategory android:title="@string/qod"
+    <PreferenceCategory
         android:key="qod"
-        android:layout="@xml/preference_category">
+        android:layout="@xml/preference_category"
+        android:title="@string/qod">
 
         <SwitchPreference
             android:defaultValue="false"
             android:key="pref_qod_activate"
-            android:title="@string/qod_activate"/>
+            android:title="@string/qod_activate" />
 
         <CheckBoxPreference
             android:defaultValue="false"
+            android:dependency="pref_qod_activate"
             android:key="pref_qod_sound"
-            android:title="@string/qod_sound"
-            android:dependency="pref_qod_activate"/>
+            android:title="@string/qod_sound" />
 
         <com.ift2905.myquotes.TimePreference
+            android:layout_width="match_parent"
+            android:dependency="pref_qod_activate"
             android:key="pref_qod_clock"
-            android:title="@string/qod_time">
-        </com.ift2905.myquotes.TimePreference>
+            android:title="@string/qod_time"/>
 
     </PreferenceCategory>
 

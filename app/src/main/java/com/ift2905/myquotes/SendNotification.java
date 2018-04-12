@@ -3,6 +3,7 @@ package com.ift2905.myquotes;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -25,7 +26,7 @@ import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 - Affiche une quote avec auteur dans la notification
 */
 
-public class AlarmeReceiver extends BroadcastReceiver {
+public class SendNotification extends BroadcastReceiver {
 
     Uri uri;
     private static final String CHANNEL_ID = "com.singhajit.notificationDemo.channelId";
@@ -79,7 +80,8 @@ public class AlarmeReceiver extends BroadcastReceiver {
             builder.setChannelId(CHANNEL_ID);
         }
 
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        //NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(

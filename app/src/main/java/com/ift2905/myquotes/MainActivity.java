@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity
         calendar.set(Calendar.MINUTE,minute);
         calendar.set(Calendar.SECOND,0);
 
-        Intent intent = new Intent(this,AlarmeReceiver.class);
+        Intent intent = new Intent(this,SendNotification.class);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,100,intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);

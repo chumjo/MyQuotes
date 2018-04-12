@@ -1,19 +1,14 @@
 package com.ift2905.myquotes;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Created by augus on 07/04/2018.
+ * Forms the view of the favorite quotes at Favorite Quotes ListView
  */
 
 public class FavoriteQuoteFragment extends Fragment {
@@ -85,6 +80,9 @@ public class FavoriteQuoteFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         // Remove quote from Favorites Database
                         DBHelper.deleteQuoteFromFavorites(quote.getId());
+
+                        // Uncheck Favorite's star if quote displayed in MainActivity ViewPager (mViewPager)
+                        ((MainActivity)getActivity()).unCheckFavoriteState(quote.getId());
 
                         // Remove all exitant FavoriteQuoteFragments and FavoritesViewPagerFragments
                         // to be recretated

@@ -7,30 +7,54 @@
     <color name="colorPrimary">#b2b2b2</color>
     <color name="colorPrimaryDark">#686868</color>
     <color name="colorPrimaryLight">#d3d3d3</color>
-    <color name="colorAccent">#e5e5e5</color>
+    <color name="colorAccent">#c4c4c4</color>
 
     <!-- Colors for the different themes -->
     <!-- Colors Theme 1 -->
     <color name="colorPrimary1">#63d8d2</color>
     <color name="colorPrimaryDark1">#28bab2</color>
     <color name="colorPrimaryLight1">#d6fcfa</color>
-    <color name="colorAccent1">#deefef</color>
+    <color name="colorAccent1">#63d8d2</color>
 
     <!-- Colors Theme 2 -->
     <color name="colorPrimary2">#d86393</color>
     <color name="colorPrimaryDark2">#ba285d</color>
     <color name="colorPrimaryLight2">#fcd6e5</color>
-    <color name="colorAccent2">#efdee3</color>
+    <color name="colorAccent2">#ed76a7</color>
 
     <!-- Colors Theme 3 -->
     <color name="colorPrimary3">#f28259</color>
     <color name="colorPrimaryDark3">#ba541a</color>
     <color name="colorPrimaryLight3">#fce0d6</color>
-    <color name="colorAccent3">#efe3de</color>
+    <color name="colorAccent3">#ff946d</color>
 
     <!-- Colors Theme 4 -->
     <color name="colorPrimary4">#63d863</color>
     <color name="colorPrimaryDark4">#42ba28</color>
     <color name="colorPrimaryLight4">#ddfcd6</color>
-    <color name="colorAccent4">#e2efde</color>
+    <color name="colorAccent4">#77e577</color>
+
+    <!-- Colors Theme 5 -->
+    <color name="colorPrimary5">#d8c263</color>
+    <color name="colorPrimaryDark5">#ba8e28</color>
+    <color name="colorPrimaryLight5">#fcf7d6</color>
+    <color name="colorAccent5">#e5c577</color>
+
+    <!-- Colors Theme 6 -->
+    <color name="colorPrimary6">#63add8</color>
+    <color name="colorPrimaryDark6">#2889ba</color>
+    <color name="colorPrimaryLight6">#d6ecfc</color>
+    <color name="colorAccent6">#77b7e5</color>
+
+    <!-- Colors Theme 7 -->
+    <color name="colorPrimary7">#686868</color>
+    <color name="colorPrimaryDark7">#424242</color>
+    <color name="colorPrimaryLight7">#c4c4c4</color>
+    <color name="colorAccent7">#b2b2b2</color>
+
+    <!-- Colors Theme 8 -->
+    <color name="colorPrimary8">#F0F000</color>
+    <color name="colorPrimaryDark8">#FF0000</color>
+    <color name="colorPrimaryLight8">#00FF00</color>
+    <color name="colorAccent8">#0000FF</color>
 </resources>

@@ -47,6 +47,17 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             intent.putExtra("settings", true);
             startActivity(intent);
         }
+
+        /*if(s.equals("pref_qod_clock")) {
+            Log.d("MY_QUOTES", "CLOCK");
+            String time = sharedPreferences.getString("pref_qod_clock", "");
+            Log.d("MY_QUOTES", "time"+time);
+            String[] parsed_time = time.split(":");
+            Log.d("MY_QUOTES", "hour" + parsed_time[0]);
+            Log.d("MY_QUOTES", "minute" + parsed_time[1]);
+
+            ((MainActivity) getContext()).sendNotification(Integer.parseInt(parsed_time[0]),Integer.parseInt(parsed_time[1]));
+        }*/
     }
 
     @Override

@@ -42,13 +42,7 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
             mQuoteList.add(quote);
         }
 
-        /*QuoteFragment quoteFragment = QuoteFragment.newInstance(position, quote);
-        android.support.v4.app.FragmentTransaction ft = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-        ft.add(quoteFragment, quote.getId());
-        ft.commit();*/
-
         return QuoteFragment.newInstance(quote);
-        //return quoteFragment;
     }
 
     @Override

@@ -161,37 +161,22 @@ public class MainActivity extends AppCompatActivity
         }
 
         //-- NOTIFICATIONS --//
-        sendNotification();
-    }
+        // boolean notification = (PendingIntent.getBroadcast(this, 0, new Intent("NOTIFICATION"), PendingIntent.FLAG_NO_CREATE) == null);
+        boolean notification = sharedPreferences.getBoolean("pref_qod_activate",false);
 
-    public void sendNotification(){
-
-        int hour = 12;
-        int minute = 30;
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // check state in notification settings option
-        if(!sharedPreferences.getBoolean("pref_qod_activate", false)){
-            return;
-        }
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,hour);
-        calendar.set(Calendar.MINUTE,minute);
-        calendar.set(Calendar.SECOND,0);
-
-        Intent intent = new Intent(this,AlarmeReceiver.class);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,100,intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-
-        if (alarmManager != null) {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    AlarmManager.INTERVAL_DAY, pendingIntent);
+        if(notification){
+            Log.d("MY_QUOTES", "notification");
+            Intent itAlarm = new Intent("NOTIFICATION");
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,itAlarm,0);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.add(Calendar.SECOND, 3);
+            AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarme.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),60000, pendingIntent);
         }
     }
+
+
 
     public void setTime_notification(int time_notification){
         this.time_notification = time_notification;

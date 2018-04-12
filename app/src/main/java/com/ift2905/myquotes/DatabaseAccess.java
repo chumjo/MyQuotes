@@ -9,7 +9,8 @@ import android.util.Log;
 import java.util.ArrayList;
 
 /**
- * Created by augus on 06/04/2018.
+ * Retreive external database
+ * Code strongly inspired by: http://www.javahelps.com/2015/04/import-and-use-external-database-in.html
  */
 
 public class DatabaseAccess {
@@ -58,24 +59,6 @@ public class DatabaseAccess {
         }
     }
 
-    // NOT USED
-    /**
-     * Read all quotes from the database.
-     *
-     * @return a List of quotes
-     */
-    /*public List<String> getQuotes() {
-        List<String> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT * FROM initial_quotes", null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            list.add(cursor.getString(0));
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return list;
-    }*/
-
     /**
      * Read all initial quotes from the database.
      *
@@ -95,7 +78,6 @@ public class DatabaseAccess {
         cursor.close();
         database.close();
 
-        Log.d("MY_QUOTES_DEBUG", "initial quotes list size: "+quotes.size());
         return quotes;
     }
 }

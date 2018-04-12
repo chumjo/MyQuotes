@@ -23,6 +23,8 @@ import android.widget.TextView;
 
 /**
  * Created by augus on 07/04/2018.
+ *
+ * Forms the view of the favorite quotes at Favorite Quotes ListView
  */
 
 public class FavoriteQuoteFragment extends Fragment {

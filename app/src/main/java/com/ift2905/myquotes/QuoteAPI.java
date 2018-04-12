@@ -3,7 +3,6 @@ package com.ift2905.myquotes;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import com.ift2905.myquotes.theysaidso.Root;
 import com.squareup.moshi.JsonAdapter;
@@ -16,8 +15,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by augus on 02/04/2018.
- *
  * Get quote json from web API http://quotes.rest/
  * Parse it into a Quote object and return it
  */

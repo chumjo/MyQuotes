@@ -68,7 +68,6 @@ public class SendNotificationManager extends BroadcastReceiver {
             Log.d("MY_QUOTES", "hour: "+strHour);
             //if (date.equals(yourDate) && hour.equals(yourHour)) {
             if (/*prefHour == currHour && prefMin == currMin*/true) {
-
                 Log.d("MY_QUOTES", "heure match");
 
                 // Create the quote to send and put it in a bundle
@@ -93,22 +92,26 @@ public class SendNotificationManager extends BroadcastReceiver {
                         context.getResources().getString(R.string.notif_body),
                         qod[0] + "\n- " + qod[1],
                         notifSound);
+                it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Log.d("MY_QUOTES", "PASSÉ ICI");
+                createNotification(context, it, "new mensage", "body!", "this is a mensage");
             }
         } catch (Exception e) {
             Log.i("date", "error == " + e.getMessage());
         }
     }
 
+    public void createNotification(Context context, Intent intent, CharSequence ticker, CharSequence title, CharSequence description) {
 
     public void createNotification(Context context, Intent intent, CharSequence ticker, CharSequence title, CharSequence descricao, boolean notifSound) {
 
-        NotificationManager nm = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-        PendingIntent p = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent p = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationManager nm = (NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setTicker(ticker);
         builder.setContentTitle(title);
-        builder.setContentText(descricao);
+        builder.setContentText(description);
         builder.setSmallIcon(R.drawable.icon_app);
         builder.setContentIntent(p);
         Notification n = builder.build();
@@ -116,6 +119,8 @@ public class SendNotificationManager extends BroadcastReceiver {
         n.vibrate = new long[]{150, 300, 150, 400};
         n.flags = Notification.FLAG_AUTO_CANCEL;
         nm.notify(R.drawable.icon_app, n);
+
+        Log.d("MY_QUOTES", "PASSÉ ICI5");
         //create a vibration
         try {
 

@@ -44,7 +44,7 @@ public class RandomQuoteInitialList {
         return quotesOfCategory.get(i);
     }
 
-    public static Quote getQuoteOfTheDay(String[] preferences, int date) {
+    public static Quote getQuoteOfTheDay(int date) {
 
         int size = quotes.size();
 

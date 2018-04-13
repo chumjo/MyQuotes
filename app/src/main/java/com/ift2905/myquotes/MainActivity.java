@@ -299,17 +299,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        /*
-        Log.d("MY_QUOTES", "ON STOP");
-        Intent intent = new Intent(this, NotificationService.class);
-        intent.putExtras(createQodBundle());
-        startService(intent);
-        */
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long

@@ -1,5 +1,6 @@
 package com.ift2905.myquotes;
 
+import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -25,6 +26,7 @@ public class FavoriteQuoteFragment extends Fragment {
     public Quote quote;
     public ImageButton btn_delete;
     public ImageButton btn_share;
+    public ImageButton btn_search;
     public int position;
 
     public FavoriteQuoteFragment() {
@@ -64,6 +66,7 @@ public class FavoriteQuoteFragment extends Fragment {
         // Get the buttons
         btn_delete = (ImageButton) rootView.findViewById(R.id.btn_delete);
         btn_share = (ImageButton) rootView.findViewById(R.id.btn_share);
+        btn_search = (ImageButton) rootView.findViewById(R.id.btn_search);
 
         // Adds a listener for the favorite delete button
         btn_delete.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +145,18 @@ public class FavoriteQuoteFragment extends Fragment {
                 sendIntent.putExtra(Intent.EXTRA_TEXT, textBody);
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent, textDesc));
+            }
+        });
+
+        btn_search.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                String searchFor= "https://wikipedia.org/wiki/"+quote.getAuthor();
+                Intent viewSearch = new Intent(Intent.ACTION_WEB_SEARCH);
+                viewSearch.putExtra(SearchManager.QUERY, searchFor);
+                startActivity(viewSearch);
             }
         });
 

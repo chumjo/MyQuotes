@@ -69,10 +69,11 @@ public class SendNotificationManager extends BroadcastReceiver {
 
             Log.d("MY_QUOTES", "hour: "+strHour);
             //if (date.equals(yourDate) && hour.equals(yourHour)) {
-            if (prefHour == currHour && prefMin == currMin) {
+            if (/*prefHour == currHour && prefMin == currMin*/true) {
                 Log.d("MY_QUOTES", "heure match");
                 Intent it = new Intent(context, MainActivity.class);
                 it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Log.d("MY_QUOTES", "PASSÉ ICI");
                 createNotification(context, it, "new mensage", "body!", "this is a mensage");
             }
         } catch (Exception e) {
@@ -80,11 +81,15 @@ public class SendNotificationManager extends BroadcastReceiver {
         }
     }
 
+    public void createNotification(Context context, Intent intent, CharSequence ticker, CharSequence title, CharSequence description) {
 
-    public void createNotification(Context context, Intent intent, CharSequence ticker, CharSequence title, CharSequence descricao) {
+        Log.d("MY_QUOTES", "PASSÉ ICI2");
 
         // Create the quote to send and put it in a bundle
-        Quote quote_notification = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(context));
+        //Quote quote_notification = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(context));
+        Quote quote_notification = new Quote("Blablabla","unknown author", Category.art, "bla");
+
+        Log.d("MY_QUOTES", "PASSÉ ICI3");
 
         String [] qod = new String [4];
         qod [0] = quote_notification.getQuote();
@@ -97,14 +102,15 @@ public class SendNotificationManager extends BroadcastReceiver {
 
         intent.putExtras(bundleQod);
 
+        Log.d("MY_QUOTES", "PASSÉ ICI4");
 
-        NotificationManager nm = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        NotificationManager nm = (NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);
         PendingIntent p = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setTicker(ticker);
         builder.setContentTitle(title);
-        builder.setContentText(descricao);
+        builder.setContentText(description);
         builder.setSmallIcon(R.drawable.icon_app);
         builder.setContentIntent(p);
         Notification n = builder.build();
@@ -112,6 +118,8 @@ public class SendNotificationManager extends BroadcastReceiver {
         n.vibrate = new long[]{150, 300, 150, 400};
         n.flags = Notification.FLAG_AUTO_CANCEL;
         nm.notify(R.drawable.icon_app, n);
+
+        Log.d("MY_QUOTES", "PASSÉ ICI5");
         //create a vibration
         try {
 

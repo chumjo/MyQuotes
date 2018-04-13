@@ -3,6 +3,7 @@ package com.ift2905.myquotes;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,10 +19,10 @@ public class SettingRessources {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Changing quotes random requests according to user selection of categories
-        Set<String> set = new HashSet<String>();
+        Set<String> set;
         set = sharedPreferences.getStringSet("pref_cat_list", null);
-        String[] new_preferences = null;
-        if(set != null) {
+        String[] new_preferences;
+        if(set.size() != 0) {
             new_preferences = new String[set.size()];
             int i = 0;
             for (String str : set) {
@@ -47,6 +48,8 @@ public class SettingRessources {
                 }
                 i++;
             }
+        } else {
+            new_preferences = new String[]{"inspire", "management", "sport", "love", "funny", "art"};
         }
         return new_preferences;
     }

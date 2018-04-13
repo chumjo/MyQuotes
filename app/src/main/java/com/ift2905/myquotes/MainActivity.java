@@ -400,6 +400,12 @@ public class MainActivity extends AppCompatActivity
 
     // Generates random category from user's preferences
     public static Category randomQuoteFromPreferences(String[] prefCategories) {
+
+        if(prefCategories.length == 0) {
+            String[] defaultPrefCategories = {"inspire", "management", "sport", "love", "funny", "art"};
+            prefCategories = defaultPrefCategories;
+        }
+
         int i = (int) Math.floor(Math.random()*prefCategories.length);
         return Category.valueOf(prefCategories[i]);
     }

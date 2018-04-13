@@ -156,26 +156,11 @@ public class MainActivity extends AppCompatActivity
             }
             else if(bundle.containsKey("qod_key")){
                 int date = bundle.getInt("qod_key", 0);
-                // TODO Quote quote = getQuoteOfTheDay(date);
+                Quote quote = randomQuoteInitialList.getQuoteOfTheDay(date);
                 Log.d("QOD", "Quote of the day :" + date);
-                //goQod(quote);
+                goQod(quote);
             }
         }
-
-        //-- NOTIFICATIONS --//
-        /*
-        Log.d("MY_QUOTES", "notification");
-        Intent itAlarm = new Intent("NOTIFICATION");
-        itAlarm.putExtras(createQodBundle());
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,itAlarm,0);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.SECOND, 3);
-        AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarme.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),60000, pendingIntent);
-        */
-
     }
 
 

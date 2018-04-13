@@ -43,18 +43,22 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             activity.setTheme(SettingRessources.getTheme(theme));
 
             Intent intent = new Intent(getActivity(), MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra("settings", true);
             startActivity(intent);
         }
 
         // Quote of the day
         if(s.equals("pref_qod_activate")){
+
+            Log.d("QOD", "Quote of the day pref has change");
+
             if(sharedPreferences.getBoolean("pref_qod_activate", false)) {
                 Intent intent = new Intent(getContext(), NotificationService.class);
                 getActivity().startService(intent);
             }
             else {
+                Log.d("QOD", "stop service");
                 Intent intent = new Intent(getContext(), NotificationService.class);
                 getActivity().stopService(intent);
             }
@@ -71,5 +75,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 .registerOnSharedPreferenceChangeListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 }

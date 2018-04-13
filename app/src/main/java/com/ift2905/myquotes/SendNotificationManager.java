@@ -100,7 +100,7 @@ public class SendNotificationManager extends BroadcastReceiver {
         builder.setTicker(ticker);
         builder.setContentTitle(title);
         builder.setContentText(description);
-        builder.setSmallIcon(R.drawable.icon_app);
+        builder.setSmallIcon(R.drawable.icon_app_alpha);
         builder.setContentIntent(p);
         Notification n = builder.build();
         //create the notification

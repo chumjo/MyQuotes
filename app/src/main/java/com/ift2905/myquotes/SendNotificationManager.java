@@ -35,8 +35,6 @@ import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 
 public class SendNotificationManager extends BroadcastReceiver {
 
-    boolean notifSound;
-
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
@@ -47,7 +45,7 @@ public class SendNotificationManager extends BroadcastReceiver {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
             boolean notifActive = sharedPreferences.getBoolean("pref_qod_activate", false);
-            notifSound = sharedPreferences.getBoolean("pref_qod_sound", false);
+            boolean notifSound = sharedPreferences.getBoolean("pref_qod_sound", false);
             String prefTime = sharedPreferences.getString("pref_qod_clock", null);
 
             if(!notifActive)
@@ -69,11 +67,32 @@ public class SendNotificationManager extends BroadcastReceiver {
 
             Log.d("MY_QUOTES", "hour: "+strHour);
             //if (date.equals(yourDate) && hour.equals(yourHour)) {
-            if (prefHour == currHour && prefMin == currMin) {
+            if (/*prefHour == currHour && prefMin == currMin*/true) {
+
                 Log.d("MY_QUOTES", "heure match");
+
+                // Create the quote to send and put it in a bundle
+                Quote quote_notification = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(context));
+
+                String [] qod = new String [4];
+                qod [0] = quote_notification.getQuote();
+                qod [1] = quote_notification.getAuthor();
+                qod [2] = quote_notification.getCategory().toString();
+                qod [3] = quote_notification.getId();
+
+                Bundle bundleQod = new Bundle();
+                bundleQod.putStringArray("qod_key", qod);
+
+
                 Intent it = new Intent(context, MainActivity.class);
-                it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                createNotification(context, it, "new mensage", "body!", "this is a mensage");
+                it.putExtras(bundleQod);
+                //it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                createNotification(context, it,
+                        context.getResources().getString(R.string.notif_ticker),
+                        context.getResources().getString(R.string.notif_body),
+                        qod[0] + "\n- " + qod[1],
+                        notifSound);
             }
         } catch (Exception e) {
             Log.i("date", "error == " + e.getMessage());
@@ -81,25 +100,10 @@ public class SendNotificationManager extends BroadcastReceiver {
     }
 
 
-    public void createNotification(Context context, Intent intent, CharSequence ticker, CharSequence title, CharSequence descricao) {
-
-        // Create the quote to send and put it in a bundle
-        Quote quote_notification = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(context));
-
-        String [] qod = new String [4];
-        qod [0] = quote_notification.getQuote();
-        qod [1] = quote_notification.getAuthor();
-        qod [2] = quote_notification.getCategory().toString();
-        qod [3] = quote_notification.getId();
-
-        Bundle bundleQod = new Bundle();
-        bundleQod.putStringArray("qod_key", qod);
-
-        intent.putExtras(bundleQod);
-
+    public void createNotification(Context context, Intent intent, CharSequence ticker, CharSequence title, CharSequence descricao, boolean notifSound) {
 
         NotificationManager nm = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-        PendingIntent p = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent p = PendingIntent.getActivity(context, 0, intent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setTicker(ticker);
@@ -115,8 +119,15 @@ public class SendNotificationManager extends BroadcastReceiver {
         //create a vibration
         try {
 
-            Uri som = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            Ringtone toque = RingtoneManager.getRingtone(context, som);
+            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+            // check state of sound option notifications
+            if (notifSound){
+                // default sound notification
+                uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            }
+
+            Ringtone toque = RingtoneManager.getRingtone(context, uri);
             toque.play();
         } catch (Exception e) {
         }

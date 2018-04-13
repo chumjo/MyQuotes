@@ -7,6 +7,7 @@ package com.ift2905.myquotes;
 
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 import android.content.Context;
@@ -23,6 +24,7 @@ public class TimePreference extends DialogPreference {
 
     public static int getHour(String time) {
         String[] pieces=time.split(":");
+        Log.d("MY_QUOTES",pieces[0]);
 
         return(Integer.parseInt(pieces[0]));
     }

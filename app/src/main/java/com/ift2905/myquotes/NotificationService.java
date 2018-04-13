@@ -27,21 +27,11 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        Log.e("MY_QUOTES", "onStartCommand");
+        Log.d("MY_QUOTES", "onStartCommand");
         super.onStartCommand(intent, flags, startId);
 
         Log.d("MY_QUOTES", "notification");
         Intent itAlarm = new Intent("NOTIFICATION");
-
-        Bundle bundle = intent.getExtras();
-        String [] qod = bundle.getStringArray("qod_key");
-
-        Log.d("MY_QUOTES", "quote = " + qod[0]);
-
-        if(bundle.containsKey("qod_key"))
-            itAlarm.putExtras(bundle);
-
-        Log.d("MY_QUOTES", "author = " + qod[1]);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,itAlarm, PendingIntent.FLAG_CANCEL_CURRENT);
         Calendar calendar = Calendar.getInstance();
@@ -58,12 +48,12 @@ public class NotificationService extends Service {
 
     @Override
     public void onCreate(){
-        Log.e("MY_QUOTES", "onCreate");
+        Log.d("MY_QUOTES", "onCreate");
     }
 
     @Override
     public void onDestroy(){
-        Log.e("MY_QUOTES", "onDestroy");
+        Log.d("MY_QUOTES", "onDestroy");
         super.onDestroy();
     }
 }

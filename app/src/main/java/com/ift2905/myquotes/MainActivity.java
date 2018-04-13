@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -146,11 +147,11 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        // Check if has bundle
         Bundle bundle = getIntent().getExtras();
 
         if(bundle != null){
             if(bundle.containsKey("settings")) {
-                Log.d("LOL", "Came here from settting");
                 goSetting();
             }
             else if(bundle.containsKey("qod_key")){
@@ -161,19 +162,19 @@ public class MainActivity extends AppCompatActivity
         }
 
         //-- NOTIFICATIONS --//
-        // boolean notification = (PendingIntent.getBroadcast(this, 0, new Intent("NOTIFICATION"), PendingIntent.FLAG_NO_CREATE) == null);
-        boolean notification = sharedPreferences.getBoolean("pref_qod_activate",false);
+        /*
+        Log.d("MY_QUOTES", "notification");
+        Intent itAlarm = new Intent("NOTIFICATION");
+        itAlarm.putExtras(createQodBundle());
 
-        if(notification){
-            Log.d("MY_QUOTES", "notification");
-            Intent itAlarm = new Intent("NOTIFICATION");
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,itAlarm,0);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.add(Calendar.SECOND, 3);
-            AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarme.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),60000, pendingIntent);
-        }
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,itAlarm,0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.SECOND, 3);
+        AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarme.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),60000, pendingIntent);
+        */
+
     }
 
 
@@ -288,8 +289,7 @@ public class MainActivity extends AppCompatActivity
         //--- QOD ---//
         // Restart the main activity
         else if(frag_qod != null && frag_qod.isVisible()){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            goHome();
         }
 
         // Else we call the normal back pressed
@@ -299,10 +299,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
+        /*
         Log.d("MY_QUOTES", "ON STOP");
-        startService(new Intent(this, NotificationService.class));
+        Intent intent = new Intent(this, NotificationService.class);
+        intent.putExtras(createQodBundle());
+        startService(intent);
+        */
     }
 
     @Override
@@ -396,6 +400,30 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+    public void activateQuoteOfTheDay()
+    {
+        Intent intent = new Intent(this, NotificationService.class);
+        intent.putExtras(createQodBundle());
+        startService(intent);
+    }
+    private Bundle createQodBundle(){
+
+        // Create the quote to send and put it in a bundle
+        Quote quote_notification = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(this));
+
+        String [] qod = new String [4];
+        qod [0] = quote_notification.getQuote();
+        qod [1] = quote_notification.getAuthor();
+        qod [2] = quote_notification.getCategory().toString();
+        qod [3] = quote_notification.getId();
+
+        Bundle bundleQod = new Bundle();
+        bundleQod.putStringArray("qod_key", qod);
+
+        return bundleQod;
+    }
+
     // Generates random category from user's preferences
     public static Category randomQuoteFromPreferences(String[] prefCategories) {
         int i = (int) Math.floor(Math.random()*prefCategories.length);
@@ -423,12 +451,18 @@ public class MainActivity extends AppCompatActivity
     private void goHome(){
         getSupportFragmentManager().beginTransaction().remove(new Fragment());
 
+        TextView tv = (TextView) findViewById(R.id.title_app);
+        tv.setText(R.string.app_name);
+
         // removes all Fragments to get back to the main activity
         // hides the setting fragment, does not delete it
         removeAllFragments();
     }
 
     private void goFavorite(){
+
+        TextView tv = (TextView) findViewById(R.id.title_app);
+        tv.setText(R.string.favorites);
 
         Fragment frag_fav_list = getSupportFragmentManager().findFragmentByTag("FRAG_FAV_LIST");
 
@@ -445,6 +479,9 @@ public class MainActivity extends AppCompatActivity
 
     private void goSetting(){
 
+        TextView tv = (TextView) findViewById(R.id.title_app);
+        tv.setText(R.string.app_name);
+
         removeAllFragments();
 
         android.app.Fragment frag_setting = new SettingsFragment();
@@ -456,6 +493,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void goAbout(){
+
+        TextView tv = (TextView) findViewById(R.id.title_app);
+        tv.setText(R.string.app_name);
 
         Fragment frag_about = getSupportFragmentManager().findFragmentByTag("FRAG_ABOUT");
 
@@ -471,6 +511,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void goQod(Quote quote){
+
+        TextView tv = (TextView) findViewById(R.id.title_app);
+        tv.setText(R.string.qod);
+
         removeAllFragments();
 
         QuoteFragment frag_qod = QuoteFragment.newInstance(quote);

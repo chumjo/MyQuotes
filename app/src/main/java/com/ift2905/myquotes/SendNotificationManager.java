@@ -35,8 +35,6 @@ import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 
 public class SendNotificationManager extends BroadcastReceiver {
 
-    boolean notifSound;
-
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
@@ -47,7 +45,7 @@ public class SendNotificationManager extends BroadcastReceiver {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
             boolean notifActive = sharedPreferences.getBoolean("pref_qod_activate", false);
-            notifSound = sharedPreferences.getBoolean("pref_qod_sound", false);
+            boolean notifSound = sharedPreferences.getBoolean("pref_qod_sound", false);
             String prefTime = sharedPreferences.getString("pref_qod_clock", null);
 
             if(!notifActive)
@@ -69,43 +67,34 @@ public class SendNotificationManager extends BroadcastReceiver {
 
             Log.d("MY_QUOTES", "hour: "+strHour);
             //if (date.equals(yourDate) && hour.equals(yourHour)) {
-            if (/*prefHour == currHour && prefMin == currMin*/true) {
+            if (prefHour == currHour && prefMin == currMin) {
                 Log.d("MY_QUOTES", "heure match");
+
+                Bundle bundleQod = intent.getExtras();
+
+
                 Intent it = new Intent(context, MainActivity.class);
+                it.putExtras(bundleQod);
+                //it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                createNotification(context, it,
+                        context.getResources().getString(R.string.notif_ticker),
+                        context.getResources().getString(R.string.notif_body),
+                        context.getResources().getString(R.string.notif_message),
+                        notifSound);
                 it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Log.d("MY_QUOTES", "PASSÉ ICI");
-                createNotification(context, it, "new mensage", "body!", "this is a mensage");
             }
         } catch (Exception e) {
             Log.i("date", "error == " + e.getMessage());
         }
     }
 
-    public void createNotification(Context context, Intent intent, CharSequence ticker, CharSequence title, CharSequence description) {
 
-        Log.d("MY_QUOTES", "PASSÉ ICI2");
+    public void createNotification(Context context, Intent intent, CharSequence ticker, CharSequence title, CharSequence description, boolean notifSound) {
 
-        // Create the quote to send and put it in a bundle
-        //Quote quote_notification = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(context));
-        Quote quote_notification = new Quote("Blablabla","unknown author", Category.art, "bla");
-
-        Log.d("MY_QUOTES", "PASSÉ ICI3");
-
-        String [] qod = new String [4];
-        qod [0] = quote_notification.getQuote();
-        qod [1] = quote_notification.getAuthor();
-        qod [2] = quote_notification.getCategory().toString();
-        qod [3] = quote_notification.getId();
-
-        Bundle bundleQod = new Bundle();
-        bundleQod.putStringArray("qod_key", qod);
-
-        intent.putExtras(bundleQod);
-
-        Log.d("MY_QUOTES", "PASSÉ ICI4");
-
-        NotificationManager nm = (NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);
         PendingIntent p = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationManager nm = (NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setTicker(ticker);
@@ -123,8 +112,15 @@ public class SendNotificationManager extends BroadcastReceiver {
         //create a vibration
         try {
 
-            Uri som = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            Ringtone toque = RingtoneManager.getRingtone(context, som);
+            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+            // check state of sound option notifications
+            if (notifSound){
+                // default sound notification
+                uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            }
+
+            Ringtone toque = RingtoneManager.getRingtone(context, uri);
             toque.play();
         } catch (Exception e) {
         }

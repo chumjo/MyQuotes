@@ -116,17 +116,15 @@ public class SendNotificationManager extends BroadcastReceiver {
         Log.d("MY_QUOTES", "PASSÉ ICI5");
         //create a vibration
         try {
-
-            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
             // check state of sound option notifications
-            if (notifSound){
+            if (notifSound) {
                 // default sound notification
-                uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            }
+                Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-            Ringtone toque = RingtoneManager.getRingtone(context, uri);
-            toque.play();
+
+                Ringtone toque = RingtoneManager.getRingtone(context, uri);
+                toque.play();
+            }
         } catch (Exception e) {
         }
     }

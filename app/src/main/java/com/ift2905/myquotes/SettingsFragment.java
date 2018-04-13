@@ -32,7 +32,15 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
 
-        Log.d("SETTING", "changed : " + s);
+        // If the setting changed is the Categories
+        // Restarts the activity to get only pref categories
+        if(s.equals("pref_cat_list")){
+
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra("settings", true);
+            startActivity(intent);
+        }
 
         // If the setting changed is the Theme
         // Restarts the activity to force update the theme

@@ -3,7 +3,10 @@ package com.ift2905.myquotes;
 import android.content.Context;
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by augus on 06/04/2018.
@@ -39,6 +42,15 @@ public class RandomQuoteInitialList {
         int i = (int) Math.floor(Math.random()*quotesOfCategory.size());
 
         return quotesOfCategory.get(i);
+    }
+
+    public static Quote getQuoteOfTheDay(int date) {
+
+        int size = quotes.size();
+
+        int i = date % size;
+
+        return quotes.get(i);
     }
 
     public static int getInitialQuoteListSize() {

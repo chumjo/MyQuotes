@@ -27,6 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String Q_QUOTE = "quote";
     static final String Q_AUTHOR = "author";
     static final String Q_CATEGORY = "category";
+    static Context context;
     //static int count = 0;
     //static int added = 0;
 
@@ -35,6 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public DBHelper(Context context){
         super(context, DB_NAME, null, DB_VERSION);
+        DBHelper.context = context;
         if (db==null){
             db = getWritableDatabase();
         }

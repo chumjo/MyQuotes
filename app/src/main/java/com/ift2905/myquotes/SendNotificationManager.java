@@ -80,14 +80,14 @@ public class SendNotificationManager extends BroadcastReceiver {
 
                 Intent it = new Intent(context, MainActivity.class);
                 it.putExtras(bundle);
-                //it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
+                it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 createNotification(context, it,
                         context.getResources().getString(R.string.notif_ticker),
                         context.getResources().getString(R.string.notif_body),
                         context.getResources().getString(R.string.notif_message),
                         notifSound);
-                it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                 Log.d("MY_QUOTES", "PASSÉ ICI");
             }
         } catch (Exception e) {

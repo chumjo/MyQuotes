@@ -162,9 +162,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         //-- NOTIFICATIONS --//
-        // boolean notification = (PendingIntent.getBroadcast(this, 0, new Intent("NOTIFICATION"), PendingIntent.FLAG_NO_CREATE) == null);
+        /*
         Log.d("MY_QUOTES", "notification");
         Intent itAlarm = new Intent("NOTIFICATION");
+        itAlarm.putExtras(createQodBundle());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,itAlarm,0);
         Calendar calendar = Calendar.getInstance();
@@ -172,6 +173,8 @@ public class MainActivity extends AppCompatActivity
         calendar.add(Calendar.SECOND, 3);
         AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarme.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),60000, pendingIntent);
+        */
+
     }
 
 
@@ -296,10 +299,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
+        /*
         Log.d("MY_QUOTES", "ON STOP");
-        startService(new Intent(this, NotificationService.class));
+        Intent intent = new Intent(this, NotificationService.class);
+        intent.putExtras(createQodBundle());
+        startService(intent);
+        */
     }
 
     @Override
@@ -391,6 +398,30 @@ public class MainActivity extends AppCompatActivity
 
             return mRandomQuoteArrayList;
         }
+    }
+
+
+    public void activateQuoteOfTheDay()
+    {
+        Intent intent = new Intent(this, NotificationService.class);
+        intent.putExtras(createQodBundle());
+        startService(intent);
+    }
+    private Bundle createQodBundle(){
+
+        // Create the quote to send and put it in a bundle
+        Quote quote_notification = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(this));
+
+        String [] qod = new String [4];
+        qod [0] = quote_notification.getQuote();
+        qod [1] = quote_notification.getAuthor();
+        qod [2] = quote_notification.getCategory().toString();
+        qod [3] = quote_notification.getId();
+
+        Bundle bundleQod = new Bundle();
+        bundleQod.putStringArray("qod_key", qod);
+
+        return bundleQod;
     }
 
     // Generates random category from user's preferences

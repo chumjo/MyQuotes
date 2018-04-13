@@ -67,20 +67,10 @@ public class SendNotificationManager extends BroadcastReceiver {
 
             Log.d("MY_QUOTES", "hour: "+strHour);
             //if (date.equals(yourDate) && hour.equals(yourHour)) {
-            if (/*prefHour == currHour && prefMin == currMin*/true) {
+            if (prefHour == currHour && prefMin == currMin) {
                 Log.d("MY_QUOTES", "heure match");
 
-                // Create the quote to send and put it in a bundle
-                Quote quote_notification = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(context));
-
-                String [] qod = new String [4];
-                qod [0] = quote_notification.getQuote();
-                qod [1] = quote_notification.getAuthor();
-                qod [2] = quote_notification.getCategory().toString();
-                qod [3] = quote_notification.getId();
-
-                Bundle bundleQod = new Bundle();
-                bundleQod.putStringArray("qod_key", qod);
+                Bundle bundleQod = intent.getExtras();
 
 
                 Intent it = new Intent(context, MainActivity.class);
@@ -90,20 +80,18 @@ public class SendNotificationManager extends BroadcastReceiver {
                 createNotification(context, it,
                         context.getResources().getString(R.string.notif_ticker),
                         context.getResources().getString(R.string.notif_body),
-                        qod[0] + "\n- " + qod[1],
+                        context.getResources().getString(R.string.notif_message),
                         notifSound);
                 it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Log.d("MY_QUOTES", "PASSÉ ICI");
-                createNotification(context, it, "new mensage", "body!", "this is a mensage");
             }
         } catch (Exception e) {
             Log.i("date", "error == " + e.getMessage());
         }
     }
 
-    public void createNotification(Context context, Intent intent, CharSequence ticker, CharSequence title, CharSequence description) {
 
-    public void createNotification(Context context, Intent intent, CharSequence ticker, CharSequence title, CharSequence descricao, boolean notifSound) {
+    public void createNotification(Context context, Intent intent, CharSequence ticker, CharSequence title, CharSequence description, boolean notifSound) {
 
         PendingIntent p = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager nm = (NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);

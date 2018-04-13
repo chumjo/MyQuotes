@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -18,8 +19,6 @@ import java.util.Calendar;
 
 public class NotificationService extends Service {
 
-    boolean notification;
-
     @Override
     public IBinder onBind(Intent intent)
     {
@@ -31,16 +30,28 @@ public class NotificationService extends Service {
         Log.e("MY_QUOTES", "onStartCommand");
         super.onStartCommand(intent, flags, startId);
 
-        if(notification){
-            Log.d("MY_QUOTES", "notification");
-            Intent itAlarm = new Intent("NOTIFICATION");
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,itAlarm,0);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.add(Calendar.SECOND, 3);
-            AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarme.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),60000, pendingIntent);
-        }
+        Log.d("MY_QUOTES", "notification");
+        Intent itAlarm = new Intent("NOTIFICATION");
+
+        Bundle bundle = intent.getExtras();
+        String [] qod = bundle.getStringArray("qod_key");
+
+        Log.d("MY_QUOTES", "quote = " + qod[0]);
+
+        if(bundle.containsKey("qod_key"))
+            itAlarm.putExtras(bundle);
+
+        Log.d("MY_QUOTES", "author = " + qod[1]);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,itAlarm, PendingIntent.FLAG_CANCEL_CURRENT);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.SECOND, 3);
+        AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarme.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),60000, pendingIntent);
+
+        Log.d("MY_QUOTES", "it worked?");
+
 
         return START_STICKY;
     }
@@ -48,8 +59,6 @@ public class NotificationService extends Service {
     @Override
     public void onCreate(){
         Log.e("MY_QUOTES", "onCreate");
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        notification = sharedPreferences.getBoolean("pref_qod_activate",false);
     }
 
     @Override

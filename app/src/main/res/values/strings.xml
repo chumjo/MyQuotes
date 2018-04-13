@@ -72,6 +72,6 @@
     <!-- Notification -->
     <string name="notif_ticker">My Quotes - Quote of the Day</string>
     <string name="notif_body">Quote of the Day</string>
-    <string name="notif_message">Message</string>
+    <string name="notif_message">Go check the new quote of the day!</string>
 
 </resources>

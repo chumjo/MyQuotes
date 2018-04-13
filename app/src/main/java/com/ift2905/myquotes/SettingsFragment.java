@@ -50,8 +50,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         // Quote of the day
         if(s.equals("pref_qod_activate")){
-            if(sharedPreferences.getBoolean("pref_qod_activate", false))
-                ((MainActivity) getActivity()).activateQuoteOfTheDay();
+            if(sharedPreferences.getBoolean("pref_qod_activate", false)) {
+                Intent intent = new Intent(getContext(), NotificationService.class);
+                getActivity().startService(intent);
+            }
+            else {
+                Intent intent = new Intent(getContext(), NotificationService.class);
+                getActivity().stopService(intent);
+            }
         }
     }
 
@@ -65,12 +71,5 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 .registerOnSharedPreferenceChangeListener(this);
 
         return view;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .unregisterOnSharedPreferenceChangeListener(this);
     }
 }

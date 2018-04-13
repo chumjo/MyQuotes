@@ -155,9 +155,10 @@ public class MainActivity extends AppCompatActivity
                 goSetting();
             }
             else if(bundle.containsKey("qod_key")){
-                String [] qod = bundle.getStringArray("qod_key");
-                Quote quote = stringArrToQuote(qod);
-                goQod(quote);
+                int date = bundle.getInt("qod_key", 0);
+                // TODO Quote quote = getQuoteOfTheDay(date);
+                Log.d("QOD", "Quote of the day :" + date);
+                //goQod(quote);
             }
         }
 
@@ -404,7 +405,6 @@ public class MainActivity extends AppCompatActivity
     public void activateQuoteOfTheDay()
     {
         Intent intent = new Intent(this, NotificationService.class);
-        intent.putExtras(createQodBundle());
         startService(intent);
     }
     private Bundle createQodBundle(){

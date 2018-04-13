@@ -40,8 +40,6 @@ public class SendNotificationManager extends BroadcastReceiver {
         try {
             Log.d("MY_QUOTES","SendNotificationManager");
 
-            Date d = new Date();
-
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
             boolean notifActive = sharedPreferences.getBoolean("pref_qod_activate", false);
@@ -51,14 +49,21 @@ public class SendNotificationManager extends BroadcastReceiver {
             if(!notifActive)
                 return;
 
+
             Log.d("MY_QUOTES", "prefTime" + prefTime);
             String[] parsedPrefTime = prefTime.split(":");
             Log.d("MY_QUOTES", "hour" + parsedPrefTime[0]);
             Log.d("MY_QUOTES", "minute" + parsedPrefTime[1]);
 
+            Date d = new Date();
             DateFormat hourFormat = new SimpleDateFormat("HH:mm");
+            DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
             String strHour = hourFormat.format(d);
             String[] parsedCurrentTime = strHour.split(":");
+
+            String date = dateFormat.format(d);
+
+            Log.d("MY_QUOTES", "date : " + date);
 
             int prefHour = Integer.parseInt(parsedPrefTime[0]);
             int prefMin = Integer.parseInt(parsedPrefTime[1]);
@@ -70,11 +75,11 @@ public class SendNotificationManager extends BroadcastReceiver {
             if (prefHour == currHour && prefMin == currMin) {
                 Log.d("MY_QUOTES", "heure match");
 
-                Bundle bundleQod = intent.getExtras();
-
+                Bundle bundle = new Bundle();
+                bundle.putInt("qod_key", Integer.parseInt(date));
 
                 Intent it = new Intent(context, MainActivity.class);
-                it.putExtras(bundleQod);
+                it.putExtras(bundle);
                 //it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 createNotification(context, it,

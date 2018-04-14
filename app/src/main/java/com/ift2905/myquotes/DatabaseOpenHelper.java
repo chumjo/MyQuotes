@@ -5,7 +5,8 @@ import android.content.Context;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 /**
- * Created by augus on 06/04/2018.
+ * Open external database (database placed in "assets" folder)
+ * Code strongly inspired by: http://www.javahelps.com/2015/04/import-and-use-external-database-in.html
  */
 
 public class DatabaseOpenHelper extends SQLiteAssetHelper {

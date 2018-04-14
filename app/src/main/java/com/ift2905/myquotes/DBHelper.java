@@ -6,15 +6,12 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import com.ift2905.myquotes.Category;
-import com.ift2905.myquotes.Quote;
 
 import java.util.ArrayList;
 
 /**
- * Created by augus on 05/04/2018.
+ * Managing the Favorites Quotes database with SQLite
+ * Code strongly inspired by the class database demo
  */
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -28,12 +25,14 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String Q_AUTHOR = "author";
     static final String Q_CATEGORY = "category";
     static Context context;
-    //static int count = 0;
-    //static int added = 0;
 
-    //private static SQLiteDatabase db = null;
+    // Private static SQLiteDatabase db = null;
     public static SQLiteDatabase db = null;
 
+    /**
+     * Constructor that creates database
+     * @param context
+     */
     public DBHelper(Context context){
         super(context, DB_NAME, null, DB_VERSION);
         DBHelper.context = context;
@@ -41,6 +40,11 @@ public class DBHelper extends SQLiteOpenHelper {
             db = getWritableDatabase();
         }
     }
+
+    /**
+     * Function called on the creation of Favorite Quotes database
+     * @param db
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "create table " + TABLE_FAVORITE_QUOTES
@@ -48,16 +52,27 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Q_QUOTE+ " text, "
                 + Q_AUTHOR+ " text, "
                 +Q_CATEGORY+ " text )";
-        //Log.d("MY_QUOTES_DEBUG",sql);
         db.execSQL(sql);
     }
-    
+
+    /**
+     * Upgrade database Favorite Quotes database
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists " + TABLE_FAVORITE_QUOTES);
         onCreate(db);
     }
 
+    /**
+     * Add quotes into Favorites Quotes database
+     * Throws exception if quote is already in database and don't insert it
+     * after exception app's execution continues
+     * @param quote
+     */
     public static void addQuoteToFavorites(Quote quote){
         ContentValues cv = new ContentValues();
         cv.clear();
@@ -66,27 +81,26 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(Q_CATEGORY, quote.getCategory().name());
         cv.put(Q_ID,quote.getId());
         try{
-            //count++;
-            //Log.d("FAV_DATABASE", "quote category: "+quote.getCategory().name()+" count: "+count);
-
             db.insertOrThrow(TABLE_FAVORITE_QUOTES, null, cv);
-            //Log.d("FAV_DATABASE", "quote inserted (unique) add :" + added);
-            //added++;
         } catch (SQLException e){
             e.printStackTrace();
-            //Log.d("FAV_DATABASE", "quote not inserted (not unique)");
             return;
         }
     }
 
+    /**
+     * Delete quotes from Favorites Quotes database
+     * @param id
+     */
     public static void deleteQuoteFromFavorites(String id) {
         db.delete(TABLE_FAVORITE_QUOTES, Q_ID + " = ?", new String[]{id});
-        Log.d("MY_QUOTES_DEBUG", "deleted from favorites");
-        //db.close();
     }
 
+    /**
+     * Get an ArrayList with all the favorite quotes of the database
+     * @return
+     */
     public static ArrayList<Quote> getFaroriteQuotes() {
-        //db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_FAVORITE_QUOTES, null, null, null, null, null, null);
         ArrayList<Quote> quotes = new ArrayList<Quote>();
         Quote quote;
@@ -98,14 +112,7 @@ public class DBHelper extends SQLiteOpenHelper {
             }
         }
         cursor.close();
-        //db.close();
         return quotes;
-    }
-
-    public Cursor quotesList(){
-        Cursor c;
-        c = db.rawQuery("select * from " + TABLE_FAVORITE_QUOTES + " ORDER BY " + Q_CATEGORY + " ASC",null);
-        return c;
     }
 }
 

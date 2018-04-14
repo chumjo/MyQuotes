@@ -33,6 +33,12 @@ public class FavoriteQuoteFragment extends Fragment {
         super();
     }
 
+    /**
+     * Returns new instance of Favorite Quote Fragment to Favorites ViewPager
+     * @param position
+     * @param quote
+     * @return
+     */
     public static FavoriteQuoteFragment newInstance(int position, Quote quote) {
 
         FavoriteQuoteFragment fragment = new FavoriteQuoteFragment();
@@ -42,6 +48,13 @@ public class FavoriteQuoteFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Favorite Quotes Fragment view creation
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

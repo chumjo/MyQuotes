@@ -4,12 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 
 /**
- * Retreive external database
+ * Retreive external database (database placed in "assets" folder)
  * Code strongly inspired by: http://www.javahelps.com/2015/04/import-and-use-external-database-in.html
  */
 

@@ -12,10 +12,6 @@
 
     <!-- About Text -->
     <string name="app_about">
-        <!-- \"L\'application My Quotes a été développée par les étudiants Jonathan Larose, Augusto
-        Dos Santos et Dennis Orozco dans le cadre du cours ift2905 - Interfaces personne-machine de la
-        session d\'hiver 2018 sous l\'enseignement du professeur Bernhard Thomaszewski à
-        l\'Université de Montréal\.\" -->
         \"The My Quotes app was developed by students Augusto Latgé, Dennis Orozco and Jonathan Larose,
         for the Human-Machine Interfaces course ( IFT 2905) during 2018 Winter term at Montreal University,
         under the teaching of Professor Bernhard Thomaszewski\.\"

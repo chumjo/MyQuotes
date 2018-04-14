@@ -3,17 +3,20 @@ package com.ift2905.myquotes;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by Jonathan on 2018-04-07.
+ * Managing resources from user's preferences
  */
 
-public class SettingRessources {
+public class SettingsResources {
 
+    /**
+     * Returns the list of categories chosen by user
+     * @param context
+     * @return
+     */
     static String[] getPrefCategories(Context context){
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -54,7 +57,9 @@ public class SettingRessources {
         return new_preferences;
     }
 
-    // Returns the drawable icon of correspondant category
+    /**
+     * Returns the drawable icon of correspondent category
+     */
     static int getIcon(Category category){
 
         switch (category){
@@ -75,7 +80,11 @@ public class SettingRessources {
         return R.drawable.ic_launcher_background;
     }
 
-    // Returns the theme
+    /**
+     * Returns the theme chosen by the user
+     * @param theme
+     * @return
+     */
     static int getTheme(String theme){
 
         if(theme.equals("theme1"))

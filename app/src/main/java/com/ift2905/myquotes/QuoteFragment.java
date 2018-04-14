@@ -40,6 +40,13 @@ public class QuoteFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Creation of QuoteFragment view for mViewPager
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -52,7 +59,7 @@ public class QuoteFragment extends Fragment {
         @ColorInt int color = typedValue.data;
 
         ImageView imgView = (ImageView) rootView.findViewById(R.id.imgCategory);
-        imgView.setImageDrawable(getResources().getDrawable(SettingRessources.getIcon(quote.getCategory())));
+        imgView.setImageDrawable(getResources().getDrawable(SettingsResources.getIcon(quote.getCategory())));
         imgView.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
 
         // Fills the textview with the quote and the author
@@ -92,6 +99,7 @@ public class QuoteFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                // Share message with contacts
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_SUBJECT, "@string/app_name");
@@ -101,11 +109,13 @@ public class QuoteFragment extends Fragment {
             }
         });
 
+        // Adds a listener to the search button
         btn_search.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
+                // Wikipedia author search
                 String searchFor= "https://wikipedia.org/wiki/"+quote.getAuthor();
                 Intent viewSearch = new Intent(Intent.ACTION_WEB_SEARCH);
                 viewSearch.putExtra(SearchManager.QUERY, searchFor);

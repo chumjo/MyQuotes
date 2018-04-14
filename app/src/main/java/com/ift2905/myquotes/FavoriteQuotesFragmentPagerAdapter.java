@@ -15,6 +15,12 @@ public class FavoriteQuotesFragmentPagerAdapter extends FragmentStatePagerAdapte
     private final int numberOfFragment;
     private ArrayList<Quote> mQuoteList;
 
+    /**
+     * PagerAdapter for Favorite Quotes ViewPager
+     * @param fm
+     * @param numberOfFragment
+     * @param quoteArrayList
+     */
     public FavoriteQuotesFragmentPagerAdapter(FragmentManager fm, int numberOfFragment,
                                      ArrayList<Quote> quoteArrayList) {
         super(fm);
@@ -22,7 +28,11 @@ public class FavoriteQuotesFragmentPagerAdapter extends FragmentStatePagerAdapte
         this.mQuoteList = quoteArrayList;
     }
 
-    // Returns the quote at "position" to be displayed by the ViewPager
+    /**
+     * Returns the quote at "position" to be displayed by the ViewPager
+     * @param position
+     * @return
+     */
     @Override
     public Fragment getItem(int position) {
 
@@ -31,6 +41,10 @@ public class FavoriteQuotesFragmentPagerAdapter extends FragmentStatePagerAdapte
         return FavoriteQuoteFragment.newInstance(position, quote);
     }
 
+    /**
+     * Returns the total number of Favorite Quotes Fragments
+     * @return
+     */
     @Override
     public int getCount() {
         return numberOfFragment;

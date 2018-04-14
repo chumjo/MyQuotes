@@ -5,16 +5,13 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.util.Calendar;
 
 /**
- * Created by augus on 12/04/2018.
+ * Service to allow sending a Quote of the Day notification in the background
+ * Code strongly inspired by: https://stackoverflow.com/questions/39674850/send-a-notification-when-the-app-is-closed
  */
 
 public class NotificationService extends Service {
@@ -25,12 +22,19 @@ public class NotificationService extends Service {
         return null;
     }
 
+    /**
+     * Set a Alarm to run in the background and send a notification at
+     * the time chosen by the user
+     * @param intent
+     * @param flags
+     * @param startId
+     * @return
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        Log.d("MY_QUOTES", "onStartCommand");
+
         super.onStartCommand(intent, flags, startId);
 
-        Log.d("MY_QUOTES", "notification");
         Intent itAlarm = new Intent("NOTIFICATION");
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,itAlarm, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -40,20 +44,15 @@ public class NotificationService extends Service {
         AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarme.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),60000, pendingIntent);
 
-        Log.d("MY_QUOTES", "it worked?");
-
-
         return START_STICKY;
     }
 
     @Override
     public void onCreate(){
-        Log.d("MY_QUOTES", "onCreate");
     }
 
     @Override
     public void onDestroy(){
-        Log.d("MY_QUOTES", "onDestroy");
         super.onDestroy();
     }
 }

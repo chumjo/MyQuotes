@@ -1,6 +1,8 @@
 package com.ift2905.myquotes;
 
-import android.support.annotation.NonNull;
+/**
+ * Object quote
+ */
 
 public class Quote {
 
@@ -9,6 +11,15 @@ public class Quote {
     private String author;
     private Category category;
     private String id;
+
+    // Constructors
+    public Quote(String quote, String author, Category category, String id)
+    {
+        this.quote = quote;
+        this.author = author;
+        this.category = category;
+        this.id = id;
+    }
 
     // Getters
     public String getQuote() {
@@ -29,20 +40,5 @@ public class Quote {
 
     public String getId() {
         return id;
-    }
-
-    // Constructors
-    public Quote(String quote, String author, Category category, String id)
-    {
-        this.quote = quote;
-        this.author = author;
-        this.category = category;
-        this.id = id;
-    }
-
-    public static boolean equals(Quote q1, Quote q2) {
-
-        return q1.getId().equals(q2.getId());
-
     }
 }

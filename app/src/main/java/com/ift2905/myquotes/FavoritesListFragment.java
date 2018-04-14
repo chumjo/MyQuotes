@@ -40,11 +40,20 @@ public class FavoritesListFragment extends Fragment {
     // List of quotes from Favorites Database
     ArrayList<Quote> list_favorite_quotes = DBHelper.getFaroriteQuotes();
 
-    // Constructor
+    /**
+     * Constructor of Favorite Quotes ListView Fragment
+     */
     public FavoritesListFragment(){
         super();
     }
 
+    /**
+     * Creation of Favorites Quotes ListView Fragment
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -130,6 +139,9 @@ public class FavoritesListFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Adapter of Favorite Quote Fragment to Favorite Quotes ListView Fragment
+     */
     public class MyAdapter extends BaseAdapter {
 
         @Override
@@ -208,7 +220,7 @@ public class FavoritesListFragment extends Fragment {
             theme.resolveAttribute(R.attr.colorPrimary, typedValue,true);
             @ColorInt int color = typedValue.data;
 
-            im_category.setImageDrawable(getResources().getDrawable(SettingRessources.getIcon(quote.getCategory())));
+            im_category.setImageDrawable(getResources().getDrawable(SettingsResources.getIcon(quote.getCategory())));
             im_category.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
 
             return view;

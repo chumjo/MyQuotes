@@ -22,12 +22,22 @@ public class FavoritesViewPagerFragment extends Fragment {
     // List of favorite quotes from Favorite quotes database
     ArrayList<Quote> list_favorite_quotes = DBHelper.getFaroriteQuotes();
 
+    /**
+     * Constructor
+     */
     public FavoritesViewPagerFragment() {
         super();
     }
 
-    // Uses bundle to get the position of the item selected in the Favorites ListView to display it
-    // in the ViewPager as the currently visible element
+    /**
+     * Creation of Favorites Quotes ViewPager Fragment
+     * Uses a bundle to get the position of the item selected in the Favorites ListView to be
+     * displayed in the ViewPager as the currently visible element
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

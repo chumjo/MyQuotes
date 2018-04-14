@@ -33,6 +33,12 @@ public class FavoriteQuoteFragment extends Fragment {
         super();
     }
 
+    /**
+     * Returns new instance of Favorite Quote Fragment to Favorites ViewPager
+     * @param position
+     * @param quote
+     * @return
+     */
     public static FavoriteQuoteFragment newInstance(int position, Quote quote) {
 
         FavoriteQuoteFragment fragment = new FavoriteQuoteFragment();
@@ -42,6 +48,13 @@ public class FavoriteQuoteFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Favorite Quotes Fragment view creation
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -54,7 +67,7 @@ public class FavoriteQuoteFragment extends Fragment {
         @ColorInt int color = typedValue.data;
 
         ImageView imgView = (ImageView) rootView.findViewById(R.id.imgCategory);
-        imgView.setImageDrawable(getResources().getDrawable(SettingRessources.getIcon(quote.getCategory())));
+        imgView.setImageDrawable(getResources().getDrawable(SettingsResources.getIcon(quote.getCategory())));
         imgView.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
 
         // Fills the textview with the quote and the author
@@ -139,6 +152,8 @@ public class FavoriteQuoteFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
+
+                // Share favorite quote with contacts
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_SUBJECT, "@string/app_name");
@@ -148,11 +163,13 @@ public class FavoriteQuoteFragment extends Fragment {
             }
         });
 
+        // Adds a listener to the search button
         btn_search.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
+                // Wikipedia author search
                 String searchFor= "https://wikipedia.org/wiki/"+quote.getAuthor();
                 Intent viewSearch = new Intent(Intent.ACTION_WEB_SEARCH);
                 viewSearch.putExtra(SearchManager.QUERY, searchFor);

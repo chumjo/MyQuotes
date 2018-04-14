@@ -1,7 +1,6 @@
 package com.ift2905.myquotes;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
@@ -10,14 +9,9 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import java.util.HashSet;
-import java.util.Set;
 
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -48,7 +42,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             String theme = sharedPreferences.getString("pref_theme", "");
 
             Activity activity = getActivity();
-            activity.setTheme(SettingRessources.getTheme(theme));
+            activity.setTheme(SettingsResources.getTheme(theme));
 
             Intent intent = new Intent(getActivity(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);

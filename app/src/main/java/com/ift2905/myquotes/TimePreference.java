@@ -1,13 +1,7 @@
-/**
- * Code form :
- * https://stackoverflow.com/questions/5533078/timepicker-in-preferencescreen
- */
-
 package com.ift2905.myquotes;
 
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 import android.content.Context;
@@ -17,6 +11,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/**
+ * Manages Quote of the Day time setter
+ * Code from :
+ * https://stackoverflow.com/questions/5533078/timepicker-in-preferencescreen
+ */
+
 public class TimePreference extends DialogPreference {
     private int lastHour=0;
     private int lastMinute=0;
@@ -24,7 +24,6 @@ public class TimePreference extends DialogPreference {
 
     public static int getHour(String time) {
         String[] pieces=time.split(":");
-        Log.d("MY_QUOTES",pieces[0]);
 
         return(Integer.parseInt(pieces[0]));
     }

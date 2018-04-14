@@ -67,18 +67,18 @@ public class MainActivity extends AppCompatActivity
 
         // Set app theme
         String theme = sharedPreferences.getString("pref_theme", "");
-        setTheme(SettingRessources.getTheme(theme));
+        setTheme(SettingsResources.getTheme(theme));
 
         // Fill firt "nb_init_quotes" elements of the quotes list to be displayed in fragments
         // on mViewPager from "initial_quotes.db"
         for(int i=0; i<nb_init_quotes; i++) {
-            String[] test = SettingRessources.getPrefCategories(this);
+            String[] test = SettingsResources.getPrefCategories(this);
             // welcome quote
             if(i==0)
                 quote = new Quote(getResources().getString(R.string.quote_welcome),getResources().getString(R.string.app_author),Category.love,"welcome_quote");
             // random quote
             else
-                quote = randomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(this));
+                quote = randomQuoteInitialList.getRandomQuoteFromIntialList(SettingsResources.getPrefCategories(this));
             if(quote != null) {
                 mRandomQuoteArrayList.add(quote);
             }
@@ -379,7 +379,7 @@ public class MainActivity extends AppCompatActivity
             for (int i=0; i<nb_init_quotes; i++){
 
                 // Pass random category to QuoteAPI
-                QuoteAPI web = new QuoteAPI(randomQuoteFromPreferences(SettingRessources.getPrefCategories(MainActivity.this))
+                QuoteAPI web = new QuoteAPI(randomQuoteFromPreferences(SettingsResources.getPrefCategories(MainActivity.this))
                         ,MainActivity.this);
 
                 // Run QuoteAPI

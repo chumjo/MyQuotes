@@ -49,7 +49,7 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
             quote = mQuoteList.get(position);
 
         } else {
-            quote = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(context));
+            quote = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingsResources.getPrefCategories(context));
             mQuoteList.add(quote);
         }
 

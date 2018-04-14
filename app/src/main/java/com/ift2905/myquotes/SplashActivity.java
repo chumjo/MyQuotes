@@ -1,12 +1,16 @@
 package com.ift2905.myquotes;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Handler;
+
+/**
+ * Manages initial loading screen
+ * Base code from somewhere in StackOverflow...
+ */
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -18,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
     public void onCreate(Bundle icicle) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String theme = sharedPreferences.getString("pref_theme", "");
-        setTheme(SettingRessources.getTheme(theme));
+        setTheme(SettingsResources.getTheme(theme));
 
         super.onCreate(icicle);
 

@@ -59,7 +59,7 @@ public class QuoteFragment extends Fragment {
         @ColorInt int color = typedValue.data;
 
         ImageView imgView = (ImageView) rootView.findViewById(R.id.imgCategory);
-        imgView.setImageDrawable(getResources().getDrawable(SettingRessources.getIcon(quote.getCategory())));
+        imgView.setImageDrawable(getResources().getDrawable(SettingsResources.getIcon(quote.getCategory())));
         imgView.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
 
         // Fills the textview with the quote and the author

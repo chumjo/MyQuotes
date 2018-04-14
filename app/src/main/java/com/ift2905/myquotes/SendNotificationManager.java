@@ -1,11 +1,9 @@
 package com.ift2905.myquotes;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,23 +12,17 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.os.Build;
-import android.app.NotificationChannel;
 import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
-import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
-
-/*
-- Classe por la gestion de notifications de l'application
-- Affiche une quote avec auteur dans la notification
+/**
+ * Manages notifications sending
+ * Base code from somewhere in StackOverflow...
 */
 
 public class SendNotificationManager extends BroadcastReceiver {
@@ -38,42 +30,34 @@ public class SendNotificationManager extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
-            Log.d("MY_QUOTES","SendNotificationManager");
-
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
             boolean notifActive = sharedPreferences.getBoolean("pref_qod_activate", false);
             boolean notifSound = sharedPreferences.getBoolean("pref_qod_sound", false);
             String prefTime = sharedPreferences.getString("pref_qod_clock", null);
 
+            // Check if user's notification preference is disabled
             if(!notifActive)
                 return;
 
-
-            Log.d("MY_QUOTES", "prefTime" + prefTime);
             String[] parsedPrefTime = prefTime.split(":");
-            Log.d("MY_QUOTES", "hour" + parsedPrefTime[0]);
-            Log.d("MY_QUOTES", "minute" + parsedPrefTime[1]);
 
             Date d = new Date();
             DateFormat hourFormat = new SimpleDateFormat("HH:mm");
             DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
             String strHour = hourFormat.format(d);
+
             String[] parsedCurrentTime = strHour.split(":");
 
             String date = dateFormat.format(d);
-
-            Log.d("MY_QUOTES", "date : " + date);
 
             int prefHour = Integer.parseInt(parsedPrefTime[0]);
             int prefMin = Integer.parseInt(parsedPrefTime[1]);
             int currHour = Integer.parseInt(parsedCurrentTime[0]);
             int currMin = Integer.parseInt(parsedCurrentTime[1]);
 
-            Log.d("MY_QUOTES", "hour: "+strHour);
-            //if (date.equals(yourDate) && hour.equals(yourHour)) {
+            // If current time matches user's set time send notification
             if (prefHour == currHour && prefMin == currMin) {
-                Log.d("MY_QUOTES", "heure match");
 
                 Bundle bundle = new Bundle();
                 bundle.putInt("qod_key", Integer.parseInt(date));
@@ -87,15 +71,21 @@ public class SendNotificationManager extends BroadcastReceiver {
                         context.getResources().getString(R.string.notif_body),
                         context.getResources().getString(R.string.notif_message),
                         notifSound);
-
-                Log.d("MY_QUOTES", "PASSÉ ICI");
             }
         } catch (Exception e) {
-            Log.i("date", "error == " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-
+    /**
+     * Creates the notification to be sent
+     * @param context
+     * @param intent
+     * @param ticker
+     * @param title
+     * @param description
+     * @param notifSound
+     */
     public void createNotification(Context context, Intent intent, CharSequence ticker, CharSequence title, CharSequence description, boolean notifSound) {
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -110,12 +100,12 @@ public class SendNotificationManager extends BroadcastReceiver {
         builder.setSmallIcon(R.drawable.icon_app_alpha);
         builder.setContentIntent(p);
         Notification n = builder.build();
+
         //create the notification
         n.vibrate = new long[]{150, 300, 150, 400};
         n.flags = Notification.FLAG_AUTO_CANCEL;
         nm.notify(R.drawable.icon_app, n);
 
-        Log.d("MY_QUOTES", "PASSÉ ICI5");
         //create a vibration
         try {
             // check state of sound option notifications
@@ -128,8 +118,7 @@ public class SendNotificationManager extends BroadcastReceiver {
                 toque.play();
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-
-
 }

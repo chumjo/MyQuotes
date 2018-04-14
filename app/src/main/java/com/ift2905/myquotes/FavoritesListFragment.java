@@ -220,7 +220,7 @@ public class FavoritesListFragment extends Fragment {
             theme.resolveAttribute(R.attr.colorPrimary, typedValue,true);
             @ColorInt int color = typedValue.data;
 
-            im_category.setImageDrawable(getResources().getDrawable(SettingRessources.getIcon(quote.getCategory())));
+            im_category.setImageDrawable(getResources().getDrawable(SettingsResources.getIcon(quote.getCategory())));
             im_category.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
 
             return view;

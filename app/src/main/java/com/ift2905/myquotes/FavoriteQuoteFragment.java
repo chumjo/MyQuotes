@@ -152,6 +152,8 @@ public class FavoriteQuoteFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
+
+                // Share favorite quote with contacts
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_SUBJECT, "@string/app_name");
@@ -161,11 +163,13 @@ public class FavoriteQuoteFragment extends Fragment {
             }
         });
 
+        // Adds a listener to the search button
         btn_search.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
+                // Wikipedia author search
                 String searchFor= "https://wikipedia.org/wiki/"+quote.getAuthor();
                 Intent viewSearch = new Intent(Intent.ACTION_WEB_SEARCH);
                 viewSearch.putExtra(SearchManager.QUERY, searchFor);

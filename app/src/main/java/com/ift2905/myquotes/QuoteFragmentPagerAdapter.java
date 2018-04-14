@@ -1,18 +1,17 @@
 package com.ift2905.myquotes;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
+
+/**
+ * PagerAdapter for mViewPager QuoteFragments
+ */
 
 public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
 
@@ -21,6 +20,13 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
     private Context context;
     private SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 
+    /**
+     * PagerAdapter for mViewPager
+     * @param fm
+     * @param numberOfFragment
+     * @param quoteArrayList
+     * @param context
+     */
     public QuoteFragmentPagerAdapter(FragmentManager fm, int numberOfFragment,
                                      ArrayList<Quote> quoteArrayList, Context context) {
         super(fm);
@@ -29,6 +35,11 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
         this.mQuoteList = quoteArrayList;
     }
 
+    /**
+     * Returns the quote at "position" to be displayed by the mViewPager
+     * @param position
+     * @return
+     */
     @Override
     public Fragment getItem(int position) {
 
@@ -45,11 +56,21 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
         return QuoteFragment.newInstance(quote);
     }
 
+    /**
+     * Returns the total number of QuoteFragments
+     * @return
+     */
     @Override
     public int getCount() {
         return numberOfFragment;
     }
 
+    /**
+     * Checks if QuoteFragment instatiated
+     * @param container
+     * @param position
+     * @return
+     */
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Fragment fragment = (Fragment) super.instantiateItem(container, position);
@@ -57,6 +78,11 @@ public class QuoteFragmentPagerAdapter extends FragmentPagerAdapter {
         return fragment;
     }
 
+    /**
+     * Get QuoteFragment at position
+     * @param position
+     * @return
+     */
     public Fragment getRegisteredFragment(int position) {
         return registeredFragments.get(position);
     }

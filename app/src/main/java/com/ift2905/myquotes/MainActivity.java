@@ -1,9 +1,6 @@
 package com.ift2905.myquotes;
 
-import android.annotation.SuppressLint;
-import android.app.AlarmManager;
 import android.app.FragmentTransaction;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -17,7 +14,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.CheckBox;
@@ -25,14 +21,19 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import static com.ift2905.myquotes.R.id.container;
+
+/**
+ * Main Activity of My Quotes app
+ * The only one used in the app
+ * All other views are fragments setted from this activity *
+ * A lot of the present code was inspired from : Android Developers, StackOverflow and class demos
+ */
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    int time_notification = 1;       // default time in hours to receive a notification
     public Quote quote;
     public SharedPreferences sharedPreferences;
     public RandomQuoteInitialList randomQuoteInitialList;
@@ -45,13 +46,17 @@ public class MainActivity extends AppCompatActivity
     private QuoteFragmentPagerAdapter mQuoteFragmentPagerAdapter;
     private ViewPager mViewPager;
 
-
-    @SuppressLint("CutPasteId")
+    /**
+     * Creation of MainActivity initial view
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        // Set default values to preferences
         PreferenceManager.setDefaultValues(this, R.xml.preference, false);
 
+        // Get initial quotes list from "initial_quotes.db"
         randomQuoteInitialList = new RandomQuoteInitialList(this);
 
         // Initialise une liste de random quote vide
@@ -60,9 +65,12 @@ public class MainActivity extends AppCompatActivity
         mMaxQuotePosition = 0;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        // Set app theme
         String theme = sharedPreferences.getString("pref_theme", "");
         setTheme(SettingRessources.getTheme(theme));
 
+        // Fill firt "nb_init_quotes" elements of the quotes list to be displayed in fragments
+        // on mViewPager from "initial_quotes.db"
         for(int i=0; i<nb_init_quotes; i++) {
             String[] test = SettingRessources.getPrefCategories(this);
             // welcome quote
@@ -72,12 +80,12 @@ public class MainActivity extends AppCompatActivity
             else
                 quote = randomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(this));
             if(quote != null) {
-                Log.d("MY_QUOTES_DEBUG",quote.getQuote());
                 mRandomQuoteArrayList.add(quote);
             }
             //mRandomQuoteArrayList.add(randomQuoteInitialList.getRandomQuoteFromIntialList(prefCategories));
         }
 
+        // Gets quotes from They Said So API
         RunAPI run = new RunAPI();
         try{
             run.execute();
@@ -86,14 +94,17 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
+        // Super constructor
         super.onCreate(savedInstanceState);
 
-
+        // Set content view
         setContentView(R.layout.activity_main);
 
+        // Defines toolbar view
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Creates adapter for mViewPager
         mQuoteFragmentPagerAdapter = new QuoteFragmentPagerAdapter(
                 getSupportFragmentManager(), mNumberOfFragment, mRandomQuoteArrayList, this);
 
@@ -101,16 +112,16 @@ public class MainActivity extends AppCompatActivity
         mViewPager = (ViewPager) findViewById(container);
         mViewPager.setAdapter(mQuoteFragmentPagerAdapter);
 
+        // Set up DrawerLayout
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Set up NavigationView
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
 
         // Page Change listener
         // Changes the different page counts
@@ -125,6 +136,11 @@ public class MainActivity extends AppCompatActivity
 
             }
 
+            /**
+             * When a ViewPager page is swiped from right to left we
+             * fetch a new quote to be displayed
+             * @param position
+             */
             @Override
             public void onPageSelected(int position) {
 
@@ -152,24 +168,20 @@ public class MainActivity extends AppCompatActivity
 
         if(bundle != null){
             if(bundle.containsKey("settings")) {
-                goSetting();
+                goSettings();
             }
             else if(bundle.containsKey("qod_key")){
                 int date = bundle.getInt("qod_key", 0);
                 Quote quote = randomQuoteInitialList.getQuoteOfTheDay(date);
-                Log.d("QOD", "Quote of the day :" + date);
                 goQod(quote);
             }
         }
     }
 
-
-
-    public void setTime_notification(int time_notification){
-        this.time_notification = time_notification;
-    }
-
-    // Uncheck the Favorite Star Icon in activty_main layout when quote removed from Favorites
+    /**
+     * Uncheck the Favorite Star Icon in activty_main layout when quote removed from Favorites
+     * @param quote_id
+     */
     public void unCheckFavoriteState(String quote_id) {
 
         int position;
@@ -214,6 +226,9 @@ public class MainActivity extends AppCompatActivity
         super.onPause();
     }
 
+    /**
+     * Management of on back pressed
+     */
     @Override
     public void onBackPressed() {
 
@@ -284,6 +299,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * On the selection of Menu items
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -321,7 +341,7 @@ public class MainActivity extends AppCompatActivity
 
         //--- SETTINGS ---//
         else if (id == R.id.nav_settings) {
-            goSetting();
+            goSettings();
         }
 
         //--- ABOUT ---//
@@ -344,7 +364,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    // Asynchronous task to acquire quotes from the internet (run in background)
+    /**
+     * Asynchronous task to acquire quotes from the internet (run in background)
+     */
     public class RunAPI extends AsyncTask<String, Object, ArrayList<Quote>> {
 
         public RunAPI(){
@@ -375,30 +397,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-    public void activateQuoteOfTheDay()
-    {
-        Intent intent = new Intent(this, NotificationService.class);
-        startService(intent);
-    }
-    private Bundle createQodBundle(){
-
-        // Create the quote to send and put it in a bundle
-        Quote quote_notification = RandomQuoteInitialList.getRandomQuoteFromIntialList(SettingRessources.getPrefCategories(this));
-
-        String [] qod = new String [4];
-        qod [0] = quote_notification.getQuote();
-        qod [1] = quote_notification.getAuthor();
-        qod [2] = quote_notification.getCategory().toString();
-        qod [3] = quote_notification.getId();
-
-        Bundle bundleQod = new Bundle();
-        bundleQod.putStringArray("qod_key", qod);
-
-        return bundleQod;
-    }
-
-    // Generates random category from user's preferences
+    /**
+     * Generates random category from user's preferences
+     * @param prefCategories
+     * @return
+     */
     public static Category randomQuoteFromPreferences(String[] prefCategories) {
 
         if(prefCategories.length == 0) {
@@ -410,6 +413,9 @@ public class MainActivity extends AppCompatActivity
         return Category.valueOf(prefCategories[i]);
     }
 
+    /**
+     * Remove all QuoteFragments
+     */
     private void removeAllFragments(){
 
         for(Fragment fragment:getSupportFragmentManager().getFragments()){
@@ -427,7 +433,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
+    /**
+     * Go to Home view
+     */
     private void goHome(){
         getSupportFragmentManager().beginTransaction().remove(new Fragment());
 
@@ -439,6 +447,9 @@ public class MainActivity extends AppCompatActivity
         removeAllFragments();
     }
 
+    /**
+     * Go to Favorite view
+     */
     private void goFavorite(){
 
         TextView tv = (TextView) findViewById(R.id.title_app);
@@ -457,7 +468,10 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
     }
 
-    private void goSetting(){
+    /**
+     * Go to Settings view
+     */
+    private void goSettings(){
 
         TextView tv = (TextView) findViewById(R.id.title_app);
         tv.setText(R.string.app_name);
@@ -472,6 +486,9 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
     }
 
+    /**
+     * Go to About view
+     */
     private void goAbout(){
 
         TextView tv = (TextView) findViewById(R.id.title_app);
@@ -490,6 +507,10 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
     }
 
+    /**
+     * Go to Quote of The Day view
+     * @param quote
+     */
     private void goQod(Quote quote){
 
         TextView tv = (TextView) findViewById(R.id.title_app);
@@ -502,11 +523,5 @@ public class MainActivity extends AppCompatActivity
         ft.replace(R.id.container_main, frag_qod, "FRAG_QOD");
         ft.show(frag_qod);
         ft.commit();
-    }
-
-    private Quote stringArrToQuote(String [] strArr){
-
-        Quote quote = new Quote(strArr[0], strArr[1], Category.valueOf(strArr[2]), strArr[3]);
-        return quote;
     }
 }

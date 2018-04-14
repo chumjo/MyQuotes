@@ -1,7 +1,7 @@
 package com.ift2905.myquotes.theysaidso;
 
 /**
- * Created by augus on 04/04/2018.
+ * Objet Content to parse They Said So json
  */
 
 public class Content {

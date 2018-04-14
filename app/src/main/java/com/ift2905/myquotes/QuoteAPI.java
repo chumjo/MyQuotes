@@ -25,25 +25,25 @@ public class QuoteAPI {
     private Category category;
     private Context context;
     DBHelper dbh ;
-    //private static boolean art_sport = true;
 
-    // QuoteAPI constructor
+    /**
+     * QuoteAPI constructor
+     * @param category
+     * @param context
+     */
     public QuoteAPI(Category category, Context context) {
         this.category = category;
-        /*if (art_sport) {
-            this.category = Category.sport;
-            art_sport = false;
-        } else {
-            this.category = Category.art;
-            art_sport = true;
-        }*/
         this.context = context;
         url_begin = "http://quotes.rest/quote/search.json?category=";
         url_final = url_begin + category;
         dbh = new DBHelper(context);
     }
 
-    // Asynchronous method to retrieve json from the web API
+    /**
+     * Asynchronous method to retrieve json from the web API
+     * @return
+     * @throws IOException
+     */
     public Quote run() throws IOException {
 
         // Check if connected to the web
